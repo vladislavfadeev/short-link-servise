@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-xl-4 col-lg-5 col-md-7 mx-auto mt-5">
+        <div class="card radius-10">
+          <div class="card-body p-4">
+            <div class="text-center">
+              <h4>Личный кабинет</h4>
+              <p>Войти через социальные сети</p>
+            </div>
+            <form class="form-body row g-3" method="post">
+              {% csrf_token %}
+              <div class="col-12 col-lg-12">
+                <div class="d-grid gap-2">
+                  <a href="javascript:;" class="btn border border-2 border-dark"><img
+                      src="assets/images/icons/google.png" width="20" alt=""><span class="ms-3 fw-500">Войти через
+                      Google</span></a>
+                  <a href="javascript:;" class="btn border border-2 border-dark"><img
+                      src="assets/images/icons/apple-black-logo.png" width="20" alt=""><span class="ms-3 fw-500">Войти через 
+                      Яндекс</span></a>
+                </div>
+              </div>
+              <div class="col-12 col-lg-12">
+                <div class="position-relative border-bottom my-3">
+                  <div class="position-absolute seperator-2 translate-middle-y">или</div>
+                </div>
+              </div>
+
+              {% if form.errors %}
+              <div class="col-12">
+                {{ form.non_field_errors }}
+              </div>
+              {% endif %}
+
+              <div class="col-12">
+                <label for="id_username" class="form-label">Login</label>
+                <input type="text" name="username" autofocus class="form-control" autocomplete="username" maxlength="150" required id="id_username">
+                <!-- <input type="login" class="form-control" id="inputLogin" name="username" placeholder="abc@example.com"> -->
+              </div>
+              <div class="col-12">
+                <label for="id_password" class="form-label">Password</label>
+                <input type="password" name="password" autocomplete="current-password" class="form-control" required id="id_password">
+                <!-- <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Your password"> -->
+              </div>
+              <!-- <div class="col-12 col-lg-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckRemember">
+                  <label class="form-check-label" for="flexSwitchCheckRemember">Запомнить</label>
+                </div>
+              </div> -->
+              <div class="col-12"> <!-- text-end -->
+                <a href="{% url 'forgot-pwd' %}">Забыли пароль?</a>
+              </div>
+              <div class="col-12 col-lg-12">
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-dark">Вход</button>
+                </div>
+              </div>
+              <div class="col-12 col-lg-12 text-center">
+                <p class="mb-0">Нет аккаунта? <a href="{% url 'sign-up' %}">Регистрация</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

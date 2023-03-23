@@ -1,0 +1,22 @@
+{% load static %}
+
+<div class="align-items-center margin-bottom">
+    <div class="d-flex border border-success p-2 mb-2 rounded">
+        <div class="input-group cust-succes flex-grow-1 align-self-center">
+            <div class="input-group-text">Ваша ссылка:</div>
+            <input class="form-control" type="text" value="{{ object.get_url }}" aria-label="short link" disabled readonly>
+        </div>
+            <div class="dropdown text-end flex-shrink-0 qr">
+              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% static 'home/QR/qr.png' %}" width="90" height="90" loading="lazy" alt="qr">
+              </a>
+              <ul class="dropdown-menu text-small">
+                <li><a class="dropdown-item" href="download/qr.png">Скачать PNG</a></li>
+                <li><a class="dropdown-item" href="download/qr.svg">Скачать SVG</a></li>
+                <!-- <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li> -->
+              </ul>
+            </div>
+    </div>
+</div>

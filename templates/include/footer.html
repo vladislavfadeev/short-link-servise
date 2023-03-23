@@ -1,0 +1,40 @@
+{% load static %}
+
+<div class="container">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <ul class="nav col-md-4 justify-content-start">
+      <li class="nav-item"><a href="{% url 'home' %}" class="nav-link px-2 text-muted">Главная</a></li>
+      <li class="nav-item"><a href="{% url 'features' %}" class="nav-link px-2 text-muted">Возможности</a></li>
+      <li class="nav-item"><a href="{% url 'bot' %}" class="nav-link px-2 text-muted">TG-бот</a></li>
+      <li class="nav-item"><a href="{% url 'api' %}" class="nav-link px-2 text-muted">API</a></li>
+    </ul>
+
+    <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <a href="/">
+        <img src="{% static 'home/img/logo.png' %}" class="bi bi-scissors" alt="logo" width="125" height="40">
+        <!-- <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg> -->
+      </a>
+    </div>
+
+    <p class="col-md-4 mb-0 text-muted text-end">© 2023 FVA Сorp, Inc</p>
+  </footer>
+</div>
+
+
+<!-- <div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <p class="col-md-4 mb-0 text-muted">© 2023 FVA Сorp, Inc</p>
+  
+      <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <img src="{% static 'home/img/logo.png' %}" class="bi bi-scissors" alt="logo" width="125" height="40">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      </a>
+  
+      <ul class="nav col-md-4 justify-content-end">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link px-2 text-muted">Главная</a></li>
+        <li class="nav-item"><a href="{% url 'features' %}" class="nav-link px-2 text-muted">Возможности</a></li>
+        <li class="nav-item"><a href="{% url 'bot' %}" class="nav-link px-2 text-muted">TG-бот</a></li>
+        <li class="nav-item"><a href="{% url 'api' %}" class="nav-link px-2 text-muted">API</a></li>
+      </ul>
+    </footer>
+  </div> -->

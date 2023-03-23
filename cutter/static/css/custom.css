@@ -1,0 +1,42 @@
+.border-bottom-custom {
+    border-bottom: 1px solid #fc0606;
+}
+
+.border-custom {
+    border-color: blue !important;
+}
+
+.margin-bottom {
+    margin-bottom: 4%;
+}
+
+.custom-margin-left {
+    margin-left: 40% !important;
+    align-self: flex-end;
+}
+
+.cust-succes {
+    padding-block: 10px;
+    margin: 1%;
+    margin-right: 2%;
+}
+
+.qr {
+    margin: 1%;
+}
+
+.errorlist {
+    list-style: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #ff2650
+}
+
+.errors input {
+    border-color: #aa1754;
+    background-color: #f4eeff;
+}
+
+.errors label{
+ color: #aaff54;
+}

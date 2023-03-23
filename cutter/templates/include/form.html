@@ -1,0 +1,28 @@
+<form class="row row-cols-lg-auto g-3 align-items-center" action="" method="post">
+    {% csrf_token %}
+    <div class="col-12">
+      <!-- <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label> -->
+
+      <div class="input-group">
+        <div class="input-group-text"><../></div>
+        {{ form.long_link }}
+        <!-- <input type="text" class="form-control" id="inlineFormInputGroupUsername"
+             placeholder="Вставьте ссылку.." required name="long_link"> -->
+      </div>
+    </div>
+  
+    <div class="col-12">
+      <!-- <div class="form-check"> -->
+      <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="statistics" checked>
+        <!-- <input class="form-check-input" type="checkbox" id="inlineFormCheck" name="stat"> -->
+        <label class="form-check-label" for="flexSwitchCheckDefault">
+          Включить статистику
+        </label>
+      </div>
+    </div>
+  
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Уменьшить</button>
+    </div>
+  </form>
