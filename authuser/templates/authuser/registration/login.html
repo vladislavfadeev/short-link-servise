@@ -33,16 +33,15 @@
                 {{ form.non_field_errors }}
               </div>
               {% endif %}
-
               <div class="col-12">
-                <label for="id_username" class="form-label">Login</label>
-                <input type="text" name="username" autofocus class="form-control" autocomplete="username" maxlength="150" required id="id_username">
-                <!-- <input type="login" class="form-control" id="inputLogin" name="username" placeholder="abc@example.com"> -->
+                <label for="id_username" class="form-label">Ваш e-mail</label>
+                {{ form.username.errors }}
+                <input type="text" name="username" autofocus autocomplete="username" maxlength="254" class="form-control" required id="id_username" placeholder="abc@example.com">
               </div>
               <div class="col-12">
-                <label for="id_password" class="form-label">Password</label>
-                <input type="password" name="password" autocomplete="current-password" class="form-control" required id="id_password">
-                <!-- <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Your password"> -->
+                {{ form.password.errors }}
+                <label for="id_password" class="form-label">Пароль</label>
+                <input type="password" name="password" autocomplete="current-password" class="form-control" required id="id_password" placeholder="Your password">
               </div>
               <!-- <div class="col-12 col-lg-6">
                 <div class="form-check form-switch">
@@ -51,7 +50,7 @@
                 </div>
               </div> -->
               <div class="col-12"> <!-- text-end -->
-                <a href="{% url 'forgot-pwd' %}">Забыли пароль?</a>
+                <a href="{% url 'password_reset' %}">Забыли пароль?</a>
               </div>
               <div class="col-12 col-lg-12">
                 <div class="d-grid">
@@ -59,7 +58,7 @@
                 </div>
               </div>
               <div class="col-12 col-lg-12 text-center">
-                <p class="mb-0">Нет аккаунта? <a href="{% url 'sign-up' %}">Регистрация</a></p>
+                <p class="mb-0">Нет аккаунта? <a href="{% url 'registration' %}">Регистрация</a></p>
               </div>
             </form>
           </div>

@@ -31,6 +31,8 @@ AUTH_USER_MODEL = 'authuser.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Application definition
 
@@ -139,11 +141,4 @@ MEDIA_ROOT = BASE_DIR / 'cutter/static/home/QR/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Cache
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': '127.0.0.1:11211',
-#     }
-# }
-# USER_AGENTS_CACHE = 'default'
+# Custom constants there

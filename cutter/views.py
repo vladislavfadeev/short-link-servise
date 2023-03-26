@@ -93,15 +93,15 @@ class RedirectSlug(RedirectView):
             raise Http404()
 
 
-class CreateAccountView(TemplateView):
+# class CreateAccountView(TemplateView):
 
-    template_name = 'registration/sign_up.html'
+#     template_name = 'registration/sign_up.html'
 
-    def get(self, request):
-        context = {
-            'form': UserCreationForm()
-        }
-        return render(request, self.template_name, context)
+#     def get(self, request):
+#         context = {
+#             'form': UserCreationForm()
+#         }
+#         return render(request, self.template_name, context)
 
 
 
@@ -129,14 +129,3 @@ class BotInfoView(TemplateView):
 
 class APIInfoView(TemplateView):
     template_name = 'cutter/api.html'
-
-
-class LoginView(TemplateView):
-    template_name = 'templates/include/sign_in.html'
-
-    
-class CreateAccountView(TemplateView):
-    template_name = 'templates/include/sign_up.html'
-
-class ForgotPwdView(TemplateView):
-    template_name = 'templates/include/forgot-pwd.html'

@@ -15,16 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from cutter.views import (LoginView,
-                          CreateAccountView,
-                          ForgotPwdView
-                        )
+
+
 
 urlpatterns = [
     path('admin', admin.site.urls),
-    # path('sign-in', LoginView.as_view(), name='sign-in'),
-    path('sign-up', CreateAccountView.as_view(), name='sign-up'),
-    path('forgot-password', ForgotPwdView.as_view(), name='forgot-pwd'),
     path('', include('authuser.urls')),
     path('', include('cutter.urls'))
 ]
