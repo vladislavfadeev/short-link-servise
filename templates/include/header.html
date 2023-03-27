@@ -32,8 +32,8 @@
             </a>
           </div>
         <ul class="dropdown-menu text-small dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">Статистика</a></li>
-          <li><a class="dropdown-item" href="#">Настройки</a></li>
+          <li><a class="dropdown-item" href="{% url 'profile' %}">Dashboard</a></li>
+          <li><a class="dropdown-item" href="{% url 'user_page' %}">Профиль</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
         </ul>
