@@ -1,28 +1,33 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/base-fullscreen.html" %}
 
-{% block title %} Page 404 {% endblock %} 
+{% block title %} 404 Page {% endblock %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}   
 
-{% block content %}
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="feather x-circle"></i>
+                    </div>
+                    <h3 class="mb-4">Error 404</h3>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-profile">
-                <div class="card-body">
-                    <h6 class="card-category text-gray">Error 404</h6>
-                    <h4 class="card-title">
-                        Page not found
-                    </h4>
-                    <a href="/" class="btn btn-primary btn-round">Home</a>
+                    <br />
+
+                    <span class="mb-0 text-muted">
+                        Page not found - <a href="/">Home</a> 
+                    </span>
+
                 </div>
             </div>
         </div>
     </div>
 
-
 {% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}

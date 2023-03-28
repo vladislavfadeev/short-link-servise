@@ -11,6 +11,7 @@ class LinkModel(models.Model):
     slug = models.SlugField(max_length=15, unique=True)
     long_link = models.URLField(max_length=30000)
     statistics = models.BooleanField(default=False)
+    
 
 
     def make_slug():
