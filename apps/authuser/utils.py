@@ -8,7 +8,9 @@ from django.core.mail import EmailMessage
 
 
 def send_email_verify(request, user):
+
     current_site = get_current_site(request)
+
     context = {
         'domain': current_site.domain,
         'user': user,
@@ -30,9 +32,11 @@ def send_email_verify(request, user):
 
 
 def get_redirect_url():
+
     try:
         from clkr_core.settings import LOGIN_REDIRECT_URL
         redirect_url = LOGIN_REDIRECT_URL
+        
     except ImportError:
         redirect_url = None
         

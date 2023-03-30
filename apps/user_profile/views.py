@@ -12,4 +12,4 @@ class DashBoardView(LoginRequiredMixin, TemplateView):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     login_url = '/login'
-    template_name = 'user_profile/page-user.html'
+    template_name = 'user_profile/profile.html'
