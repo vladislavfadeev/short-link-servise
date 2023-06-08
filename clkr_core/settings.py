@@ -36,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['192.168.1.8', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'apps.db_model',
     'apps.home',
     'apps.user_profile',
+    'apps.api',
 ]
 
 MIDDLEWARE = [
@@ -148,7 +149,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
 # MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'cutter/static/home/QR/'
+MEDIA_ROOT = BASE_DIR / 'apps/home/static/home/QR/'
 
 
 # Default primary key field type
@@ -158,3 +159,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Custom constants there
+
+PROJECT_NAME = "clkr-project"

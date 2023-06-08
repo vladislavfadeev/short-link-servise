@@ -7,6 +7,7 @@ from django.views.generic.base import (RedirectView,
 from django.views import View
 from clkr_core import settings
 from apps.home.forms import LinkModelForm
+from apps.cutter.utils import make_qr
 from apps.db_model.models import (LinkModel,
                      LinkTransitionsModel
                      )
@@ -19,7 +20,6 @@ import os
 class HomeView(View):
 
     def get(self, request):
-
         form = LinkModelForm()
         return render(request, 'home/index.html', context={'form': form})
     
@@ -31,7 +31,7 @@ class HomeView(View):
             obj = LinkModel.objects.filter(slug=slug_uniq).exists()
 
             if not obj:
-                LinkModel.make_qr(slug_uniq)
+                make_qr(slug_uniq)
                 char = LinkModel(
                             slug=slug_uniq,
                             long_link=form.cleaned_data['long_link'],
@@ -39,16 +39,17 @@ class HomeView(View):
                             )
                 char.save()
                 return render(request, 'home/index.html',
-                              context = {'form': form, 
-                                         'object': char
-                                         })
-            
+                              context = {
+                                  'form': form, 
+                                  'object': char
+                                }
+                            )
             else:
                 while obj:
                     slug_uniq = LinkModel.make_slug()
                     obj = LinkModel.objects.filter(slug=slug_uniq).exists()
 
-                LinkModel.make_qr(slug_uniq)
+                make_qr(slug_uniq)
                 char = LinkModel(
                             slug=slug_uniq,
                             long_link=form.cleaned_data['long_link'],
@@ -56,9 +57,11 @@ class HomeView(View):
                             )
                 char.save()
                 return render(request, 'home/index.html',
-                              context = {'form': form, 
-                                         'object': char
-                                         })
+                              context = {
+                                  'form': form, 
+                                  'object': char
+                                }
+                            )
         else:
             return render(request, 'home/index.html', context={'form': form})
 

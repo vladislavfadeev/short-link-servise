@@ -24,7 +24,13 @@ class GroupLinkModel(models.Model):
 class LinkModel(models.Model):
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True
+    )
+    group = models.ForeignKey(
+        GroupLinkModel,
+        on_delete=models.SET_NULL,
+        null=True
     )
     slug = models.SlugField(
         max_length=30,
@@ -32,17 +38,13 @@ class LinkModel(models.Model):
     )
     long_link = models.URLField(max_length=30000)
     statistics = models.BooleanField(default=False)
-    group = models.ForeignKey(
-        GroupLinkModel,
-        on_delete=models.SET_NULL,
-        null=True
-    )
     is_private = models.BooleanField(default=False)
-    password = models.CharField(max_length=128)
-    svg_image = models.CharField(max_length=30)
-    png_image = models.CharField(max_length=30)
+    password = models.CharField(max_length=128, null=True)
+    svg_image = models.CharField(max_length=30, null=True)
+    png_image = models.CharField(max_length=30, null=True)
     date_created = models.DateField(auto_now_add=True)
-    date_expire = models.DateField()
+    last_changed = models.DateTimeField(auto_now=True)
+    date_expire = models.DateField(null=True, blank=True)
     use_alias = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
