@@ -1,5 +1,6 @@
 apps/api/__pycache__
 apps/api/migrations
+apps/api/api_auth/__pycache__
 apps/authuser/__pycache__
 apps/authuser/migrations
 apps/cutter/__pycache__
@@ -12,6 +13,7 @@ apps/home/static/home/QR/*
 apps/db_model/__pycache__
 apps/db_model/migrations
 apps/__pycache__
+static
 clkr_core/__pycache__
 Pipfile.lock
 db.sqlite3
