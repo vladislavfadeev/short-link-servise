@@ -9,7 +9,7 @@ from clkr_core import settings
 from apps.home.forms import LinkModelForm
 from apps.cutter.utils import make_qr
 from apps.db_model.models import (LinkModel,
-                     LinkTransitionsModel
+                     StatisticsModel
                      )
 import mimetypes
 import os

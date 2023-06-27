@@ -1,10 +1,18 @@
 from datetime import date, datetime
-from typing import Optional
+from typing import Optional, TypeVar
 from pydantic import BaseModel, AnyHttpUrl
 
+T = TypeVar('T')
 
 
-class LinkModel(BaseModel):
+class Base(BaseModel):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class LinkModel(Base):
     user_id: Optional[int | None]
     group: Optional[int | None]
     slug: str
@@ -20,11 +28,53 @@ class LinkModel(BaseModel):
     use_alias: bool = False
     is_active: bool = True
 
+
+class GroupLinkModel(Base):
+    user_id: int
+    title: str
+    description: str
+    is_active: bool
+    is_private: bool
+    password: str
+
+
+class LinkInfo(BaseModel):
+    clicks: int
+    device: list[dict]
+    source: list[dict]
+    browser: list[dict]
+    date: list[dict]
+
     class Config:
         orm_mode = True
 
 
+class GroupInfo(LinkInfo):
+    links: int
 
+
+class AccountInfo(GroupInfo):
+    groups: int
+
+
+# class ResponseBase(BaseModel):
+#     message: str = ""
+#     meta: dict = {}
+#     data: T | None
+
+
+# def create_response(
+#     data: DataType | None,
+#     message: str | None = None,
+#     meta: dict | Any | None = {},
+# ) -> dict[str, DataType] | DataType:
+#     if isinstance(data, IResponsePage):
+#         data.message = "Data paginated correctly" if message is None else message
+#         data.meta = meta
+#         return data
+#     if message is None:
+#         return {"data": data, "meta": meta}
+#     return {"data": data, "message": message, "meta": meta}
 
 
 

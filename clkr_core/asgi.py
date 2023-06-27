@@ -13,7 +13,7 @@ from fastapi.middleware.wsgi import WSGIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 
-from apps.api.endpoints import api_router
+from apps.api.endpoints.router import api_router
 from apps.api.api_auth.auth import SimpleAuthBackend
 
 

@@ -3,7 +3,7 @@ from django.views.generic.base import RedirectView
 
 from apps.db_model.models import (
     LinkModel,
-    LinkTransitionsModel
+    StatisticsModel
 )
 
 
@@ -20,7 +20,7 @@ class RedirectSlug(RedirectView):
             try:
 
                 device = (str(request.user_agent).split('/')[0]).strip()
-                LinkTransitionsModel.objects.create(
+                StatisticsModel.objects.create(
                     link = link,
                     user_agent_unparsed = request.headers['user-agent'],
                     device = device,

@@ -1,4 +1,3 @@
-from curses import raw
 from datetime import datetime
 from starlette.requests import HTTPConnection
 from asgiref.sync import sync_to_async
@@ -15,7 +14,7 @@ User = get_user_model()
 
 HTTP_HEADER_ENCODING = 'iso-8859-1'
 
-# based on DRF token authentication
+# based on DRF Token authentication
 class TokenCheck():
     """
     Simple token based authentication.
@@ -62,7 +61,7 @@ class TokenCheck():
 class CookieCheck():
     """
     Simple cookie based authentication.
-    Get django cookies, decode it, get user.
+    Get django cookies, decode it and get user.
     """
     def get_cookie_model(self):
         if self.cookie_model is not None:
@@ -106,7 +105,6 @@ class CookieCheck():
         
         return user
     
-
 
 class SimpleAuthBackend(AuthenticationBackend, CookieCheck, TokenCheck):
     
