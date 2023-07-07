@@ -125,21 +125,18 @@ class SimpleAuthBackend(AuthenticationBackend, CookieCheck, TokenCheck):
 
     @sync_to_async
     def authenticate(self, conn: HTTPConnection):
-        
         user = None
         auth_token = conn.headers.get('Authorization')
         cookies = conn.cookies
 
         if self.use_cookie and cookies:
             user = self.cookie_auth(cookies)
-        
         if not user and self.use_token and auth_token:
             user = self.token_auth(auth_token)
-
         if user is None:
             return
-        
         auth = AuthCredentials()
+        
         return (auth, user)
         
 

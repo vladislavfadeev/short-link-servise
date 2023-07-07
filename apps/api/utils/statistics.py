@@ -13,9 +13,9 @@ User = get_user_model()
 
 
 class Statistics():
-
+    
     @staticmethod
-    def from_queryset(queryset: QuerySet):
+    def _from_queryset(queryset: QuerySet) -> dict:
         
         clicks = len(queryset)
         if not clicks:
@@ -35,34 +35,39 @@ class Statistics():
         }
         return data
     
+    @staticmethod
+    @sync_to_async
+    def link_count(user: User, **kwargs) -> int:
+        return len(LinkModel.objects.filter(user=user, **kwargs))
+
     @classmethod
     @sync_to_async
-    def link_info(cls, user: User, slug: str):
+    def link_info(cls, user: User, slug: str) -> dict:
         queryset = StatisticsModel.objects.filter(
             link__user = user,
             link__slug = slug
         )
-        data: dict = cls.from_queryset(queryset)
+        data: dict = cls._from_queryset(queryset)
         return data
 
     @classmethod
     @sync_to_async
-    def group_info(cls, user: User, group_id: int):
+    def group_info(cls, user: User, group_id: int) -> dict:
         queryset = StatisticsModel.objects.filter(
             link__user=user,
             link__group__id=group_id,
         )
-        links = len(LinkModel.objects.filter(group=group_id))
-        data: dict = cls.from_queryset(queryset)
+        links = cls.link_count(user=user, group=group_id)
+        data: dict = cls._from_queryset(queryset)
         data.update({'links': links})
         return data
 
     @classmethod
     @sync_to_async
-    def account_info(cls, user: User):
+    def account_info(cls, user: User) -> dict:
         queryset = StatisticsModel.objects.filter(link__user=user)
-        data: dict = cls.from_queryset(queryset)
-        links = len(LinkModel.objects.filter(user=user))
+        data: dict = cls._from_queryset(queryset)
+        links = cls.link_count(user=user)
         groups = len(GroupLinkModel.objects.filter(user=user))
         data.update({'links': links, 'groups': groups})
         return data

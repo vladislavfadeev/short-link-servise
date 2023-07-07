@@ -7,7 +7,7 @@ from django.views.generic.base import (RedirectView,
 from django.views import View
 from clkr_core import settings
 from apps.home.forms import LinkModelForm
-from apps.cutter.utils import make_qr
+# from apps.cutter.utils import make_qr
 from apps.db_model.models import (LinkModel,
                      StatisticsModel
                      )
@@ -31,7 +31,7 @@ class HomeView(View):
             obj = LinkModel.objects.filter(slug=slug_uniq).exists()
 
             if not obj:
-                make_qr(slug_uniq)
+                # make_qr(slug_uniq)
                 char = LinkModel(
                             slug=slug_uniq,
                             long_link=form.cleaned_data['long_link'],
@@ -49,7 +49,7 @@ class HomeView(View):
                     slug_uniq = LinkModel.make_slug()
                     obj = LinkModel.objects.filter(slug=slug_uniq).exists()
 
-                make_qr(slug_uniq)
+                # make_qr(slug_uniq)
                 char = LinkModel(
                             slug=slug_uniq,
                             long_link=form.cleaned_data['long_link'],
