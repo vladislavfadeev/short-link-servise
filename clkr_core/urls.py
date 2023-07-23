@@ -23,7 +23,7 @@ urlpatterns = [
     path('dashboard/', include('apps.user_profile.urls')),
     path('', include('apps.home.urls')),
     path('', include('apps.authuser.urls')),
-    path('', include('apps.cutter.urls')),
+    path('', include('apps.cutter.urls', namespace='cutter_url')),
 
     
     

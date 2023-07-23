@@ -1,68 +1,32 @@
 from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm
-from django.http import StreamingHttpResponse, Http404
-from django.views.generic.base import (RedirectView,
-                                       TemplateView,
-                                       )
+from django.http import StreamingHttpResponse
+from django.views.generic.base import TemplateView
 from django.views import View
+from django.contrib.auth import get_user_model
 from clkr_core import settings
-from apps.home.forms import LinkModelForm
-# from apps.cutter.utils import make_qr
-from apps.db_model.models import (LinkModel,
-                     StatisticsModel
-                     )
+from apps.home.forms import HomeCreateLinkForm
 import mimetypes
-import os
+import os 
 
-
+User = get_user_model()
 
 
 class HomeView(View):
+    form_class = HomeCreateLinkForm
 
     def get(self, request):
-        form = LinkModelForm()
+        form = self.form_class()
         return render(request, 'home/index.html', context={'form': form})
     
     def post(self, request):
-        form = LinkModelForm(request.POST)
-
+        form = self.form_class(request.POST)
         if form.is_valid():
-            slug_uniq = LinkModel.make_slug()
-            obj = LinkModel.objects.filter(slug=slug_uniq).exists()
-
-            if not obj:
-                # make_qr(slug_uniq)
-                char = LinkModel(
-                            slug=slug_uniq,
-                            long_link=form.cleaned_data['long_link'],
-                            statistics=form.cleaned_data['statistics']
-                            )
-                char.save()
-                return render(request, 'home/index.html',
-                              context = {
-                                  'form': form, 
-                                  'object': char
-                                }
-                            )
-            else:
-                while obj:
-                    slug_uniq = LinkModel.make_slug()
-                    obj = LinkModel.objects.filter(slug=slug_uniq).exists()
-
-                # make_qr(slug_uniq)
-                char = LinkModel(
-                            slug=slug_uniq,
-                            long_link=form.cleaned_data['long_link'],
-                            statistics=form.cleaned_data['statistics']
-                            )
-                char.save()
-                return render(request, 'home/index.html',
-                              context = {
-                                  'form': form, 
-                                  'object': char
-                                }
-                            )
+            user = request.user if isinstance(request.user, User) else None
+            setattr(form, 'user', user)
+            link = form.save()
+            return render(request, 'home/index.html', context = {'form': form, 'link': link})
         else:
+            print('else')
             return render(request, 'home/index.html', context={'form': form})
 
 

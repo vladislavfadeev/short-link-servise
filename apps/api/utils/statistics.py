@@ -36,9 +36,12 @@ class Statistics():
         return data
     
     @staticmethod
-    @sync_to_async
-    def link_count(user: User, **kwargs) -> int:
+    def _link_count(user: User, **kwargs) -> int:
         return len(LinkModel.objects.filter(user=user, **kwargs))
+
+    @staticmethod
+    def _group_count(user: User, **kwargs) -> int:
+        return len(GroupLinkModel.objects.filter(user=user, **kwargs))
 
     @classmethod
     @sync_to_async
@@ -57,7 +60,7 @@ class Statistics():
             link__user=user,
             link__group__id=group_id,
         )
-        links = cls.link_count(user=user, group=group_id)
+        links = cls._link_count(user=user, group=group_id)
         data: dict = cls._from_queryset(queryset)
         data.update({'links': links})
         return data
@@ -67,7 +70,7 @@ class Statistics():
     def account_info(cls, user: User) -> dict:
         queryset = StatisticsModel.objects.filter(link__user=user)
         data: dict = cls._from_queryset(queryset)
-        links = cls.link_count(user=user)
-        groups = len(GroupLinkModel.objects.filter(user=user))
+        links = cls._link_count(user=user)
+        groups = cls._group_count(user=user)
         data.update({'links': links, 'groups': groups})
         return data

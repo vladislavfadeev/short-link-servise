@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from apps.cutter.utils import qr
-
+from clkr_core.settings import DOMAIN_NAME
 
 User = get_user_model()
 
@@ -17,15 +17,32 @@ class GroupLinkModel(models.Model):
         related_name='link_groups',
         on_delete=models.CASCADE
     )
-    alias = models.SlugField(max_length=30, unique=True, blank=True, db_index=True)
+    alias = models.SlugField(max_length=30, unique=True, blank=True, null=True, db_index=True)
     title = models.CharField(max_length=30)
     description = models.TextField(null=True)
     is_active = models.BooleanField(default=True)
+    date_expire = models.DateField(null=True, blank=True)
     password = models.CharField(max_length=1024, null=True)
     rotation = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ['user', 'title']
+
+    @property
+    def qr(self):
+        return qr.make_base64(self.short_url)
+    
+    @property
+    def qr_png(self):
+        return qr.make_png(self.short_url)
+    
+    @property
+    def qr_svg(self):
+        return qr.make_svg(self.short_url)
+    
+    @property
+    def short_url(self):
+        return DOMAIN_NAME + self.get_absolute_url()
 
     @classmethod
     def make_alias(cls, **kwargs):
@@ -34,24 +51,32 @@ class GroupLinkModel(models.Model):
             alias = ''.join(random.choice(data) for _ in range(4))
             if not cls.objects.filter(alias=alias, **kwargs).exists():
                 break
-        return alias 
+        return alias
+
+    def get_absolute_url(self):
+        return reverse('cutter:redirect_group_url', kwargs={'alias': self.alias})
+
+    def save(self, *args, **kwargs):
+        if self.alias is None:
+            self.alias = self.make_alias()
+        return super().save(*args, **kwargs)
 
 
 class LinkModel(models.Model):
     user = models.ForeignKey(
         User,
-        # related_name='links',
         on_delete=models.CASCADE,
         null=True
     )
     group = models.ForeignKey(
         GroupLinkModel,
-        related_name='links',
         on_delete=models.SET_NULL,
         null=True
     )
     slug = models.SlugField(
         max_length=30,
+        null=True,
+        blank=True,
         unique=True,
         db_index=True
     )
@@ -76,8 +101,8 @@ class LinkModel(models.Model):
     
     @property
     def short_url(self):
-        return f'https://clkr.su/{self.slug}'
-    
+        return DOMAIN_NAME + self.get_absolute_url()
+
     @classmethod
     def make_slug(cls, **kwargs):
         data = string.ascii_letters + string.digits
@@ -85,8 +110,16 @@ class LinkModel(models.Model):
             slug = ''.join(random.choice(data) for _ in range(8))
             if not cls.objects.filter(slug=slug, **kwargs).exists():
                 break
-        return slug    
+        return slug
     
+    def get_absolute_url(self):
+        return reverse('cutter:redirect_url', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if self.slug is None:
+            self.slug = self.make_slug()
+        return super().save(*args, **kwargs)
+
 
 class StatisticsModel(models.Model):
     link = models.ForeignKey(

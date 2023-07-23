@@ -1,22 +1,93 @@
 {% load static %}
-
-<div class="align-items-center margin-bottom">
-    <div class="d-flex border border-success p-2 mb-2 rounded">
-        <div class="input-group cust-succes flex-grow-1 align-self-center">
-            <div class="input-group-text">Ваша ссылка:</div>
-            <input class="form-control" type="text" value="{{ object.get_url }}" aria-label="short link" disabled readonly>
+<div class="container text-center py-4">
+  <div class="row justify-content-center">
+      <div class="col-xs-6 col-md-8 border rounded-5 align-items-center">
+        <div class="container">
+          <div class="row">
+            <div class="long-link-title col-md-8 text-start pt-3">Mail.ru: почта, поиск в интернете, новости, игры</div>
+            <div class="long-link col-md-6 text-start"><a href="http://mail.ru" target="blank">http://mail.ru</a></div>
+          </div>
         </div>
-            <div class="dropdown text-end flex-shrink-0 qr">
-              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{% static 'home/QR/qr.png' %}" width="90" height="90" loading="lazy" alt="qr">
-              </a>
-              <ul class="dropdown-menu text-small">
-                <li><a class="dropdown-item" href="download/qr.png">Скачать PNG</a></li>
-                <li><a class="dropdown-item" href="download/qr.svg">Скачать SVG</a></li>
-                <!-- <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li> -->
-              </ul>
-            </div>
-    </div>
+          <div class="input-group input-group-lg mt-2 mb-4">
+          <span class="input-group-text" id="inputGroup-sizing-lg" style="background-color:rgb(198, 245, 198);">Ваша ссылка:</span>
+            <input class="form-control" id="myInput" type="text" value="{{ link.short_url }}" aria-label="short link" disabled readonly>
+            <button class="input-group-text copy-button">
+              Копировать
+              <!-- <svg class="i_svg" viewBox="0 0 24 24">
+                <use xlink:href="#i_copy"></use>
+                <symbol id="i_copy" viewBox="0 0 24 24"><path d="M15.143 13.244l.837-2.244 2.698 5.641-5.678 2.502.805-2.23s-8.055-3.538-7.708-10.913c2.715 5.938 9.046 7.244 9.046 7.244zm8.857-7.244v18h-18v-6h-6v-18h18v6h6zm-2 2h-12.112c-.562-.578-1.08-1.243-1.521-2h7.633v-4h-14v14h4v-3.124c.6.961 1.287 1.823 2 2.576v6.548h14v-14z"></path></symbol>
+              </svg> -->
+            </button>
+          <button class="input-group-text dropdown text-end dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(160, 220, 255);">Скачать QR</dutton>
+          <ul class="dropdown-menu text-small">
+            <li><a class="dropdown-item" href="download/link.slug?type=png">Скачать PNG</a></li>
+              <li><a class="dropdown-item" href="download/link.slug?type=svg">Скачать SVG</a></li>
+          </ul>
+        </div>
+      </div>
+  </div>
 </div>
+
+
+<script>
+// Получаем кнопку "копировать" по классу
+var copyButton = document.querySelector(".copy-button");
+
+// Добавляем обработчик события "click" для кнопки
+copyButton.addEventListener("click", function() {
+  // Получаем текстовое поле по id
+  var input = document.getElementById("myInput");
+  
+  // Создаем временный элемент для копирования текста
+  var tempInput = document.createElement("input");
+  tempInput.setAttribute("type", "text");
+  tempInput.setAttribute("value", input.value);
+  document.body.appendChild(tempInput);
+  
+  // Выделяем текст во временном элементе
+  tempInput.select();
+  
+  // Копируем выделенный текст в буфер обмена
+  document.execCommand("copy");
+  
+  // Удаляем временный элемент
+  document.body.removeChild(tempInput);
+  
+  // Меняем текст кнопки на "Скопировано!"
+  copyButton.innerText = "Скопировано!";
+  
+  // Через 3 секунды возвращаем текст кнопки обратно на "Копировать"
+  setTimeout(function() {
+    copyButton.innerText = "Копировать";
+  }, 3000);
+});
+
+</script>
+<!-- 
+
+<div class="container">
+  <div class="row py-4">
+    <div class="col-12 result">
+      <div class="url_options border rounded-6" id="0">
+        <p class="nazwa_link">Mail.ru: почта, поиск в интернете, новости, игры</p>
+        <p class="data_link">2023-07-22</p>
+        <p class="url_link"><a href="http://mail.ru" target="blank">http://mail.ru</a></p>
+        <p id="link" class="link_element">
+          <a href="https://cutt.ly/iwpCau6d" class="short_url_l" target="blank">https://cutt.ly/iwpCau6d</a>
+        </p>
+
+        <a href="register" class="d-inline-block">Зарегистрируйтесь, чтобы использовать другие функции</a>
+
+      <div class="col-12 mt-2 rounded box_register">
+          <img src="img/startup.svg" alt="Free url shortener - register">
+          <div class="register_txt">
+              <h2>Перейдите на новый уровень</h2>
+              <p>Пользуйтесь более полезными функциями. Все это для управления вашими ссылками интуитивно и просто.</p>
+          </div>
+          <div class="register_link">
+              <a href="register" class="cutt_link rounded mb-2 l_bg">Регистрация</a>
+              <a href="pro-pricing" class="cutt_link rounded l_bg cutt_l_green">Перейти на Pro</a>
+          </div>
+      </div>
+      </div>
+  </div> -->

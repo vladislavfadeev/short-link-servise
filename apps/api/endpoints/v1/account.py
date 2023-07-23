@@ -1,6 +1,3 @@
-from typing import List
-
-from django.contrib.auth import get_user_model
 from fastapi import APIRouter, Request, HTTPException
 from asgiref.sync import sync_to_async
 

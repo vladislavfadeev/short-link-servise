@@ -146,9 +146,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'apps/home/static/'
+    BASE_DIR / 'static/'
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 # MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'apps/home/static/home/QR/'
 
@@ -161,4 +161,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom constants there
 
-PROJECT_NAME = "clkr-project"
+PROJECT_NAME = 'clkr-project'
+DOMAIN_NAME = 'http://clkr.su'
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"

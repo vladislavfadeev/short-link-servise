@@ -1,19 +1,17 @@
 from datetime import date, datetime
 from typing import Any, Optional, TypeVar
-from pydantic import BaseModel, HttpUrl, validator
+from pydantic import BaseModel, Field, HttpUrl, root_validator, validator
 from django.contrib.auth.hashers import make_password
-from asgiref.sync import sync_to_async
 import string
 
-from apps.db_model.models import LinkModel
+from apps.cutter.utils import qr
 
 
 T = TypeVar('T')
-literals = string.ascii_letters + string.digits
+literals = string.ascii_letters + string.digits + '_-'
 
 
 class Base(BaseModel):
-    id: Optional[int | None]
 
     class Config:
         orm_mode = True
@@ -29,74 +27,162 @@ class GroupBase(Base):
 
 class CreateGroup(GroupBase):
     password: Optional[str]
+    date_expire: Optional[date]
+
+    @validator('date_expire', pre=True)
+    def group_date_expire(cls, v):
+        date = datetime.strptime(v, "%Y-%m-%d")
+        if date <= datetime.now():
+            raise ValueError('Date cannot be less or equal than today')
+        return date 
 
 
-class ViewGroupList(GroupBase):
+class ViewGroupInList(GroupBase):
+    id: int
     password: bool
+    short_url: str
     links_entry: Optional[int]
-    links: Any
+    date_expire: Optional[date]
+    qr: str
 
     @validator('password', pre=True)
     def pwd(cls, v):
         return True if v else False
+    
+class GroupList(Base):
+    groups_total: int
+    groups_shown: int
+    groups_list: list[ViewGroupInList] | None
 
 
 class BaseLinkModel(Base):
     slug: Optional[str | None]
     long_link: HttpUrl
-    date_expire: Optional[datetime | None]
+    date_expire: Optional[date | None]
     is_active: Optional[bool] = True
 
 
 class CreateLinkModel(BaseLinkModel):
     password: Optional[str | None]
-    group: Optional[int]
+    group_id: Optional[int]
 
     @validator('slug')
     def slug(cls, v):
         for i in list(v):
             if i not in literals:
                 raise ValueError(
-                    'Slug must only contain English letters and digits'
+                    'Slug must contain English letters and digits only'
                 )
         return v
     
+    @validator('date_expire', pre=True)
+    def date_expire(cls, v):
+        date = datetime.strptime(v, "%Y-%m-%d")
+        if date <= datetime.now():
+            raise ValueError('Date cannot be less or equal than today')
+        return date        
+
     @validator('password')
     def pwd_setter(cls, v):
         return make_password(v)
-
-
-
-class ViewLinkModel(BaseLinkModel):
-    date_created: Optional[date]
-    last_changed: Optional[datetime]
-    password: Optional[bool]
-    group: ViewGroupList | None
-    qr: str
-
     
-    @validator('password', pre=True)
-    def pwd(cls, v):
-        return True if v else False
-
 
 class ViewLinkInGroup(BaseLinkModel):
     date_created: Optional[date]
     last_changed: Optional[datetime]
     password: Optional[bool | None]
+    short_url: Optional[str]
     qr: str
 
-    @validator('password')
+    @validator('password', pre=True)
     def pwd(cls, v):
         return True if v else False
 
 
-class ViewGroupDetail(GroupBase):
-    links: Optional[Any]
+class ViewLinkModel(ViewLinkInGroup):
+    group: Optional[GroupBase | None]
 
+
+class LinksList(Base):
+    links_total: int
+    links_shown: int
+    links_list: list[ViewLinkModel] | None
+
+
+class CreateViewLinkModel(BaseLinkModel):
+    date_created: Optional[date]
+    last_changed: Optional[datetime]
+    password: Optional[bool] 
+    group: Optional[GroupBase | None]
+    short_url: Optional[str]
+    qr: Optional[str]
+
+    # @root_validator(pre=True)
+    # def sss(cls, values):
+    #     q = qr.make_base64(values.get('long_link'))
+    #     values.update({'qr': q})
+    #     return values
+    
+    @validator('password', pre=True)
+    def pwd(cls, v):
+        return True if v else False
+    
+
+class PartialUpdateLinkModel(Base):
+    title: Optional[str]
+    group_id: Optional[int]
+    password: Optional[str]
+    date_expire: Optional[date]
+    is_active: Optional[bool]
+
+    @validator('password')
+    def pwd_setter(cls, v):
+        return make_password(v)
+
+    @validator('date_expire', pre=True)
+    def link_date_expire(cls, v):
+        date = datetime.strptime(v, "%Y-%m-%d")
+        if date <= datetime.now():
+            raise ValueError('Date cannot be less or equal than today')
+        return date 
+
+
+class PartialUpdateGroupModel(Base):
+    title: Optional[str]
+    description: Optional[str]
+    rotation: Optional[bool]
+    password: Optional[str]
+    is_active: Optional[bool]
+    date_expire: Optional[date]
+
+    @validator('password')
+    def pwd_setter(cls, v):
+        return make_password(v)
+    
+    @validator('date_expire', pre=True)
+    def date_expire1(cls, v):
+        date = datetime.strptime(v, "%Y-%m-%d")
+        if date <= datetime.now():
+            raise ValueError('Date cannot be less or equal than today')
+        return date 
+
+
+class ViewGroupDetail(GroupBase):
+    id: int
+    date_expire: Optional[date]
+    short_url: str
+    qr: str
+    links_total: int
+    links_shown: int
+    links: Optional[Any]
+    
   
 class ViewCreatedGroup(GroupBase):
+    id: int
     password: bool
+    short_url: str
+    date_expire: Optional[date]
+    qr: str
 
     @validator('password', pre=True)
     def pwd(cls, v):
@@ -105,10 +191,10 @@ class ViewCreatedGroup(GroupBase):
 
 class BaseInfo(BaseModel):
     clicks: int
-    device: list[dict]
-    source: list[dict]
-    browser: list[dict]
-    date: list[dict]
+    device: list[dict | None]
+    source: list[dict | None]
+    browser: list[dict | None]
+    date: list[dict | None]
 
     class Config:
         orm_mode = True
@@ -119,11 +205,11 @@ class LinkInfo(BaseInfo):
 
 
 class GroupInfo(BaseInfo):
-    links: int
+    links: int | None
 
 
 class AccountInfo(GroupInfo):
-    groups: int
+    groups: Optional[int | None]
 
 
 class FailValidationModel(BaseModel):
@@ -133,39 +219,8 @@ class FailValidationModel(BaseModel):
 
 class MultipleResponseModel(BaseModel):
     fails: Optional[list[FailValidationModel]]
-    created: Optional[list[ViewLinkModel]]
+    created: Optional[list[CreateViewLinkModel]]
 
-
-{
-  "detail": [
-    {
-      "loc": [
-        "body",
-        0,
-        "slug"
-      ],
-      "msg": "Slug can only contain English letters and digits",
-      "type": "value_error"
-    }
-  ]
-},
-{
-  "fails": [
-    {
-      "loc": {
-        "slug": "kjbwnw"
-      },
-      "msg": "Current slug is not unique"
-    },
-    {
-      "loc": {
-        "slug": "kjbwn"
-      },
-      "msg": "Current slug is not unique"
-    }
-  ],
-  "success": []
-}
 
 
 # class ResponseBase(BaseModel):
@@ -186,22 +241,3 @@ class MultipleResponseModel(BaseModel):
 #     if message is None:
 #         return {"data": data, "meta": meta}
 #     return {"data": data, "message": message, "meta": meta}
-
-
-
-
-# class ItemBase(BaseModel):
-#     title: str
-#     description: str = None
-
-
-# class ItemCreate(ItemBase):
-#     pass
-
-
-# class Item(ItemBase):
-#     id: int
-#     owner_id: int
-
-#     class Config:
-#         orm_mode = True

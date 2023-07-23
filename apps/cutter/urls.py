@@ -1,10 +1,9 @@
-from django.urls import path ,include
-from apps.cutter.views import RedirectSlug
+from django.urls import path
+from apps.cutter.views import GroupRedirect, LinkRedirect
 
 app_name = 'cutter'
 
 urlpatterns = [
-
-    path('<str:slug>', RedirectSlug.as_view(), name='redirect_url'), 
-
+    path('g/<str:alias>', GroupRedirect.as_view(), name='redirect_group_url'),
+    path('<str:slug>', LinkRedirect.as_view(), name='redirect_url'),
 ]
