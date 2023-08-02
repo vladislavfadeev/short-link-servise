@@ -1,0 +1,135 @@
+{% extends "dashboard/layouts/base.html" %}
+
+{% block title %} Page Blank {% endblock %} 
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    {% csrf_token %}
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row px-3 align-items-center justify-content-between">
+                                                <h5 style="font-size: 24px;">Мои ссылки</h5>
+                                                <a href="{% url 'links_create' %}" class="btn btn-primary mt-1" style="font-size: 16px; font-weight: 700;">Создать новую ссылку</a>
+                                            </div>
+                                        </div>
+                                        {% if links %}
+                                            {% for link in links %}
+                                            <div class="container my-2">
+                                                <div class="card-block shadow-sm" style="background-color: rgb(255, 255, 255);">
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-lg-9 col-sm-auto">
+                                                            <div class="row row-cols-1 border-bottom pb-2">
+                                                                <div class="long-link-title col-md-12" style="color: rgb(17, 17, 17); font-size: 18px;">
+                                                                    {{ link.title }}
+                                                                </div>
+                                                                <div class="long-link col-lg-8 col-sm-auto">
+                                                                    <a href="{{ link.long_link }}" style="color: rgb(99, 99, 99);">{{ link.long_link }}</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row row-cols-1 pt-2">
+                                                                <div class="col-lg-6 col-sm-auto" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                    <a href="{{ link.short_url }}" style="font-size: 1.1em;">{{ link.short_url }}</a>
+                                                                    <input type="hidden" value="{{ link.short_url }}" id="{{ link.slug }}">
+                                                                </div>
+                                                                <div class="col-lg-6 col-sm-auto text-center">
+                                                                    <button class="icon-button h6 px-1" title="Копировать" onclick="copyToClipboard('{{ link.slug }}')" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-copy" style="color: rgb(51, 39, 37);"></i>
+                                                                    </button>
+                                                                    <a href="{% url 'links_edit' slug=link.slug %}" class="icon-button h6 px-1" title="Редактировать" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-edit" style="color: rgb(51, 39, 37);"></i>
+                                                                    </a>
+                                                                    <a href="#" class="icon-button h6 px-1" title="Статистика" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-bar-chart-2" style="color: rgb(51, 39, 37);"></i>
+                                                                    </a>
+                                                                    <button class="icon-button h6 px-1" data-toggle="img-modal" data-img="{%url 'download_qr' model='link' slug=link.slug %}" data-title="{{link.title}}" title="Скачать QR" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-maximize" style="color: rgb(51, 39, 37);"></i>
+                                                                    </button>
+
+                                                                    <button class="icon-button h6 px-1" data-toggle="del-modal" data-url="{% url 'links_delete' slug=link.slug %}" data-title="Удалить ссылку" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-trash" style="color: rgb(51, 39, 37);"></i>
+                                                                    </button>
+
+                                                                    <button class="icon-button h6 px-1" data-toggle="share-modal" data-title="Поделиться ссылкой" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-external-link" style="color: rgb(51, 39, 37);"></i>
+                                                                    </button>
+                                                                    {% if link.is_active %}
+                                                                    <a class="icon-button h6 px-1" title="Ссылка активна" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-eye" style="color:rgb(74, 199, 36);"></i>
+                                                                    </a>
+                                                                    {% else %}
+                                                                    <a class="icon-button h6 px-1" title="Ссылка не активна" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-eye" style="color: rgb(212, 60, 23);"></i>
+                                                                    </a>
+                                                                    {% endif %}
+                                                                    {% if link.password %}
+                                                                    <a class="icon-button h6 px-1" title="Пароль установлен" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-shield" style="color:rgb(155, 35, 5);"></i>
+                                                                    </a>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2 col-sm-auto mr-3">
+                                                            <div class="row row-cols-1 border-bottom">
+                                                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                                                    Создана: {{ link.date_created|date:"Y.m.d" }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row row-cols-1 border-bottom">
+                                                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                                                    Истекает: {% if link.date_expire %}{{ link.date_expire|date:"Y.m.d" }}{% else %}Дата не указана{% endif %}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row row-cols-1 border-bottom">
+                                                                <div class="col-auto" style="color: rgb(68, 66, 66); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                    Группа: {% if link.group.title %}{{ link.group.title }}{% else %}Группа не указана{% endif %}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row row-cols-1">
+                                                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                                                    Кликов: {{ link.statistics.all.count }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                            {% include 'dashboard/includes/pagination.html' %}
+                                        {% else %}
+                                            <h4 class="fs-4 text-center py-5 my-5">Еще не создано ни одной ссылки</h4>
+                                        {% endif %}
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+
+<script>
+
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+$('[data-bs-toggle="tooltip"]').on('click', function(e){
+    $(this).blur();
+});
+
+</script>
+{% endblock javascripts %}

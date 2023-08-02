@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'apps.cutter',
     'apps.db_model',
     'apps.home',
-    'apps.user_profile',
+    'apps.dashboard',
     'apps.api',
 ]
 
@@ -72,7 +72,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'clkr_core.urls'
 
 AUTH_USER_MODEL = 'authuser.User'
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

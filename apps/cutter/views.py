@@ -25,6 +25,7 @@ class BaseRedirect(RedirectView):
             StatisticsModel.objects.create(
                 link = link,
                 user_agent_unparsed = request.headers['user-agent'],
+                fingerprint = request.META,
                 device = device,
                 os = request.user_agent.os.family,
                 browser = request.user_agent.browser.family,

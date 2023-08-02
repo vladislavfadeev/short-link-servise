@@ -7,7 +7,7 @@ from asgiref.sync import sync_to_async
 
 from apps.api import schemas
 from apps.db_model import models
-from apps.api.utils.statistics import Statistics
+from apps.db_model.statistics import Statistics
 from apps.api.utils.validators import ItemChecker
 from apps.api.utils.exceptions import IValidationError
 
@@ -67,7 +67,10 @@ async def delete_link(request: Request, slug: str):
 
 @router.get("/{slug}/info", response_model=schemas.LinkInfo)
 async def link_info(request: Request, slug: str):
-    data = await Statistics.link_info(request.user, slug)
+    try:
+        data = await Statistics.async_link_info(request.user, slug)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
     return data
 
 

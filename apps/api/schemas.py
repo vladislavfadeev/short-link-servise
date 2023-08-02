@@ -1,25 +1,22 @@
 from datetime import date, datetime
-from typing import Any, Optional, TypeVar
-from pydantic import BaseModel, Field, HttpUrl, root_validator, validator
+from typing import Any, Optional
+from pydantic import BaseModel, HttpUrl, validator
 from django.contrib.auth.hashers import make_password
 import string
 
-from apps.cutter.utils import qr
 
-
-T = TypeVar('T')
 literals = string.ascii_letters + string.digits + '_-'
 
 
 class Base(BaseModel):
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class GroupBase(Base):
     title: str                      # добавить проверку на кол-во символов
-    alias: Optional[str]
+    slug: Optional[str]
     description: Optional[str]
     is_active: Optional[bool] = True
     rotation: Optional[bool] = False
@@ -197,7 +194,7 @@ class BaseInfo(BaseModel):
     date: list[dict | None]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class LinkInfo(BaseInfo):

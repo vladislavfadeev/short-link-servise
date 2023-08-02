@@ -1,0 +1,141 @@
+{% extends "dashboard/layouts/base.html" %}
+
+{% block title %} Page Blank {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Sample Page</h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Sample Page</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 style="font-size: 24px;">{% if 'edit' in segment %}Редактировать ссылку{% else %}Создать новую ссылку{% endif %}</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                {{ form.non_field_errors }}
+                                                <div class="row mb-3">
+                                                    <label for="inputEmail3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Длинная ссылка:</label>
+                                                    <div class="col-sm-8">
+                                                        {{ form.long_link }}
+                                                        {{ form.long_link.errors }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Название:</label>
+                                                    <div class="col-sm-3">
+                                                        {{ form.title.errors }}
+                                                        {{ form.title }}
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <span id="passwordHelpInline" class="form-text">
+                                                          Если оставить пустым, сервер запросит название автоматически.
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Ваш алиас:</label>
+                                                    <div class="col-sm-3">
+                                                        {{ form.slug.errors }}
+                                                        {{ form.slug }}
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <span id="passwordHelpInline" class="form-text">
+                                                          Оставьте пустым, если хотите сгенерировать автоматически.
+                                                        </span>
+                                                    </div> 
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Пароль:</label>
+                                                    <div class="col-sm-3">
+                                                        {{ form.password.errors }}
+                                                        {{ form.password }}
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <span id="passwordHelpInline" class="form-text">
+                                                          Если указать, переход по ссылке будет возможен только после ввода пароля.
+                                                        </span>
+                                                    </div>                                                    
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Добавить в группу:</label>
+                                                    <div class="col-sm-3">
+                                                        {{ form.group.errors }}
+                                                        {{ form.group }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Действительна до:</label>
+                                                    <div class="col-sm-3">
+                                                        {{ form.date_expire.errors }}
+                                                        {{ form.date_expire }}
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <span id="passwordHelpInline" class="form-text">
+                                                          Оставьте пустым, если нужна вечная ссылка.
+                                                        </span>
+                                                    </div> 
+                                                </div>
+                                                <fieldset class="row mb-3">
+                                                  <div class="col-sm-2 pt-0"  style="color: rgb(17, 17, 17); font-size: 16px;">Статус:</div>
+                                                  <div class="col-sm-10">
+                                                    <div class="form-check">
+                                                        {{ form.is_active.errors }}
+                                                        {{ form.is_active }}
+                                                        <label class="form-check-label" for="gridCheck1">
+                                                        Ссылка активна
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                </fieldset>
+                                                {% if 'edit' in segment %}
+                                                    <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">Сохранить изменения</button>
+                                                {% else %}
+                                                    <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">Сохранить</button>
+                                                {% endif %}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

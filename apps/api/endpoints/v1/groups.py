@@ -6,7 +6,7 @@ from django.db.models import Count
 
 from apps.api import schemas
 from apps.db_model import models
-from apps.api.utils.statistics import Statistics
+from apps.db_model.statistics import Statistics
 from apps.api.utils.validators import ItemChecker
 from apps.api.utils.exceptions import IValidationError
 
@@ -78,7 +78,10 @@ async def delete_group(request: Request, pk: int, cascade: bool = False):
 @router.get("/{pk}/info", response_model=schemas.GroupInfo)
 async def group_info(request: Request, pk: int):
     user = request.user
-    data = await Statistics.group_info(user, pk)
+    try:
+        data = await Statistics.async_group_info(user, pk)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
     return data
 
 

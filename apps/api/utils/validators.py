@@ -47,12 +47,12 @@ class ItemChecker():
                 loc={'title': item.title},
                 msg='Current title is not unique in yor account'
             )
-        # if user enter group alias we check unique of it
-        if item.alias:
-            if cls._group_filter(alias=item.alias):
+        # if user enter group slug we check unique of it
+        if item.slug:
+            if cls._group_filter(slug=item.slug):
                 return FailValidationModel(
-                    loc={'alias': item.alias},
-                    msg='Current alias is not unique'
+                    loc={'slug': item.slug},
+                    msg='Current group slug is not unique'
                 )
         return item
 

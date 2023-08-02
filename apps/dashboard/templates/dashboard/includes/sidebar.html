@@ -1,0 +1,113 @@
+<!-- [ navigation menu ] start -->
+{% load static %}
+
+<nav class="pcoded-navbar">
+    <div class="navbar-wrapper">
+        <div class="navbar-brand header-logo">
+            <a href="{% url 'dashboard' %}" class="b-brand">
+                <div class="b-bg">
+                    <i class="feather icon-trending-up"></i>
+                </div>
+                <span class="b-title">Clicker panel</span>
+            </a>
+            <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+        </div>
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Информация</label>
+                </li>
+                <li data-username="Dashboard" 
+                    class="nav-item {% if 'index' in segment %} active {% endif %}">
+                    <a href="{% url 'dashboard' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span
+                            class="pcoded-mtext">Dashboard</span></a>
+                </li>
+                <li data-username="My Links List" 
+                    class="nav-item {% if 'links' in segment %} active {% endif %}">
+                    <a href="{% url 'links' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-link"></i></span>
+                            <span class="pcoded-mtext">Ссылки</span></a>
+                </li>
+                <li data-username="My Groups List" 
+                    class="nav-item {% if 'groups' in segment %} active {% endif %}">
+                    <a href="{% url 'groups' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-folder"></i></span>
+                            <span class="pcoded-mtext">Группы</span></a>
+                </li>
+                <li data-username="My Profile" 
+                    class="nav-item {% if 'user' in segment %} active {% endif %}">
+                    <a href="{% url 'profile' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-user"></i></span>
+                            <span class="pcoded-mtext">Профиль</span></a>
+                </li>
+
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Действия</label>
+                </li>
+                <li data-username="Make short link" 
+                    class="nav-item {% if 'cutt_link' in segment %} active {% endif %}">
+                    <a href="{% url 'links_create' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-minimize-2"></i></span>
+                            <span class="pcoded-mtext">Сократить ссылку</span></a>
+                </li>
+                <li data-username="Make QR" 
+                    class="nav-item {% if 'groups_list' in segment %} active {% endif %}">
+                    <a href="% url 'make_qr' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-maximize"></i></span>
+                            <span class="pcoded-mtext">Создать QR</span></a>
+                </li> 
+
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Сервисы</label>
+                </li>
+                <li data-username="API for developers" 
+                    class="nav-item {% if 'cutt_link' in segment %} active {% endif %}">
+                    <a href="% url 'api_doc' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-book"></i></span>
+                            <span class="pcoded-mtext">API документация</span></a>
+                </li>
+                <li data-username="Telegram bot" 
+                    class="nav-item {% if 'groups_list' in segment %} active {% endif %}">
+                    <a href="% url 'bot_set' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-radio"></i></span>
+                            <span class="pcoded-mtext">Telegram бот</span></a>
+                </li> 
+                <!-- <li data-username="........."
+                    class="nav-item pcoded-hasmenu">
+                    <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span><span
+                            class="pcoded-mtext">Components</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class=""><a href="/dashboard/links/" class="">Button</a></li>
+                        <li class=""><a href="/bc_badges.html" class="">Badges</a></li>
+                        <li class=""><a href="/bc_breadcrumb-pagination.html" class="">Breadcrumb & paggination</a></li>
+                        <li class=""><a href="/bc_collapse.html" class="">Collapse</a></li>
+                        <li class=""><a href="/bc_tabs.html" class="">Tabs & pills</a></li>
+                        <li class=""><a href="/bc_typography.html" class="">Typography</a></li>
+
+
+                        <li class=""><a href="/icon-feather.html" class="">Feather<span
+                                class="pcoded-badge label label-danger">NEW</span></a></li>
+                    </ul>
+                </li> -->
+                <li class="nav-item pcoded-menu-caption" style="margin-top: 25%;">
+                    <label>Прочее</label>
+                </li> 
+                <li data-username="Logout" class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Logout</span>
+                    </a>
+                </li>
+                   
+                <li data-username="Support" class="nav-item ">
+                    <a target="_blank" href="https://appseed.us/support" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-headphones"></i>
+                        </span>
+                        <span class="pcoded-mtext">Поддержка</span>
+                    </a>
+                </li>                
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- [ navigation menu ] end -->
