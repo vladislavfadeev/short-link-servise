@@ -1,10 +1,16 @@
 from bs4 import BeautifulSoup
 from faker import Faker
+from urllib.parse import urlparse
 import requests
 
 
 class Requester():
     faker = Faker()
+
+    @staticmethod
+    def extract_domain(url):
+        parsed_url = urlparse(url)
+        return parsed_url.netloc
 
     def __call__(self, url: str):
         headers = {'user-agent': self.faker.user_agent()}
@@ -28,7 +34,8 @@ class Requester():
             page_json = response.json()
             if page_json.get('title'):
                 return True, page_json.get('title').capitalize()
-            domain = url.replace('//', '/').split('/')[1].capitalize()
+            # domain = url.replace('//', '/').split('/')[1].capitalize()
+            domain = self.extract_domain(url)
             return True, domain
         
 

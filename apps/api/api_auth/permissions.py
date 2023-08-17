@@ -5,11 +5,11 @@ from fastapi import Request, HTTPException
 
 class AuthPermissions:
     def __init__(
-            self,
-            role: str | None = None,
-            user_model: Optional[Any] = None,
-            redirect_to: str = None    
-        ):
+        self,
+        role: str | None = None,
+        user_model: Optional[Any] = None,
+        redirect_to: str = None,
+    ):
         self.role = role
         self._user_model = user_model
         self._redirect_to = redirect_to
@@ -35,10 +35,7 @@ class AuthPermissions:
         user = request.user
         if isinstance(user, self.user_model):
             return True
-        raise HTTPException(
-            status_code=401,
-            detail='Not authorized.'
-        )
+        raise HTTPException(status_code=401, detail="Not authorized.")
 
     async def __call__(self, request: Request):
         self.check_auth(request)

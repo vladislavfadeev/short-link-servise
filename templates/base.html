@@ -12,13 +12,23 @@
 
 </head>
 <body>
-    {% include 'include/header.html' %}
 
 
+    <div class="header">
+        {% include 'include/header.html' %}
+
+        {% block inner-header %}{% endblock %}
+        
+        {% include 'include/waves.html' %}
+    </div>
+
+    <div class="content">
     {% block content %} {% endblock %}
-
-    <script src="{% static 'js/copy_func.js' %}"></script>
+        <script src="{% static 'js/copy_func.js' %}"></script>
+    </div>
 
     {% include 'include/footer.html' %}
+
+
 </body>
 </html>

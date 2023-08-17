@@ -1,73 +1,43 @@
 {% load static %}
 
-  
-  <div class="header">
-    <div class="container">
-      <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <div class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-dark">
-          <a href="/">  
-              <img src="{% static '/img/logo.png' %}" class="bi bi-scissors" alt="logo" width="165" height="50">
-          </a>
-        </div>
-  
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Главная</a></li>
-          <li><a href="{% url 'home' %}#features" class="nav-link px-2 link-dark">Возможности</a></li>
-          <li><a href="{% url 'bot' %}" class="nav-link px-2 link-dark">TG-бот</a></li>
-          <li><a href="{% url 'api' %}" class="nav-link px-2 link-dark">API</a></li>
-        </ul>
-        
-        {% if not user.is_authenticated %}
-        <div class="col-md-3 text-end">
-          <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Войти</a>
-          <a href="{% url 'registration' %}" class="btn btn-primary">Регистрация</a>
-        </div>
-        {% endif %}
-  
-        {% if user.is_authenticated %}
-        <div class="text-end col-md-3">
-           <div class="d-block dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              <a href="" class="text-decoration-none link-dark">
-                {{ user.email }}
-                <img src="https://github.com/mdo.png" alt="mdo" class="rounded-circle" width="32" height="32">
-              </a>
-            </div>
-          <ul class="dropdown-menu text-small dropdown-menu-end">
-            <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
-          </ul>
-        </div>
-        {% endif %}
-      </header>
+<div class="container">
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <div class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-dark">
+      <a href="/">  
+          <img src="{% static '/img/logo.png' %}" class="bi bi-scissors" alt="logo" width="165" height="50">
+      </a>
     </div>
 
-    {% if not main_form %}
-
-      <!--Waves Container-->
-      <div>
-        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-        <defs>
-        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-        </defs>
-        <g class="parallax">
-        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(249,255,254,0.7" />
-        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(249,255,254,0.5)" />
-        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(249,255,254,0.3)" />
-        <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(249,250,254,1)" />
-        </g>
-        </svg>
-      </div>    
-        <!--Waves end-->
-  </div>
-    <!--Header ends-->
-
-    {% else %}
-
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Главная</a></li>
+      <li><a href="{% url 'home' %}#features" class="nav-link px-2 link-dark">Возможности</a></li>
+      <li><a href="{% url 'qr_generator' %}" class="nav-link px-2 link-dark">Создать QR</a></li>
+      <li><a href="{% url 'bot' %}" class="nav-link px-2 link-dark">TG-бот</a></li>
+      <li><a href="{% url 'api' %}" class="nav-link px-2 link-dark">API</a></li>
+    </ul>
+    
+    {% if not user.is_authenticated %}
+    <div class="col-md-3 text-end">
+      <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Войти</a>
+      <a href="{% url 'registration' %}" class="btn btn-primary">Регистрация</a>
+    </div>
     {% endif %}
 
-
-
-
+    {% if user.is_authenticated %}
+    <div class="text-end col-md-3">
+        <div class="d-block dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <a href="" class="text-decoration-none link-dark">
+            {{ user.email }}
+            <img src="https://github.com/mdo.png" alt="mdo" class="rounded-circle" width="32" height="32">
+          </a>
+        </div>
+      <ul class="dropdown-menu text-small dropdown-menu-end">
+        <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a class="dropdown-item" href="{% url 'api-key' %}">API</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+      </ul>
+    </div>
+    {% endif %}
+  </header>
+</div>

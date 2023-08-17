@@ -1,4 +1,10 @@
+html, body {
+    height: 100%;
+  }
+
 body {
+    display: flex;
+    flex-direction: column;
     margin:0;
     background-color: #f9fafe;
 }
@@ -11,9 +17,13 @@ body {
     color:rgba(0, 0, 0, 0.767);
 }
 
-.footer {
-    min-height:15vh;
+.content {
+    flex: 1 0 auto;
+  }
 
+.footer {
+    flex-shrink: 0;
+    min-height:15vh;
 }
 
 .inner-header {
@@ -22,16 +32,6 @@ body {
     margin: 0;
     padding: 0;
 }
-
-.card-item11:after {
-    content: "";
-    background-color: #04a9f5;
-    position:relative;
-    left: -25px;
-    top: 0;
-    width: 4px;
-    height: 20px;
-  }
 
 .flex { /*Flexbox for containers*/
     display: flex;
@@ -57,7 +57,7 @@ body {
 .long-link, .long-link-title {
     white-space: nowrap; /* Текст не будет переноситься на новую строку */
     overflow: hidden; /* Текст, выходящий за пределы блока, будет скрыт */
-    text-overflow: ellipsis; /* Добавляет троеточие в конце обрезанного текста */
+    text-overflow: ellipsis; /* Добавляет троеточие в конце обрезанного текста */ 
   }
   
 .icon-button {
@@ -66,6 +66,18 @@ body {
     padding: 0;
     font-size: 18px;
     cursor: pointer;
+}
+
+#notification {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    z-index: 9999;
 }
 
 

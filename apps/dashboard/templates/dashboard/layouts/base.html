@@ -16,7 +16,7 @@
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 
     <!-- Favicon icon -->
@@ -31,15 +31,14 @@
     <link rel="stylesheet" href="{% static 'assets/css/dark.css' %}">
     <!-- modal window css -->
     <link rel="stylesheet" href="{% static 'assets/css/modal.css' %}">
-    <!-- static css -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
     <!-- Specific CSS goes HERE -->
     {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
-<body>
 
+<body>
+    <div id="notification">Скопировано!</div>
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -50,16 +49,23 @@
 
     {% include 'dashboard/includes/sidebar.html' %}
 
-    {% include 'dashboard/includes/navigation.html' %}
-
+    <!-- [ Header ] start -->
+    <header class="navbar pcoded-header navbar-expand-lg navbar-light">
+        {% include 'dashboard/includes/mobile-header.html' %}
+        <div class="collapse navbar-collapse">
+            {% block breadcrumb %}{% endblock breadcrumb %}
+            {% include 'dashboard/includes/navigation.html' %}
+        </div>
+    </header>
+    <!-- [ Header ] end -->
 
     {% block content %}{% endblock content %}
 
-    <!-- {% include 'dashboard/includes/modals.html' %} -->
     {% include 'dashboard/includes/scripts.html' %}
 
     <!-- Specific Page JS goes HERE  -->
     {% block javascripts %}{% endblock javascripts %}
 
 </body>
+
 </html>

@@ -10,11 +10,11 @@
             </div>
           </div>
         </div>
-          <div class="input-group input-group-lg mt-2 mb-4">
+        <div class="input-group input-group-lg mt-2 mb-4">
           <span class="input-group-text" id="inputGroup-sizing-lg" style="background-color:rgb(198, 245, 198);">Ваша ссылка:</span>
             <input class="form-control" id="short-link-value" type="text" value="{{ link.short_url }}" aria-label="short link" disabled readonly>
             <input type="hidden" value="{{ link.short_url }}" id="{{ link.slug }}">
-            <button class="input-group-text home-copy-button" id="copy-button" onclick="copyToClipboard('{{ link.slug }}')" >Копировать</button>
+            <button class="input-group-text home-copy-button" id="btn{{ link.slug }}" onclick="copyToClipboard('{{ link.slug }}')" >Копировать</button>
           <button class="input-group-text dropdown text-end dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(160, 220, 255);">Скачать QR</dutton>
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href="download/link.slug?type=png">Скачать PNG</a></li>

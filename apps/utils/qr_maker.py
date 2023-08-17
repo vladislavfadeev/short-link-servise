@@ -1,38 +1,29 @@
 import io
 import base64
-from qrcode import QRCode
+from qrcode import make
 from qrcode.image.svg import SvgImage
 
 
-class QRMaker(QRCode):
+class QRMaker():
+    @staticmethod
+    def _bytes(data, factory = None):
+        buffer = io.BytesIO()
+        qr = make(data, image_factory = factory, box_size=20, border=1)
+        qr.save(buffer)
+        buffer.seek(0)
+        return buffer.getvalue()
 
-    def __init__(self, box_size = 20, border = 2) -> None:
-        super().__init__()
-        self.box_size = box_size
-        self.border = border
-        self.buffer = io.BytesIO()
-
-    def _flush(self) -> None:
-        self.clear()
-        self.buffer.seek(0)
-        self.buffer.truncate(0)
-
-    def _bytes(self, data, factory = None) -> bytes:
-        self._flush()
-        self.add_data(data)
-        img = self.make_image(image_factory=factory)
-        img.save(self.buffer)
-        return self.buffer.getvalue()
+    @classmethod
+    def make_base64(cls, data) -> str:
+        return "data:image/png;base64," + base64.b64encode(cls._bytes(data)).decode("utf-8")
     
-    def make_base64(self, data) -> str:
-        return "data:image/png;base64," + base64.b64encode(self._bytes(data)).decode("utf-8")
+    @classmethod
+    def make_png(cls, data) -> bytes:
+        return cls._bytes(data)
     
-    def make_png(self, data) -> bytes:
-        return self._bytes(data)
-    
-    def make_svg(self, data) -> bytes:
-        factory = SvgImage
-        return self._bytes(data, factory)
+    @classmethod
+    def make_svg(cls, data) -> bytes:
+        return cls._bytes(data, factory = SvgImage)
     
 
 qr = QRMaker()

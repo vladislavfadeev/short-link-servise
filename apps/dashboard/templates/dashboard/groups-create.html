@@ -5,6 +5,24 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
+{% block breadcrumb %}
+    {% load breadcrumb %}
+<!-- [ breadcrumb ] start -->
+        <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
+            <ol class="breadcrumb mx-3 my-2">
+                {% breadcrumb_home 'dashboard' %}
+                {% breadcrumb_item 'groups' 'Мои группы' 1 %}
+                {% if 'edit' in segment %}
+                    {% breadcrumb_active 2 url=object.get_absolute_url title=object.title prefix='Редактирование группы: ' %}
+                {% else %}
+                    {% breadcrumb_active 2 prefix='Создать группу' %}
+                {% endif %}
+            </ol>
+        </nav>
+
+<!-- [ breadcrumb ] end -->
+{% endblock breadcrumb %}
+
 {% block content %}
 
     <!-- [ Main Content ] start -->
@@ -13,21 +31,6 @@
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
                     <!-- [ breadcrumb ] start -->
-                    <div class="page-header">
-                        <div class="page-block">
-                            <div class="row align-items-center">
-                                <div class="col-md-12">
-                                    <div class="page-header-title">
-                                        <h5 class="m-b-10">Sample Page</h5>
-                                    </div>
-                                    <ul class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                        <li class="breadcrumb-item"><a href="javascript:">Sample Page</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- [ breadcrumb ] end -->
                     <div class="main-body">
                         <div class="page-wrapper">
@@ -36,19 +39,12 @@
                                 <div class="col-sm-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5 style="font-size: 24px;">{% if 'edit' in segment %}Редактировать ссылку{% else %}Создать новую ссылку{% endif %}</h5>
+                                            <h5 style="font-size: 24px;">{% if 'edit' in segment %}Редактировать группу{% else %}Создать новую группу{% endif %}</h5>
                                         </div>
                                         <div class="card-block">
                                             <form method="POST">
                                                 {% csrf_token %}
                                                 {{ form.non_field_errors }}
-                                                <div class="row mb-3">
-                                                    <label for="inputEmail3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Длинная ссылка:</label>
-                                                    <div class="col-sm-8">
-                                                        {{ form.long_link }}
-                                                        {{ form.long_link.errors }}
-                                                    </div>
-                                                </div>
                                                 <div class="row mb-3">
                                                     <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Название:</label>
                                                     <div class="col-sm-3">
@@ -57,8 +53,15 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <span id="passwordHelpInline" class="form-text">
-                                                          Если оставить пустым, сервер запросит название автоматически.
+                                                          Не должно повторяться с другой группой.
                                                         </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Описание:</label>
+                                                    <div class="col-sm-3">
+                                                        {{ form.description.errors }}
+                                                        {{ form.description }}
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -81,17 +84,17 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <span id="passwordHelpInline" class="form-text">
-                                                          Если указать, переход по ссылке будет возможен только после ввода пароля.
+                                                          Если указать, переход будет возможен только после ввода пароля.
                                                         </span>
                                                     </div>                                                    
                                                 </div>
-                                                <div class="row mb-3">
+                                                <!-- <div class="row mb-3">
                                                     <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Добавить в группу:</label>
                                                     <div class="col-sm-3">
-                                                        {{ form.group.errors }}
+                                                        {{ form.link.errors }}
                                                         {{ form.group }}
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="row mb-3">
                                                     <label for="inputPassword3" class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Действительна до:</label>
                                                     <div class="col-sm-3">
@@ -108,14 +111,26 @@
                                                   <div class="col-sm-2 pt-0"  style="color: rgb(17, 17, 17); font-size: 16px;">Статус:</div>
                                                   <div class="col-sm-10">
                                                     <div class="form-check">
-                                                        {{ form.is_active.errors }}
-                                                        {{ form.is_active }}
+                                                        {{ form.disabled.errors }}
+                                                        {{ form.disabled }}
                                                         <label class="form-check-label" for="gridCheck1">
-                                                        Ссылка активна
+                                                        Отключить группу
                                                       </label>
                                                     </div>
                                                   </div>
                                                 </fieldset>
+                                                <fieldset class="row mb-3">
+                                                    <div class="col-sm-2 pt-0"  style="color: rgb(17, 17, 17); font-size: 16px;">Ротация:</div>
+                                                    <div class="col-sm-10">
+                                                      <div class="form-check">
+                                                          {{ form.rotation.errors }}
+                                                          {{ form.rotation }}
+                                                          <label class="form-check-label" for="gridCheck1">
+                                                          Включить ротацию вложенных ссылок
+                                                        </label>
+                                                      </div>
+                                                    </div>
+                                                  </fieldset>
                                                 {% if 'edit' in segment %}
                                                     <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">Сохранить изменения</button>
                                                 {% else %}

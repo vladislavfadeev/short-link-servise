@@ -7,13 +7,15 @@ from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
-
     username = models.CharField(_("username"), max_length=150)
-    email = models.EmailField(_("email address"), unique=True,)
+    email = models.EmailField(
+        _("email address"),
+        unique=True,
+    )
     email_verify = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
 
 
 class Token(models.Model):
@@ -22,8 +24,10 @@ class Token(models.Model):
     """
     key = models.CharField(_("Key"), max_length=40, primary_key=True)
     user = models.OneToOneField(
-        User, related_name='auth_token',
-        on_delete=models.CASCADE, verbose_name=_("User")
+        User,
+        related_name="auth_token",
+        on_delete=models.CASCADE,
+        verbose_name=_("User"),
     )
     created = models.DateTimeField(_("Created"), auto_now_add=True)
 
@@ -46,7 +50,7 @@ class Token(models.Model):
 
 class TokenProxy(Token):
     """
-    Proxy mapping pk to user pk for use in admin.
+    Proxy mapping pk to user pk for use in UI.
     """
     @property
     def pk(self):

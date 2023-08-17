@@ -6,9 +6,23 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
+{% block breadcrumb %}
+    {% load breadcrumb %}
+<!-- [ breadcrumb ] start -->
+        <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
+            <ol class="breadcrumb mx-3 my-2">
+                {% breadcrumb_home 'dashboard' %}
+                {% breadcrumb_active 1 url='groups' prefix='Мои группы'%}
+            </ol>
+        </nav>
+
+<!-- [ breadcrumb ] end -->
+{% endblock breadcrumb %}
+
 {% block content %}
 
 {% csrf_token %}
+{% now "Y.m.d" as date_now %}
     <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
@@ -35,7 +49,7 @@
                                                         <div class="col-lg-9 col-sm-auto">
                                                             <div class="row row-cols-1 border-bottom pb-2">
                                                                 <div class="long-link-title col-md-12" style="color: rgb(17, 17, 17); font-size: 18px;">
-                                                                    {{ group.title }}
+                                                                    <a href="{% url 'groups_detail' slug=group.slug %}" style="color: rgb(17, 17, 17); font-size: 18px;">{{ group.title }}</a>
                                                                 </div>
                                                                 {% if group.description %}
                                                                     <div class="long-link col-lg-8 col-sm-auto">
@@ -55,8 +69,8 @@
                                                                     <a href="{% url 'groups_edit' slug=group.slug %}" class="icon-button h6 px-1" title="Редактировать"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-edit" style="color: rgb(51, 39, 37);"></i>
                                                                     </a>
-                                                                    <a href="#" class="icon-button h6 px-1" title="Статистика"  data-bs-toggle="tooltip">
-                                                                        <i class="icon feather icon-bar-chart-2" style="color: rgb(51, 39, 37);"></i>
+                                                                    <a href="{% url 'groups_detail' slug=group.slug %}" class="icon-button h6 px-1" title="Статистика"  data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-bar-chart-2" style="color: rgb(102, 193, 253);"></i>
                                                                     </a>
                                                                     <button class="icon-button h6 px-1" data-toggle="img-modal" data-img="{%url 'download_qr' model='group' slug=group.slug %}" data-title="{{group.title}}"  title="Скачать QR"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-maximize" style="color: rgb(51, 39, 37);"></i>
@@ -67,18 +81,23 @@
                                                                     <button class="icon-button h6 px-1" data-toggle="share-modal" data-title="Поделиться"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-external-link" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
-                                                                    {% if group.is_active %}
-                                                                    <a class="icon-button h6 px-1" title="Группа активна" data-bs-toggle="tooltip">
-                                                                        <i class="icon feather icon-eye" style="color:rgb(74, 199, 36);"></i>
-                                                                    </a>
-                                                                    {% else %}
+                                                                    {% if group.disabled or group.date_expire is not None and group.date_expire|date:"Y.m.d" <= date_now  %}
                                                                     <a class="icon-button h6 px-1" title="Группа не активна" data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-eye" style="color: rgb(212, 60, 23);"></i>
+                                                                    </a>
+                                                                    {% else %}
+                                                                    <a class="icon-button h6 px-1" title="Группа активна" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-eye" style="color:rgb(74, 199, 36);"></i>
                                                                     </a>
                                                                     {% endif %}
                                                                     {% if group.password %}
                                                                     <a class="icon-button h6 px-1" title="Пароль установлен" data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-shield" style="color:rgb(155, 35, 5);"></i>
+                                                                    </a>
+                                                                    {% endif %}
+                                                                    {% if group.rotation %}
+                                                                    <a class="icon-button h6 px-1" title="Ротация ссылок включена" data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-shuffle" style="color: rgb(102, 193, 253);"></i>
                                                                     </a>
                                                                     {% endif %}
                                                                 </div>
@@ -91,8 +110,18 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row row-cols-1 border-bottom">
-                                                                <div class="col-auto" style="color: rgb(68, 66, 66);">
-                                                                    Истекает:&nbsp;{% if group.date_expire %}{{ group.date_expire|date:"Y.m.d"  }}{% else %}Дата не указана{% endif %}
+                                                                {% if group.date_expire %}
+                                                                    {% if group.date_expire|date:"Y.m.d" <= date_now %}
+                                                                        <div class="col-auto" style="color: rgb(156, 91, 91);">
+                                                                            Истекает:  {{ group.date_expire|date:"Y.m.d" }}
+                                                                    {% else %} 
+                                                                        <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                                                            Истекает:  {{group.date_expire|date:"Y.m.d" }}
+                                                                    {% endif %}
+                                                                {% else %}
+                                                                    <div class="col-auto" style="color: rgb(68, 66, 66)">
+                                                                        Истекает: Дата не указана
+                                                                {%endif %}
                                                                 </div>
                                                             </div>
                                                             <div class="row row-cols-1 border-bottom">

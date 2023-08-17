@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from asgiref.sync import sync_to_async
 
 from django.db.models import Count
@@ -5,32 +7,46 @@ from django.contrib.auth import get_user_model
 from django.db.models.query import QuerySet
 
 from apps.db_model.models import GroupLinkModel, LinkModel, StatisticsModel
-from apps.db_model.schemas import LinkDetailStatistics, GroupDetailStatistics, AccountDetailStatistics
+from apps.db_model.schemas import (
+    LinkDetailStatistics,
+    GroupDetailStatistics,
+    AccountDetailStatistics,
+)
 
 
 User = get_user_model()
 
 
-class Statistics():
-    
+def datetime_handler(x):
+    if isinstance(x, datetime):
+        return x.strftime("%Y-%m-%d")
+
+
+class Statistics:
     @staticmethod
     def _from_queryset(queryset: QuerySet) -> dict:
         clicks = len(queryset)
-        # if not clicks:
-        #     raise ValueError('Item not found, or statistics is empty')
-        device = list(queryset.values('device').annotate(entries=Count('device')).distinct())
-        source = list(queryset.values('ref_link').annotate(entries=Count('ref_link')).distinct())
-        browser = list(queryset.values('browser').annotate(entries=Count('browser')).distinct())
-        date = list(queryset.values('date').annotate(entries=Count('date')).distinct())
+        device = list(
+            queryset.values("device").annotate(entries=Count("device")).distinct()
+        )
+        source = list(
+            queryset.values("ref_link").annotate(entries=Count("ref_link")).distinct()
+        )
+        browser = list(
+            queryset.values("browser").annotate(entries=Count("browser")).distinct()
+        )
+        os = list(queryset.values("os").annotate(entries=Count("device")).distinct())
+        date = list(queryset.values("date").annotate(entries=Count("date")).distinct())
         data = {
-            'clicks': clicks,
-            'device': device,
-            'source': source,
-            'browser': browser,
-            'date': date,
+            "clicks": clicks,
+            "device": device,
+            "os": os,
+            "source": source,
+            "browser": browser,
+            "date": date,
         }
         return data
-    
+
     @staticmethod
     def _is_exists(model, **kwargs) -> bool:
         return model.objects.filter(**kwargs).exists()
@@ -46,25 +62,22 @@ class Statistics():
     @classmethod
     def link_info(cls, user: User, slug: str) -> type[LinkDetailStatistics]:
         if not cls._is_exists(LinkModel, user=user, slug=slug):
-            raise ValueError('Link not found')
-        queryset = StatisticsModel.objects.filter(
-            link__user = user,
-            link__slug = slug
-        )
+            raise ValueError("Link not found")
+        queryset = StatisticsModel.objects.filter(link__user=user, link__slug=slug)
         data: dict = cls._from_queryset(queryset)
         return LinkDetailStatistics(**data)
 
     @classmethod
     def group_info(cls, user: User, group_id: int) -> type[GroupDetailStatistics]:
         if not cls._is_exists(GroupLinkModel, user=user, id=group_id):
-            raise ValueError('Group not found')
+            raise ValueError("Group not found")
         queryset = StatisticsModel.objects.filter(
             link__user=user,
             link__group__id=group_id,
         )
         links = cls._link_count(user=user, group=group_id)
         data: dict = cls._from_queryset(queryset)
-        data.update({'links': links})
+        data.update({"links": links})
         return GroupDetailStatistics(**data)
 
     @classmethod
@@ -73,20 +86,62 @@ class Statistics():
         data: dict = cls._from_queryset(queryset)
         links = cls._link_count(user=user)
         groups = cls._group_count(user=user)
-        data.update({'links': links, 'groups': groups})
+        data.update({"links": links, "groups": groups})
         return AccountDetailStatistics(**data)
 
     @classmethod
     @sync_to_async
     def async_link_info(cls, *args):
         return cls.link_info(*args)
-    
+
     @classmethod
     @sync_to_async
     def async_group_info(cls, *args):
         return cls.group_info(*args)
-    
+
     @classmethod
     @sync_to_async
     def async_account_info(cls, *args):
         return cls.account_info(*args)
+
+
+# clicks_all=4 #ch
+# clicks_month=4 #ch
+# clicks_week=4 #ch
+# clicks_day=4 #ch
+
+# device_labels = ['', '', '']  #ch
+# device=[{'device': 'PC', 'entries': 4}]
+
+# sourse_labels = ['', '', ''] #ch
+# source=[
+#     {
+#         'ref_link': 'http://127.0.0.1:8000/FcvFvcv',
+#         'entries': 3
+#     },
+#     {
+#         'ref_link': 'http://127.0.0.1:8000/kQrTKsE2',
+#         'entries': 1
+#     }
+# ]
+
+# browser_labels = ['', '', ''] #ch
+# browser=[{'browser': 'Firefox', 'entries': 4}]
+
+# date=[
+#     {
+#         'date': datetime.datetime(2023, 7, 18, 0, 0, tzinfo=datetime.timezone.utc),
+#         'entries': 2
+#     },
+#     {
+#         'date': datetime.datetime(2023, 7, 19, 0, 0, tzinfo=datetime.timezone.utc),
+#         'entries': 1
+#     },
+#     {
+#         'date': datetime.datetime(2023, 7, 27, 0, 0, tzinfo=datetime.timezone.utc),
+#         'entries': 1
+#     }
+# ]
+
+# links=163
+# groups=2

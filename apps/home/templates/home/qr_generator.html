@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block inner-header %}
+<div class="px-4 my-5 text-center">
+    <h1 class="display-6 fw-bold">Сгенерировать QR код</h1>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .lead {
+        font-weight: 300;
+        font-size: 18px;
+    }
+</style>
+
+<div class="container my-1">
+    <div class="py-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 rounded-3 justify-content-between" style="background-color: inherit">
+                <div class="row p-3 justify-content-between">
+                    <div class="row mb-5">
+                        <p class="lead text-center">
+                            QR-коды очень удобны и эффективны для передачи информации, так как их можно быстро отсканировать с помощью камеры смартфона или другого устройства. Они занимают мало места и могут содержать большой объем данных.
+                        </p>
+                    </div>
+                    <div class="col-lg-7 col-sm-auto border rounded-3">
+                        <div class="row pb-2 pt-md-5">
+                            <div class="col-lg-12">
+                                <span class="lead" style="font-weight: 400;">Введите текст, который хотите закодировать:</span>
+                            </div>
+                            <div class="col-lg-12 col-sm-auto pt-1 text-end">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        {{ form.text }}
+                                    </div>
+                                    <div class="text-start">
+                                        {{ form.errors }}
+                                    </div>
+                                    <button class="btn btn-primary px-3 py-2">Сгенерировать</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- <div class="row row-cols-1 pt-2">
+                            <div class="col-lg-6 col-sm-auto">
+                                <a href="{{ link.short_url }}" style="font-size: 1.1em; text-decoration: none;">{{ link.short_url }}</a>
+                                <input type="hidden" value="{{ link.short_url }}" id="{{ link.slug }}">
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-lg-5 col-sm-auto my-2 mr-3">
+                        <div class="mb-1 text-center">
+                            <span class="lead" style="font-weight: 400;">Ваш QR:</span>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-lg-12 my-4">
+                                {% if not qrcode or form.errors %}
+                                    <img src="{% static 'home/img/qr-example.svg' %}" style="display: block; height: auto; max-width: 50%; margin: 0 auto; opacity: 0.1;">
+                                {% else %}
+                                    <img src="{% url 'download_qr' model='qrcode' slug=qrcode.slug %}" style="display: block; height: auto; max-width: 50%; margin: 0 auto;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row my-2 justify-content-center">
+                            {% if not qrcode or form.errors %}
+                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                    <a href="" class="btn btn-primary disabled" disabled>Скачать SVG</a>
+                                </div>
+                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                    <a href="" class="btn btn-primary disabled">Скачать PNG</a>
+                                </div>
+                            {% else %}
+                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                    <a href="{% url 'download_qr' model='qrcode' slug=qrcode.slug %}?mime=svg" class="btn btn-primary">Скачать SVG</a>
+                                </div>
+                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                    <a href="{% url 'download_qr' model='qrcode' slug=qrcode.slug %}?mime=png" class="btn btn-primary">Скачать PNG</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <div class="col-lg-9">
+                        <p class="lead">
+                            QR-код (Quick Response code) - это двухмерный штрих-код, который используется для хранения информации. Он был разработан японской компанией Denso Wave в 1994 году и с тех пор стал широко распространенным и популярным.
+                        </p>
+
+                        <p class="lead">QR-коды имеют множество применений и используются в различных областях:</p>
+                        <ul>
+                            <li class="lead">Реклама и маркетинг: QR-коды часто используются в рекламных материалах, брошюрах, плакатах, упаковке продуктов и т. д.</li>
+                            <li class="lead">Ссылки и контактная информация: QR-коды могут содержать ссылки на веб-сайты, контактную информацию (номер телефона, адрес электронной почты)</li>
+                            <li class="lead">Платежи: В QR-кодах можно закодировать информацию о платеже, что упрощает и ускоряет процесс оплаты в магазинах, ресторанах и т. д.</li>
+                            <li class="lead">Аутентификация и вход: QR-коды могут использоваться для аутентификации и входа в различные сервисы, приложения или взаимодействия с Wi-Fi сетями.</li>
+                            <li class="lead">Товары и услуги: QR-коды могут использоваться для идентификации товаров и услуг, отслеживания их происхождения и другой информации о продукции.</li>
+                            <li class="lead">Туризм: В QR-кодах можно закодировать информацию о туристических объектах, маршрутах, музеях и т. д.</li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+{% endblock %}

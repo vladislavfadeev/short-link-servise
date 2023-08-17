@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import check_password
 
 
 class RedirectPasswordForm(forms.Form):
-    password = forms.CharField()
+    password = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваш пароль'}))
     encoded_pwd = forms.CharField()
     
     def clean(self):

@@ -1,0 +1,115 @@
+{% extends "dashboard/layouts/base.html" %}
+
+{% block title %} Page Blank {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block breadcrumb %}
+    {% load breadcrumb %}
+<!-- [ breadcrumb ] start -->
+        <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
+            <ol class="breadcrumb mx-3 my-2">
+                {% breadcrumb_home 'dashboard' %}
+                {% breadcrumb_active 1 prefix='API документация' %}
+            </ol>
+        </nav>
+
+<!-- [ breadcrumb ] end -->
+{% endblock breadcrumb %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 style="font-size: 24px;">API Key</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-8">
+                                                        <label class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Ваш ключ:</label>
+                                                        <input class="form-control" type="text" value="{{ user.auth_token }}" disabled>
+                                                    </div>
+                                                </div>
+                                                    <button type="submit" class="btn btn-primary" style="font-size: 16px; font-weight: 700;" {% if user.auth_token %} disabled {% endif %}>
+                                                        Получить токен
+                                                    </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 style="font-size: 24px;">Краткий обзор</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            API Service for Short Links - Comprehensive Features Description
+
+The API service for short links provides a powerful platform to create, manage, and organize short links and QR codes. With a range of endpoints tailored to different functionalities, users can seamlessly generate, edit, and retrieve information about their links and QR codes. Let's delve into the details of the available endpoints and their functionalities:
+
+**QR-Code Endpoints:**
+- **Get QR-Codes List:** Users can obtain a list of QR codes they have created. This endpoint allows them to review and keep track of their generated QR codes for various purposes, such as marketing campaigns or event promotions.
+
+- **Retrieve QR-Code Information:** This endpoint offers detailed information about a specific QR code. Users can access relevant details like creation date, associated link, and usage statistics, enabling them to monitor the performance of individual QR codes.
+
+- **Create QR-Code:** Users can effortlessly create a new QR code using this endpoint. They provide the link they want to encode, and the API generates a QR code image. This feature is immensely useful for quickly generating QR codes for web pages, apps, or any digital content.
+
+- **Multiple Create QR-Codes:** For users requiring multiple QR codes, this endpoint allows the bulk creation of QR codes. By submitting a list of links, they can efficiently generate QR codes for multiple resources simultaneously.
+
+**Links Endpoints:**
+- **Get Links List:** Users can access a list of short links they have created. This overview helps them manage and organize their links effectively, especially when dealing with a large number of short URLs.
+
+- **Get Detailed Link Information:** This endpoint provides comprehensive information about a specific short link. Users can view details such as the original URL, creation date, click-through statistics, and associated QR codes.
+
+- **Partially Update Link:** Users can modify certain attributes of a short link using this endpoint. Whether it's updating the link's title, tags, or metadata, this feature ensures link details remain accurate and relevant.
+
+- **Delete Link:** To remove a specific short link, users can utilize this endpoint. By providing the unique slug associated with the link, they can seamlessly delete links they no longer need.
+
+- **Retrieve Detailed Link Information:** Similar to the QR-code endpoint, this functionality offers a detailed breakdown of a specific short link's attributes. It's particularly useful for gathering insights into link engagement and performance.
+
+- **Create Link:** With this endpoint, users can generate a new short link by submitting the original URL. The API generates a unique slug and associates it with the provided URL, simplifying link management and sharing.
+
+- **Multiple Create Links:** When users require numerous short links, this endpoint allows them to create multiple links at once. By providing a list of original URLs, they can efficiently generate a collection of short links in a single request.
+
+**Groups Endpoints:**
+- **Get Groups List:** Users can retrieve a list of all groups they have created. This overview helps them categorize and manage their links based on different projects, themes, or campaigns.
+
+- **Get Detailed Group Information:** This endpoint provides detailed insights into a specific group created by the user. Users can access information about the group's title, description, creation date, and the number of links associated with it.
+
+- **Partially Update Group:** If users need to modify certain details of a group, they can do so using this endpoint. Whether it's updating the group's title or description, this feature ensures accurate organization of links.
+
+- **Delete Group:** Users can delete a specific group and its associated links using this endpoint. It's a handy way to manage link organization and declutter their account.
+
+- **Retrieve Detailed Group Information:** Similar to the link and QR-code endpoints, this functionality provides detailed insights into a specific group's attributes. It's particularly useful for understanding the composition and performance of a group.
+
+- **Create Group:** This endpoint enables users to create a new group for organizing their links. They can assign a title and description to the group, enhancing their ability to categorize and manage their short links efficiently.
+
+In conclusion, the API service for short links offers a comprehensive suite of endpoints that empower users to efficiently manage, organize, and monitor their short links and QR codes. By providing functionalities to create, retrieve, update, and delete links and groups, this service simplifies the process of link management and enhances the user experience. Whether it's generating QR codes, creating short links, or organizing links into groups, the API service provides a versatile and user-friendly platform for all link-related needs.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

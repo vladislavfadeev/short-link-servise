@@ -4,9 +4,9 @@
 <nav class="pcoded-navbar">
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
-            <a href="{% url 'dashboard' %}" class="b-brand">
+            <a href="/" class="b-brand">
                 <div class="b-bg">
-                    <i class="feather icon-trending-up"></i>
+                    <i class="feather icon-monitor"></i>
                 </div>
                 <span class="b-title">Clicker panel</span>
             </a>
@@ -26,19 +26,19 @@
                     class="nav-item {% if 'links' in segment %} active {% endif %}">
                     <a href="{% url 'links' %}" class="nav-link">
                         <span class="pcoded-micon"><i class="feather icon-link"></i></span>
-                            <span class="pcoded-mtext">Ссылки</span></a>
+                            <span class="pcoded-mtext">Мои ссылки</span></a>
                 </li>
                 <li data-username="My Groups List" 
                     class="nav-item {% if 'groups' in segment %} active {% endif %}">
                     <a href="{% url 'groups' %}" class="nav-link">
                         <span class="pcoded-micon"><i class="feather icon-folder"></i></span>
-                            <span class="pcoded-mtext">Группы</span></a>
+                            <span class="pcoded-mtext">Мои группы</span></a>
                 </li>
-                <li data-username="My Profile" 
-                    class="nav-item {% if 'user' in segment %} active {% endif %}">
-                    <a href="{% url 'profile' %}" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-user"></i></span>
-                            <span class="pcoded-mtext">Профиль</span></a>
+                <li data-username="My QRCodes" 
+                    class="nav-item {% if 'qrcode' in segment %} active {% endif %}">
+                    <a href="{% url 'qrcode' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
+                            <span class="pcoded-mtext">Мои QR</span></a>
                 </li>
 
                 <li class="nav-item pcoded-menu-caption">
@@ -52,8 +52,8 @@
                 </li>
                 <li data-username="Make QR" 
                     class="nav-item {% if 'groups_list' in segment %} active {% endif %}">
-                    <a href="% url 'make_qr' %}" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-maximize"></i></span>
+                    <a href="{% url 'qrcode_create' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-grid"></i></span>
                             <span class="pcoded-mtext">Создать QR</span></a>
                 </li> 
 
@@ -62,14 +62,14 @@
                 </li>
                 <li data-username="API for developers" 
                     class="nav-item {% if 'cutt_link' in segment %} active {% endif %}">
-                    <a href="% url 'api_doc' %}" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-book"></i></span>
+                    <a href="{% url 'api-key' %}" class="nav-link">    <!-- target="_blank" -->
+                        <span class="pcoded-micon"><i class="feather icon-upload-cloud"></i></span>
                             <span class="pcoded-mtext">API документация</span></a>
                 </li>
                 <li data-username="Telegram bot" 
                     class="nav-item {% if 'groups_list' in segment %} active {% endif %}">
-                    <a href="% url 'bot_set' %}" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-radio"></i></span>
+                    <a href="{% url 'api-key' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-cpu"></i></span>
                             <span class="pcoded-mtext">Telegram бот</span></a>
                 </li> 
                 <!-- <li data-username="........."
@@ -101,7 +101,7 @@
                 <li data-username="Support" class="nav-item ">
                     <a target="_blank" href="https://appseed.us/support" class="nav-link">
                         <span class="pcoded-micon">
-                            <i class="feather icon-headphones"></i>
+                            <i class="feather icon-users"></i>
                         </span>
                         <span class="pcoded-mtext">Поддержка</span>
                     </a>

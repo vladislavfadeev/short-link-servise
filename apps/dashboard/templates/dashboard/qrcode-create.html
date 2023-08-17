@@ -1,0 +1,80 @@
+{% extends "dashboard/layouts/base.html" %}
+
+{% block title %} Page Blank {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block breadcrumb %}
+    {% load breadcrumb %}
+<!-- [ breadcrumb ] start -->
+        <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
+            <ol class="breadcrumb mx-3 my-2">
+                {% breadcrumb_home 'dashboard' %}
+                {% breadcrumb_item 'qrcode' 'Мои QR' 1 %}
+                {% if 'edit' in segment %}
+                    {% breadcrumb_active 2 prefix='Редактирование содержимого QR' %}
+                {% else %}
+                    {% breadcrumb_active 2 prefix='Создать новый QR' %}
+                {% endif %}
+            </ol>
+        </nav>
+
+<!-- [ breadcrumb ] end -->
+{% endblock breadcrumb %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 style="font-size: 24px;">{% if 'edit' in segment %}Редактировать содержание QR{% else %}Создать новый QR{% endif %}</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                {{ form.non_field_errors }}
+                                                <div class="row mb-3">
+                                                    <label style="color: rgb(17, 17, 17); font-size: 16px;">Ваш текст:</label>
+                                                    <div class="col-sm-5">
+                                                        {{ form.text.errors }}
+                                                        {{ form.text }}
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <span id="passwordHelpInline" class="form-text">
+                                                          Доступная длина 550 символов.
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                {% if 'edit' in segment %}
+                                                    <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">Сохранить изменения</button>
+                                                {% else %}
+                                                    <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">Сгенерировать</button>
+                                                {% endif %}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

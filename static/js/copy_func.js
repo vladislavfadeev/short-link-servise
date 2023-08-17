@@ -1,6 +1,7 @@
 
 function copyToClipboard(inputId) {
-    var copyButton = document.getElementById("copy-button");
+    var notification = document.getElementById('notification');
+    var copyButton = document.getElementById(`btn${inputId}`);
     var input = document.getElementById(inputId);
     
     var tempInput = document.createElement("input");
@@ -17,6 +18,12 @@ function copyToClipboard(inputId) {
         copyButton.innerText = "Скопировано!";
         setTimeout(function() {
             copyButton.innerText = "Копировать";
-        }, 3000);
+        }, 2000);
     }
+    if (notification) {
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 1000);
+    };
   }

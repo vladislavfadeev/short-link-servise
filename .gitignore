@@ -1,4 +1,4 @@
-
+apps/dashboard/templates/dashboard/others
 __pycache__
 migrations
 Pipfile.lock

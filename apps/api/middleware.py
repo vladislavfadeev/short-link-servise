@@ -1,22 +1,20 @@
 from typing import Callable
 
 from fastapi import Request
+from starlette.responses import RedirectResponse
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.authentication import UnauthenticatedUser
 
 
-# def is_ok(value):
-#     return 200 <= value <= 299
+class NotAuthDocsRedirectMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app):
+        super().__init__(app)
 
-
-# class MyMiddleware(BaseHTTPMiddleware):
-#     def __init__(self, app):
-#         super().__init__(app)
-
-#     async def dispatch(self, request: Request, call_next: Callable):      
-#         response = await call_next(request)
-#         if is_ok(response.status_code):
-#             response_body = b""
-#             async for chunk in response.content:
-#                 response_body += chunk
-#             print(response_body)
-#         return response
+    async def dispatch(self, request: Request, call_next: Callable):
+        if request.url.path in ("/api/v1/redoc",):
+            if isinstance(request.user, UnauthenticatedUser):
+                return RedirectResponse(
+                    f"/login?next={request.url.path}", status_code=301
+                )
+        response = await call_next(request)
+        return response

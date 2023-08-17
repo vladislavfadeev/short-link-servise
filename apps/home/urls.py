@@ -1,16 +1,16 @@
 from django.urls import path
 from apps.home.views import (
     HomeView,
-    FeaturesInfoView,
     BotInfoView,
     APIInfoView,
-    DownloadFile
+    DownloadFile,
+    QRGeneratorView
 )
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('features', FeaturesInfoView.as_view(), name='features'),
     path('bot', BotInfoView.as_view(), name='bot'),
     path('api', APIInfoView.as_view(), name='api'),
+    path('create-qr', QRGeneratorView.as_view(), name='qr_generator'),
     path('download/<str:model>/<str:slug>', DownloadFile.as_view(), name='download_qr'),
 ]

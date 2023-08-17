@@ -1,11 +1,12 @@
 from datetime import date, datetime
-from typing import Any, Optional
-from pydantic import BaseModel, HttpUrl, validator
+from email.policy import default
+from typing import Optional
+from pydantic import BaseModel, HttpUrl, UUID4, validator, Field
 from django.contrib.auth.hashers import make_password
 import string
 
 
-literals = string.ascii_letters + string.digits + '_-'
+literals = string.ascii_letters + string.digits + "_-"
 
 
 class Base(BaseModel):
@@ -15,83 +16,94 @@ class Base(BaseModel):
 
 
 class GroupBase(Base):
-    title: str                      # добавить проверку на кол-во символов
-    slug: Optional[str]
-    description: Optional[str]
-    is_active: Optional[bool] = True
-    rotation: Optional[bool] = False
-    
+    title: str = Field(
+        max_length=256, description="Name of your group. Must be unique."
+    )
+    slug: Optional[str] = Field(
+        default=None, max_length=30, description="Group url element. Alias"
+    )
+    description: Optional[str | None] = None
+    disabled: Optional[bool] = False
+    rotation: Optional[bool] = Field(default=False, description="Random link choice")
+
+
 
 class CreateGroup(GroupBase):
-    password: Optional[str]
-    date_expire: Optional[date]
+    password: Optional[str | None] = Field(default=None, max_length=32)
+    date_expire: Optional[date | None] = None
 
-    @validator('date_expire', pre=True)
+    @validator("date_expire")  # , pre=True
     def group_date_expire(cls, v):
         date = datetime.strptime(v, "%Y-%m-%d")
         if date <= datetime.now():
-            raise ValueError('Date cannot be less or equal than today')
-        return date 
+            raise ValueError("Date cannot be less or equal than today")
+        return date
 
 
 class ViewGroupInList(GroupBase):
     id: int
     password: bool
     short_url: str
-    links_entry: Optional[int]
+    links_entry: Optional[int] = Field(
+        description="The count of links that the group contains."
+    )
     date_expire: Optional[date]
     qr: str
 
-    @validator('password', pre=True)
+    @validator("password", pre=True)
     def pwd(cls, v):
         return True if v else False
-    
+
+
 class GroupList(Base):
-    groups_total: int
-    groups_shown: int
-    groups_list: list[ViewGroupInList] | None
+    groups_total: int = Field(description="The count of groups in the account.")
+    groups_shown: int = Field(description="The count of shown groups.")
+    groups_list: list[ViewGroupInList | None]
 
 
 class BaseLinkModel(Base):
-    slug: Optional[str | None]
+    slug: Optional[str | None] = Field(default=None, max_length=30)
+    title: Optional[str | None] = Field(
+        default=None,
+        max_length=512,
+        description="The name of the link. It show to the customer, be careful.",
+    )
     long_link: HttpUrl
-    date_expire: Optional[date | None]
-    is_active: Optional[bool] = True
+    date_expire: Optional[date | None] = None
+    disabled: Optional[bool] = False
 
 
 class CreateLinkModel(BaseLinkModel):
-    password: Optional[str | None]
-    group_id: Optional[int]
+    password: Optional[str | None] = Field(default=None, max_length=32)
+    group_id: Optional[int | None] = None
 
-    @validator('slug')
+    @validator("slug")
     def slug(cls, v):
         for i in list(v):
             if i not in literals:
-                raise ValueError(
-                    'Slug must contain English letters and digits only'
-                )
+                raise ValueError("Slug must contain English letters and digits only")
         return v
-    
-    @validator('date_expire', pre=True)
+
+    @validator("date_expire", pre=True)
     def date_expire(cls, v):
         date = datetime.strptime(v, "%Y-%m-%d")
         if date <= datetime.now():
-            raise ValueError('Date cannot be less or equal than today')
-        return date        
+            raise ValueError("Date cannot be less or equal than today")
+        return date
 
-    @validator('password')
+    @validator("password")
     def pwd_setter(cls, v):
         return make_password(v)
-    
+
 
 class ViewLinkInGroup(BaseLinkModel):
-    date_created: Optional[date]
+    date_created: Optional[datetime]
     last_changed: Optional[datetime]
     password: Optional[bool | None]
-    short_url: Optional[str]
+    short_url: str
     qr: str
 
-    @validator('password', pre=True)
+    @validator("password", pre=True)
     def pwd(cls, v):
         return True if v else False
 
@@ -101,67 +113,67 @@ class ViewLinkModel(ViewLinkInGroup):
 
 
 class LinksList(Base):
-    links_total: int
-    links_shown: int
+    links_total: int = Field(description="Count of all links in the account")
+    links_shown: int = Field(description="Count of current shown links")
     links_list: list[ViewLinkModel] | None
 
 
 class CreateViewLinkModel(BaseLinkModel):
-    date_created: Optional[date]
+    date_created: Optional[datetime]
     last_changed: Optional[datetime]
-    password: Optional[bool] 
+    password: Optional[bool]
     group: Optional[GroupBase | None]
     short_url: Optional[str]
     qr: Optional[str]
 
-    # @root_validator(pre=True)
-    # def sss(cls, values):
-    #     q = qr.make_base64(values.get('long_link'))
-    #     values.update({'qr': q})
-    #     return values
-    
-    @validator('password', pre=True)
+    @validator("password", pre=True)
     def pwd(cls, v):
         return True if v else False
-    
+
 
 class PartialUpdateLinkModel(Base):
-    title: Optional[str]
-    group_id: Optional[int]
-    password: Optional[str]
-    date_expire: Optional[date]
-    is_active: Optional[bool]
+    title: Optional[str | None] = Field(
+        default=None,
+        max_length=512,
+        description="The name of the link. It show to the customer, be careful.",
+    )
+    group_id: Optional[int | None] = None
+    password: Optional[str | None] = Field(default=None, max_length=32)
+    date_expire: Optional[date | None] = None
+    disabled: Optional[bool] = False
 
-    @validator('password')
+    @validator("password")
     def pwd_setter(cls, v):
         return make_password(v)
 
-    @validator('date_expire', pre=True)
+    @validator("date_expire", pre=True)
     def link_date_expire(cls, v):
         date = datetime.strptime(v, "%Y-%m-%d")
         if date <= datetime.now():
-            raise ValueError('Date cannot be less or equal than today')
-        return date 
+            raise ValueError("Date cannot be less or equal than today")
+        return date
 
 
 class PartialUpdateGroupModel(Base):
-    title: Optional[str]
-    description: Optional[str]
-    rotation: Optional[bool]
-    password: Optional[str]
-    is_active: Optional[bool]
-    date_expire: Optional[date]
+    title: Optional[str | None] = Field(
+        default=None, max_length=256, description="Name of your group. Must be unique."
+    )
+    description: Optional[str | None] = None
+    rotation: Optional[bool | None] = None
+    password: Optional[str | None] = None
+    disabled: Optional[bool | None] = None
+    date_expire: Optional[date | None] = None
 
-    @validator('password')
+    @validator("password")
     def pwd_setter(cls, v):
         return make_password(v)
-    
-    @validator('date_expire', pre=True)
+
+    @validator("date_expire", pre=True)
     def date_expire1(cls, v):
         date = datetime.strptime(v, "%Y-%m-%d")
         if date <= datetime.now():
-            raise ValueError('Date cannot be less or equal than today')
-        return date 
+            raise ValueError("Date cannot be less or equal than today")
+        return date
 
 
 class ViewGroupDetail(GroupBase):
@@ -171,9 +183,9 @@ class ViewGroupDetail(GroupBase):
     qr: str
     links_total: int
     links_shown: int
-    links: Optional[Any]
-    
-  
+    links: list[ViewLinkInGroup] | None
+
+
 class ViewCreatedGroup(GroupBase):
     id: int
     password: bool
@@ -181,20 +193,17 @@ class ViewCreatedGroup(GroupBase):
     date_expire: Optional[date]
     qr: str
 
-    @validator('password', pre=True)
+    @validator("password", pre=True)
     def pwd(cls, v):
         return True if v else False
 
 
-class BaseInfo(BaseModel):
+class BaseInfo(Base):
     clicks: int
     device: list[dict | None]
     source: list[dict | None]
     browser: list[dict | None]
     date: list[dict | None]
-
-    class Config:
-        from_attributes = True
 
 
 class LinkInfo(BaseInfo):
@@ -209,32 +218,39 @@ class AccountInfo(GroupInfo):
     groups: Optional[int | None]
 
 
-class FailValidationModel(BaseModel):
+class FailValidationModel(Base):
     loc: dict
     msg: str
 
 
-class MultipleResponseModel(BaseModel):
-    fails: Optional[list[FailValidationModel]]
-    created: Optional[list[CreateViewLinkModel]]
+class MultipleResponseModel(Base):
+    fails: Optional[list[FailValidationModel | None]]
+    created: Optional[list[CreateViewLinkModel | None]]
+
+
+class QRCodeRetrieve(Base):
+    slug: UUID4
+    text: str
+    qr: str
+    date_created: datetime
+
+
+class QRCodeCreate(Base):
+    text: str = Field(max_length=550)
 
 
 
-# class ResponseBase(BaseModel):
-#     message: str = ""
-#     meta: dict = {}
-#     data: T | None
 
+code_401 = {
+    401: {
+        "description": "User is not authorized",
+        "content": {"application/json": {"example": {"detail": "Not authorized."}}},
+    }
+}
 
-# def create_response(
-#     data: DataType | None,
-#     message: str | None = None,
-#     meta: dict | Any | None = {},
-# ) -> dict[str, DataType] | DataType:
-#     if isinstance(data, IResponsePage):
-#         data.message = "Data paginated correctly" if message is None else message
-#         data.meta = meta
-#         return data
-#     if message is None:
-#         return {"data": data, "meta": meta}
-#     return {"data": data, "message": message, "meta": meta}
+code_404 = {
+    404: {
+        "description": "Item not found",
+        "content": {"application/json": {"example": {"detail": "Does not exist."}}},
+    }
+}

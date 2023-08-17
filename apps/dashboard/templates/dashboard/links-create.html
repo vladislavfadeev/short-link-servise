@@ -5,6 +5,24 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
+{% block breadcrumb %}
+    {% load breadcrumb %}
+<!-- [ breadcrumb ] start -->
+        <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
+            <ol class="breadcrumb mx-3 my-2">
+                {% breadcrumb_home 'dashboard' %}
+                {% breadcrumb_item 'links' 'Мои ссылки' 1 %}
+                {% if 'edit' in segment %}
+                    {% breadcrumb_active 2 url=object.get_absolute_url title=object.title prefix='Редактирование ссылки: ' %}
+                {% else %}
+                    {% breadcrumb_active 2 prefix='Создать ссылку' %}
+                {% endif %}
+            </ol>
+        </nav>
+
+<!-- [ breadcrumb ] end -->
+{% endblock breadcrumb %}
+
 {% block content %}
 
     <!-- [ Main Content ] start -->
@@ -93,10 +111,10 @@
                                                   <div class="col-sm-2 pt-0"  style="color: rgb(17, 17, 17); font-size: 16px;">Статус:</div>
                                                   <div class="col-sm-10">
                                                     <div class="form-check">
-                                                        {{ form.is_active.errors }}
-                                                        {{ form.is_active }}
+                                                        {{ form.disabled.errors }}
+                                                        {{ form.disabled }}
                                                         <label class="form-check-label" for="gridCheck1">
-                                                        Ссылка активна
+                                                        Отключена
                                                       </label>
                                                     </div>
                                                   </div>

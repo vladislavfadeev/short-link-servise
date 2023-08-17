@@ -3,6 +3,50 @@
 
 {% block content %}
 
-
+{% if links %}
+<div class="container my-1">
+    <h4 class="fs-4 text-center py-5">{{ group.title }}</h4>
+    {% for link in links %}
+        <div class="card-block py-1">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="row p-3 rounded-3 justify-content-between border shadow-sm" style="background-color: rgb(255, 255, 255);">
+                        <div class="col-lg-9 col-sm-auto">
+                            <div class="row row-cols-1 border-bottom pb-2">
+                                <div class="long-link-title col-md-12">
+                                    <span style="color: rgb(17, 17, 17); font-size: 18px;">{{ link.title }}</span>
+                                </div>
+                                <div class="long-link col-lg-8 col-sm-auto">
+                                    <span style="color: rgb(99, 99, 99);">{{ link.long_link }}</span>
+                                </div>
+                            </div>
+                            <div class="row row-cols-1 pt-2">
+                                <div class="col-lg-6 col-sm-auto" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <a href="{{ link.short_url }}" style="font-size: 1.1em; text-decoration: none;">{{ link.short_url }}</a>
+                                    <input type="hidden" value="{{ link.short_url }}" id="{{ link.slug }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-auto my-2 mr-3">
+                            <div class="row row-cols-1 mb-1">
+                                <div class="col-sm-12" style="color: rgb(68, 66, 66);">
+                                    <a href="{{ link.short_url }}" class="input-group-text px-4" style="background-color: rgb(160, 220, 255); width: 120px; text-decoration: none;">Перейти</a>
+                                </div>
+                            </div>
+                            <div class="row row-cols-1">
+                                <div class="col-auto" style="color: rgb(68, 66, 66);">
+                                    <button class="input-group-text home-copy-button" id="btn{{ link.slug }}" onclick="copyToClipboard('{{ link.slug }}')" >Копировать</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    {% endfor %}
+{% else %}
+    <h4 class="fs-4 text-center py-5 my-5">В группу не добавленно ни одной ссылки</h4>
+{% endif %}
+</div>
 
 {% endblock %}
