@@ -12,7 +12,7 @@ literals = string.ascii_letters + string.digits + "_-"
 class Base(BaseModel):
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 
 class GroupBase(Base):
@@ -49,6 +49,16 @@ class ViewGroupInList(GroupBase):
     )
     date_expire: Optional[date]
     qr: str
+
+    @validator("password", pre=True)
+    def pwd(cls, v):
+        return True if v else False
+    
+class ViewGroupInLink(GroupBase):
+    id: int
+    password: bool
+    short_url: str
+    date_expire: Optional[date]
 
     @validator("password", pre=True)
     def pwd(cls, v):
@@ -109,26 +119,27 @@ class ViewLinkInGroup(BaseLinkModel):
 
 
 class ViewLinkModel(ViewLinkInGroup):
-    group: Optional[GroupBase | None]
+    group: Optional[ViewGroupInLink | None]
 
 
 class LinksList(Base):
     links_total: int = Field(description="Count of all links in the account")
+    links_skipped: int = Field(description="Count of skipped links")
     links_shown: int = Field(description="Count of current shown links")
     links_list: list[ViewLinkModel] | None
 
 
-class CreateViewLinkModel(BaseLinkModel):
-    date_created: Optional[datetime]
-    last_changed: Optional[datetime]
-    password: Optional[bool]
-    group: Optional[GroupBase | None]
-    short_url: Optional[str]
-    qr: Optional[str]
+# class CreateViewLinkModel(BaseLinkModel):
+#     date_created: Optional[datetime]
+#     last_changed: Optional[datetime]
+#     password: Optional[bool]
+#     group: Optional[ViewGroupInLink | None]
+#     short_url: Optional[str]
+#     qr: Optional[str]
 
-    @validator("password", pre=True)
-    def pwd(cls, v):
-        return True if v else False
+#     @validator("password", pre=True)
+#     def pwd(cls, v):
+#         return True if v else False
 
 
 class PartialUpdateLinkModel(Base):
@@ -176,16 +187,6 @@ class PartialUpdateGroupModel(Base):
         return date
 
 
-class ViewGroupDetail(GroupBase):
-    id: int
-    date_expire: Optional[date]
-    short_url: str
-    qr: str
-    links_total: int
-    links_shown: int
-    links: list[ViewLinkInGroup] | None
-
-
 class ViewCreatedGroup(GroupBase):
     id: int
     password: bool
@@ -196,6 +197,12 @@ class ViewCreatedGroup(GroupBase):
     @validator("password", pre=True)
     def pwd(cls, v):
         return True if v else False
+
+
+class ViewGroupDetail(ViewCreatedGroup):
+    links_total: int
+    links_shown: int
+    links: list[ViewLinkInGroup] | None
 
 
 class BaseInfo(Base):
@@ -225,7 +232,7 @@ class FailValidationModel(Base):
 
 class MultipleResponseModel(Base):
     fails: Optional[list[FailValidationModel | None]]
-    created: Optional[list[CreateViewLinkModel | None]]
+    created: Optional[list[ViewLinkModel | None]]  #CreateViewLinkModel
 
 
 class QRCodeRetrieve(Base):

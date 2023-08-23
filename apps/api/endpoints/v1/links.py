@@ -43,7 +43,7 @@ async def links_list(
     )
     total = Statistics._link_count(user)
     shown = len(obj_list)
-    return {"links_total": total, "links_shown": shown, "links_list": obj_list}
+    return {"links_total": total, "links_skipped": skip, "links_shown": shown, "links_list": obj_list}
 
 
 @router.get(
@@ -161,7 +161,7 @@ async def link_info(request: Request, slug: str):
 
 @router.post(
     "/",
-    response_model=schemas.CreateViewLinkModel,
+    response_model=schemas.ViewLinkModel, #schemas.CreateViewLinkModel, 
     status_code=201,
     responses={**schemas.code_401},
 )

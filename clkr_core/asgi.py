@@ -9,6 +9,7 @@ apps.populate(settings.INSTALLED_APPS)
 
 
 from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.wsgi import WSGIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.authentication import AuthenticationMiddleware
@@ -19,13 +20,14 @@ from apps.api.endpoints.router import api_router
 from apps.api.api_auth.auth import SimpleAuthBackend
 from apps.api.middleware import NotAuthDocsRedirectMiddleware
 from apps.api.utils.exc_handlers import ivalidation_error_handler
+from apps.api.utils import openapi_schemas
 
 
 def get_application() -> FastAPI:
     app = FastAPI(
         title=settings.PROJECT_NAME,
         debug=settings.DEBUG,
-        docs_url='/api/v1/docs',
+        docs_url="/api/v1/docs",
         redoc_url="/api/v1/redoc",
         openapi_url="/api/v1/openapi.json",
     )
@@ -45,16 +47,19 @@ def get_application() -> FastAPI:
     return app
 
 
+def custom_openapi_schema():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=openapi_schemas.title,
+        version=openapi_schemas.version,
+        description=openapi_schemas.description,
+        routes=app.routes,
+    )
+    openapi_schema["info"]["x-logo"] = {"url": "https://clkr.su/static/img/logo.png"}
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
 app = get_application()
-
-
-"""
-    # A Header
-    **bold**
-    *italic*
-    ## Smaller Header
-   `` `
-   a multiline code block
-   `` `
-   `a inline codeblock` Lorem Ipsum
-"""
+app.openapi = custom_openapi_schema

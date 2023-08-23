@@ -119,6 +119,11 @@ strong {
 
 /* Custom */
 
+.api-brief-card p, li {
+  font-size: 16px;
+  color: #111;
+}
+
 .long-link, .long-link-title {
   white-space: nowrap;
   overflow: hidden;

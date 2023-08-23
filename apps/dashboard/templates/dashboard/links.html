@@ -142,7 +142,7 @@
                                                                 {% if link.date_expire %}
                                                                     {% if link.date_expire|date:"Y.m.d" <= date_now %}
                                                                         <div class="col-auto" style="color: rgb(156, 91, 91);">
-                                                                            Истекает:  {{ link.date_expire|date:"Y.m.d" }}
+                                                                            Истекла:  {{ link.date_expire|date:"Y.m.d" }}
                                                                     {% else %} 
                                                                         <div class="col-auto" style="color: rgb(68, 66, 66);">
                                                                             Истекает:  {{link.date_expire|date:"Y.m.d" }}

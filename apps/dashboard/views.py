@@ -21,7 +21,6 @@ class BaseDashboard(LoginRequiredMixin):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         segments = self.request.path.replace("?", "/").split("/")
         kwargs.setdefault("segment", segments)
-        kwargs.setdefault("doc_url", "/api/v1/docs")
         return super().get_context_data(**kwargs)
 
 
@@ -36,6 +35,12 @@ class DashboardView(BaseDashboard, TemplateView):
 
 class APIKeyView(BaseDashboard, TemplateView):
     template_name = "dashboard/api-dashboard.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(
+            **kwargs, redoc="/api/v1/redoc", swagger="/api/v1/docs"
+        )
+        return self.render_to_response(context)
 
     def post(self, request):
         try:

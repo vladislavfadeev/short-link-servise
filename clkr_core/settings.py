@@ -161,6 +161,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom constants there
 
-PROJECT_NAME = 'clkr-project'
+PROJECT_NAME = 'Cliker API Service'
 DOMAIN_NAME = 'http://clkr.su'
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"

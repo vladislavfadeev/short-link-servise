@@ -80,7 +80,7 @@ async def group_detail(
     links = obj.linkmodel_set.all()[skip:limit]
     setattr(obj, "links_total", Statistics._link_count(user=user, group=obj))
     setattr(obj, "links_shown", len(links))
-    setattr(obj, "links", links)
+    setattr(obj, "links", [i for i in links])
     resp_model = schemas.ViewGroupDetail.from_orm(obj)
     return resp_model
 

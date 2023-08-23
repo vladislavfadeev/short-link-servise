@@ -1,9 +1,12 @@
 {% extends "dashboard/layouts/base.html" %}
+{% load static %}
 
 {% block title %} Page Blank {% endblock %} 
 
-<!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<!-- prism css -->
+<link rel="stylesheet" href="{% static 'assets/css/prism.css' %}">
+{% endblock stylesheets %}
 
 {% block breadcrumb %}
     {% load breadcrumb %}
@@ -38,9 +41,9 @@
                                             <form method="POST">
                                                 {% csrf_token %}
                                                 <div class="row mb-3">
-                                                    <div class="col-sm-8">
-                                                        <label class="col-sm-2" style="color: rgb(17, 17, 17); font-size: 16px;">Ваш ключ:</label>
-                                                        <input class="form-control" type="text" value="{{ user.auth_token }}" disabled>
+                                                    <div class="col-12 col-xl-6">
+                                                        <label class="" style="color: rgb(17, 17, 17); font-size: 16px;">Ваш ключ:</label>
+                                                        <input class="form-control" type="text" value="Token {{ user.auth_token }}" disabled>
                                                     </div>
                                                 </div>
                                                     <button type="submit" class="btn btn-primary" style="font-size: 16px; font-weight: 700;" {% if user.auth_token %} disabled {% endif %}>
@@ -49,58 +52,355 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="card">
+                                    <div class="card api-brief-card">
                                         <div class="card-header">
-                                            <h5 style="font-size: 24px;">Краткий обзор</h5>
+                                            <h5 style="font-size: 24px;">Clicker - API Service</h5>
                                         </div>
                                         <div class="card-block">
-                                            API Service for Short Links - Comprehensive Features Description
+                                            <div class="row">
+                                                <div class="col-xl-10" id="full-doc">
+                                                    <h1 class="mb-4">Brief features description</h1>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="alert alert-primary rounded" role="alert">
+                                                                <h3 class="">Please note!</h3>
+                                                                <hr>
+                                                                <h4>This text is a brief overview of the features provided by our API service. To access the full documentation, please follow the link.</h4>
+                                                                <a href="{{ redoc }}" target="_blank" class="btn btn-primary mt-1" style="font-size: 16px; font-weight: 700; min-width: 150px;">ReDoc</a>
+                                                                <a href="{{ swagger }}" target="_blank" class="btn btn-primary mt-1" style="font-size: 16px; font-weight: 700; min-width: 150px;">Swagger</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h2>Features</h2>
+                                                    <p>Clkr.su API service provides you a powerful and free platform to create, manage, and organize short links and QR codes. 
+                                                        Also, we allow you to collect and analyze the statistics of clicks and other metrics on your links.</p>
+                                                        
+                                                    <h2>Base URL</h2>
+                                                    <p>The main address at which our web service is accessible:</p>
+                                                    <p><code>{{ request.scheme }}://{{ request.META.HTTP_HOST }}/api/v1/</code></p>
 
-The API service for short links provides a powerful platform to create, manage, and organize short links and QR codes. With a range of endpoints tailored to different functionalities, users can seamlessly generate, edit, and retrieve information about their links and QR codes. Let's delve into the details of the available endpoints and their functionalities:
+                                                    <h2>Requests</h2>
+                                                    <p>You need to use in HTTP requests only HTTPS protocol and UTF-8 encoding. 
+                                                    All requests must contain a token in the <b>Authorization</b> header, for example: </p>
+                                                    <p><code>Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a</code></p>
 
-**QR-Code Endpoints:**
-- **Get QR-Codes List:** Users can obtain a list of QR codes they have created. This endpoint allows them to review and keep track of their generated QR codes for various purposes, such as marketing campaigns or event promotions.
+                                                    <h2 class="mt-5">
+                                                        Links endpoints
+                                                        <p class="lead" style="font-size: 20px; color:rgb(110, 110, 110)">Create and manage your links.</p>
+                                                    </h2>
+                                                    <h3 class="mt-4">Create new link</h3>
+                                                    <p>Here is an example of a request to create a short link and add it to a group with index 5. 
+                                                        Additionally, when creating the link, the slug is provided manually. If it is not specified, it will be generated automatically.</p>
+                                                    <h4>Request</h4>
+<pre><code class="language-bash">
+curl --request POST \
+    --url {{ request.scheme }}://{{ request.META.HTTP_HOST }}/api/v1/links/ \
+    --header 'content-type: application/json' \
+    --header 'Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a' \
+    --data '{
+        "long_link":"https://www.very-looong-link-there.com",
+        "slug":"my-first-link",
+        "group_id":5
+    }'
 
-- **Retrieve QR-Code Information:** This endpoint offers detailed information about a specific QR code. Users can access relevant details like creation date, associated link, and usage statistics, enabling them to monitor the performance of individual QR codes.
+</code></pre>
+                                                    <h4 class="mt-4">Response</h4>
+<pre><code class="language-json">
+{
+    "slug": "my-first-link",
+    "title": null,
+    "long_link": "https://www.very-looong-link-there.com",
+    "date_expire": null,
+    "disabled": false,
+    "date_created": "2019-08-24T14:15:22Z",
+    "last_changed": "2019-08-24T14:15:22Z",
+    "password": false,
+    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-link",
+    "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+    "group": {
+        "id":5
+        "title": "My First Group",
+        "slug": "my-first-group",
+        "description": "Just description of very good first group",
+        "disabled": false,
+        "rotation": true
+        "password": false,
+        "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+        "date_expire": null
+    }
+}
 
-- **Create QR-Code:** Users can effortlessly create a new QR code using this endpoint. They provide the link they want to encode, and the API generates a QR code image. This feature is immensely useful for quickly generating QR codes for web pages, apps, or any digital content.
+</code></pre>
+                                                    <p><b>Fields description:</b></p>
+                                                    <ul>
+                                                        <li><b>slug</b> - A unique identifier for your link in the system. You can provide it manually or leave the field empty, and the server will generate it automatically.</li>
+                                                        <li class="mt-2"><b>title</b> - The title of your link. If the link is added to a group, users who visit the group's URL will see this title, so be careful. You can leave this field empty.</li>
+                                                        <li class="mt-2"><b>long_link</b> - Long link that will be shortener.</li>
+                                                        <li class="mt-2"><b>date_expire</b> - Date, after which short link will not be able. If leave the field empty link will be able all time.</li>
+                                                        <li class="mt-2"><b>disabled</b> - Default is False. If True link not be able fo users.</li>
+                                                        <li class="mt-2"><b>date_created</b> - Auto field. Server enter the date automatically.</li>
+                                                        <li class="mt-2"><b>last_changed</b> - Auto field. The date will be refrefresh if you update any link field.</li>
+                                                        <li class="mt-2"><b>password</b> - Default is None. If set this field users can not be able to access the target resourse without entering password.</li>
+                                                        <li class="mt-2"><b>short_url</b> - Your short link.</li>
+                                                        <li class="mt-2"><b>qr</b> - QRCode will be able in base64 string.</li>
+                                                        <li class="mt-2"><b>group</b> - Description of this attached fields you can read in relevant category.</li>
+                                                    </ul>
 
-- **Multiple Create QR-Codes:** For users requiring multiple QR codes, this endpoint allows the bulk creation of QR codes. By submitting a list of links, they can efficiently generate QR codes for multiple resources simultaneously.
+                                                    <h3 class="mt-4">Get links list</h3>
+                                                    <p>For example, we will make a test GET request to retrieve our existing links. 
+                                                        Also, we can limit the size of the received list using query parameters, but we won't do that since we don't have too many links.</p>
+                                                    <h4>Request</h4>
+<pre><code class="language-bash">
+curl --request GET \
+    --url {{ request.scheme }}://{{ request.META.HTTP_HOST }}/api/v1/links/ \
+    --header 'content-type: application/json' \
+    --header 'Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a'
 
-**Links Endpoints:**
-- **Get Links List:** Users can access a list of short links they have created. This overview helps them manage and organize their links effectively, especially when dealing with a large number of short URLs.
+</code></pre>
+                                                    <h4 class="mt-4">Response</h4>
+<pre><code class="language-json">
+{
+    "links_total": 2,
+    "links_skipped": 0,
+    "links_shown": 2,
+    "links_list": [
+        {
+            "slug": "my-first-link",
+            "title": null,
+            "long_link": "https://www.very-looong-link-there.com",
+            "date_expire": null,
+            "disabled": false,
+            "date_created": "2019-08-24T14:15:22Z",
+            "last_changed": "2019-08-24T14:15:22Z",
+            "password": false,
+            "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-link",
+            "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+            "group": {
+                "id":5
+                "title": "My First Group",
+                "slug": "my-first-group",
+                "description": "Just description of very good first group",
+                "disabled": false,
+                "rotation": true
+                "password": false,
+                "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+                "date_expire": null
+            }
+        },
+        {
+            "slug": "my-second-link",
+            "title": null,
+            "long_link": "https://www.very-looong-link-there.com",
+            "date_expire": null,
+            "disabled": false,
+            "date_created": "2019-08-24T14:15:22Z",
+            "last_changed": "2019-08-24T14:15:22Z",
+            "password": false,
+            "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-second-link",
+            "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+            "group": {
+                "id":5
+                "title": "My First Group",
+                "slug": "my-first-group",
+                "description": "Just description of very good first group",
+                "disabled": false,
+                "rotation": true
+                "password": false,
+                "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+                "date_expire": null
+            }
+        }
+    ]
+}
 
-- **Get Detailed Link Information:** This endpoint provides comprehensive information about a specific short link. Users can view details such as the original URL, creation date, click-through statistics, and associated QR codes.
+</code></pre>
+                                                    <h3 class="mt-4">Other available links endpoints:</h3>
+                                                    <p>Additionally, you can also use a variety of other methods, which are described in more 
+                                                        detail in the <a href="#full-doc">full version of the documentation.</a></p>
+                                                    <ul>
+                                                        <li>Get Links List.</li> 
+                                                        <li class="mt-2">Get Detailed Link Statistics.</li>
+                                                        <li class="mt-2">Partially Update Link.</li> 
+                                                        <li class="mt-2">Delete Link.</li> 
+                                                        <li class="mt-2">Retrieve Detailed Link Information.</li> 
+                                                        <li class="mt-2">Create Link.</li> 
+                                                        <li class="mt-2">Multiple Create Links.</li> 
+                                                    </ul>
 
-- **Partially Update Link:** Users can modify certain attributes of a short link using this endpoint. Whether it's updating the link's title, tags, or metadata, this feature ensures link details remain accurate and relevant.
+                                                    <h2 class="mt-5">
+                                                        Groups endpoints
+                                                        <p class="lead" style="font-size: 20px; color:rgb(110, 110, 110)">A useful tool for link management, organization, and A/B testing.</p>
+                                                    </h2>
+                                                    <p>Here is an example of a request to create a group.</p>
+                                                    <h4>Request</h4>
+<pre><code class="language-bash">
+curl --request POST \
+    --url {{ request.scheme }}://{{ request.META.HTTP_HOST }}/api/v1/groups/ \
+    --header 'content-type: application/json' \
+    --header 'Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a' \
+    --data '{
+        "title":"My First Group",
+        "slug":"my-first-group",
+        "description":"Just description of very good first group",
+        "rotation":true,
+    }'
 
-- **Delete Link:** To remove a specific short link, users can utilize this endpoint. By providing the unique slug associated with the link, they can seamlessly delete links they no longer need.
+</code></pre>
+                                                    <h4 class="mt-4">Response</h4>
+<pre><code class="language-json">
+{
+    "id": 5,
+    "title": "My First Group",
+    "slug": "my-first-group",
+    "description": "Just description of very good first group",
+    "disabled": false,
+    "rotation": true,
+    "password": false,
+    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+    "date_expire": null,
+    "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX..."
+}
 
-- **Retrieve Detailed Link Information:** Similar to the QR-code endpoint, this functionality offers a detailed breakdown of a specific short link's attributes. It's particularly useful for gathering insights into link engagement and performance.
+</code></pre>
+                                                    <p><b>Fields description:</b></p>
+                                                    <ul>
+                                                        <li><b>id</b> - A unique identifier for your link in the system. You can provide it manually or leave the field empty, and the server will generate it automatically.</li>
+                                                        <li class="mt-2"><b>title</b> - The title of your group. When users visit the group's URL they will see this title, so be careful. You can not leave this field empty. Required.</li>
+                                                        <li class="mt-2"><b>slug</b> - A unique identifier for your group in the system. You can provide it manually or leave the field empty, and the server will generate it automatically.</li>
+                                                        <li class="mt-2"><b>description</b> - Any description of your group, for personal use. You can leave this field empty.</li>
+                                                        <li class="mt-2"><b>disabled</b> - Default is False. If True group not be able for users.</li>
+                                                        <li class="mt-2"><b>rotation</b> - Default is False. If True, by clicking on the url of this group, users will be redirected to one of the links attached to the group selected randomly.</li>
+                                                        <li class="mt-2"><b>password</b> - Default is None. If set this field users can not be able to access the attached links without entering password.</li>
+                                                        <li class="mt-2"><b>short_url</b> - Your short link of that group.</li>
+                                                        <li class="mt-2"><b>date_expire</b> - Date, after which group will not be able. If leave the field empty group will be able all time.</li>
+                                                        <li class="mt-2"><b>qr</b> - QRCode will be able in base64 string.</li>
+                                                    </ul>
+                                                    <h3 class="mt-4">Retrieve group</h3>
+                                                    <p>Make a test GET request to retrieve group. 
+                                                        Also, we can limit the size of the received attached links list using query parameters, but we won't do that since we don't have too many links.</p>
+                                                    <h4>Request</h4>
+<pre><code class="language-bash">
+curl --request GET \
+    --url {{ request.scheme }}://{{ request.META.HTTP_HOST }}/api/v1/groups/5 \
+    --header 'content-type: application/json' \
+    --header 'Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a'
 
-- **Create Link:** With this endpoint, users can generate a new short link by submitting the original URL. The API generates a unique slug and associates it with the provided URL, simplifying link management and sharing.
+</code></pre>
+                                                    <h4 class="mt-4">Response</h4>
+<pre><code class="language-json">
+{
+    "id": 5,
+    "title": "My First Group",
+    "slug": "my-first-group",
+    "description": "Just description of very good first group",
+    "disabled": false,
+    "rotation": true,
+    "date_expire": null,
+    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+    "password": false,
+    "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+    "links_total": 2,
+    "links_shown": 2,
+    "links": [
+        {
+            "slug": "my-first-link",
+            "title": null,
+            "long_link": "https://www.very-looong-link-there.com",
+            "date_expire": null,
+            "disabled": false,
+            "date_created": "2019-08-24T14:15:22Z",
+            "last_changed": "2019-08-24T14:15:22Z",
+            "password": false,
+            "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-link",
+            "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+        },
+        {
+            "slug": "my-second-link",
+            "title": null,
+            "long_link": "https://www.very-looong-link-there.com",
+            "date_expire": null,
+            "disabled": false,
+            "date_created": "2019-08-24T14:15:22Z",
+            "last_changed": "2019-08-24T14:15:22Z",
+            "password": false,
+            "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-second-link",
+            "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+        }
+    ]
+}
 
-- **Multiple Create Links:** When users require numerous short links, this endpoint allows them to create multiple links at once. By providing a list of original URLs, they can efficiently generate a collection of short links in a single request.
+</code></pre>
 
-**Groups Endpoints:**
-- **Get Groups List:** Users can retrieve a list of all groups they have created. This overview helps them categorize and manage their links based on different projects, themes, or campaigns.
+                                                    <h3 class="mt-4">Other available groups endpoints:</h3>
+                                                    <p>Additionally, you can also use a variety of other methods, which are described in more 
+                                                        detail in the <a href="#full-doc">full version of the documentation.</a></p>
+                                                    <ul>
+                                                        <li>Get Groups List.</li>
+                                                        <li class="mt-2">Get Detailed Group Statistics.</li>
+                                                        <li class="mt-2">Partially Update Group.</li>
+                                                        <li class="mt-2">Delete Group.</li>
+                                                        <li class="mt-2">Retrieve Detailed Group Information.</li>
+                                                        <li class="mt-2">Create Group.</li>
+                                                    </ul>
 
-- **Get Detailed Group Information:** This endpoint provides detailed insights into a specific group created by the user. Users can access information about the group's title, description, creation date, and the number of links associated with it.
 
-- **Partially Update Group:** If users need to modify certain details of a group, they can do so using this endpoint. Whether it's updating the group's title or description, this feature ensures accurate organization of links.
+                                                    <h2 class="mt-5">
+                                                        QRCode endpoints
+                                                        <p class="lead" style="font-size: 20px; color:rgb(110, 110, 110)">A tool for creating and storing qr-codes.</p>
+                                                    </h2>
+                                                    <p>Example of a request to create QRCode.</p>
+                                                    <h4>Request</h4>
+<pre><code class="language-bash">
+curl --request POST \
+    --url {{ request.scheme }}://{{ request.META.HTTP_HOST }}/api/v1/groups/ \
+    --header 'content-type: application/json' \
+    --header 'Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a' \
+    --data '{
+        "text": "Any text, link or something else for generate qr-code"
+    }'
 
-- **Delete Group:** Users can delete a specific group and its associated links using this endpoint. It's a handy way to manage link organization and declutter their account.
+</code></pre>
+                                        <h4 class="mt-4">Response</h4>
+<pre><code class="language-json">
+{
+    "slug": "126kifc009894O8ebdcgtr77c3020777",
+    "text": "Any text, link or something else for generate qr-code",
+    "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+    "date_created": "2019-08-24T14:15:22Z"
+}
 
-- **Retrieve Detailed Group Information:** Similar to the link and QR-code endpoints, this functionality provides detailed insights into a specific group's attributes. It's particularly useful for understanding the composition and performance of a group.
+</code></pre>
+                                                    <p><b>Fields description:</b></p>
+                                                    <ul>
+                                                        <li><b>slug</b> - A unique identifier for your link in the system. You can provide it manually or leave the field empty, and the server will generate it automatically.</li>
+                                                        <li class="mt-2"><b>text</b> - Any description of your group, for personal use. You can leave this field empty.</li>
+                                                        <li class="mt-2"><b>qr</b> - QRCode will be able in base64 string.</li>
+                                                        <li class="mt-2"><b>date_created</b> - Date, after which group will not be able. If leave the field empty group will be able all time.</li>
+                                                    </ul>
 
-- **Create Group:** This endpoint enables users to create a new group for organizing their links. They can assign a title and description to the group, enhancing their ability to categorize and manage their short links efficiently.
+                                                    <h3 class="mt-4">Other available QRCode endpoints:</h3>
+                                                    <p>Additionally, you can also use a variety of other methods, which are described in more 
+                                                        detail in the <a href="#full-doc">full version of the documentation.</a></p>
+                                                    <ul>
+                                                        <li>Get QR-Codes List.</li>
+                                                        <li class="mt-2">Retrieve QR-Code Information.</li>
+                                                        <li class="mt-2">Create QR-Code.</li>
+                                                        <li class="mt-2">Multiple Create QR-Codes.</li>
+                                                    </ul>
+                                                    <div class="alert alert-primary rounded mt-5 text-center" role="alert">
+                                                        <h3 class="">Get full API documentation</h3>
+                                                        <hr>
+                                                        <a href="{{ redoc }}" target="_blank" class="btn btn-primary mt-1 mx-3" style="font-size: 16px; font-weight: 700; min-width: 150px;">ReDoc</a>
+                                                        <a href="{{ swagger }}" target="_blank" class="btn btn-primary mt-1 mx-3" style="font-size: 16px; font-weight: 700; min-width: 150px;">Swagger</a>
+                                                    </div>
 
-In conclusion, the API service for short links offers a comprehensive suite of endpoints that empower users to efficiently manage, organize, and monitor their short links and QR codes. By providing functionalities to create, retrieve, update, and delete links and groups, this service simplifies the process of link management and enhances the user experience. Whether it's generating QR codes, creating short links, or organizing links into groups, the API service provides a versatile and user-friendly platform for all link-related needs.
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                            <!-- [ Main Content ] end -->
                                 </div>
                             </div>
-                            <!-- [ Main Content ] end -->
                         </div>
                     </div>
                 </div>
@@ -112,4 +412,8 @@ In conclusion, the API service for short links offers a comprehensive suite of e
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+
+<script src="{% static 'assets/js/pages/api-preview-prism.js' %}"></script>
+
+{% endblock javascripts %}
