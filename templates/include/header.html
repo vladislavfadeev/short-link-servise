@@ -18,8 +18,8 @@
     
     {% if not user.is_authenticated %}
     <div class="col-md-3 text-end">
-      <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Войти</a>
-      <a href="{% url 'registration' %}" class="btn btn-primary">Регистрация</a>
+      <a href="{% url 'login' %}" class="btn btn-outline-primary me-2 fw-bold">Войти</a>
+      <a href="{% url 'registration' %}" class="btn btn-primary fw-bold">Регистрация</a>
     </div>
     {% endif %}
 

@@ -21,16 +21,15 @@ class CustomLoginView(views.LoginView):
 
 
 class CreateUserView(View):
-    template_name = 'authuser/registration/register.html'
+    template_name = "authuser/registration/register.html"
 
     def get(self, request):
-
         if get_redirect_url() and self.request.user.is_authenticated:
             redirect_to = get_redirect_url()
             return redirect(redirect_to)
-        
+
         context = {
-            'form': CustomUserCreationForm(),
+            "form": CustomUserCreationForm(),
         }
         return render(request, self.template_name, context)
 
@@ -39,24 +38,19 @@ class CreateUserView(View):
 
         if form.is_valid():
             form.save()
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(email=email,
-                                password=password)
+            email = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password1")
+            user = authenticate(email=email, password=password)
             send_email_verify(request, user)
-            return redirect('email_confirm')
+            return redirect("email_confirm")
             # login(request, user)
             # return redirect('home')
-        
-        context = {
-            'form': form
-        }
+
+        context = {"form": form}
         return render(request, self.template_name, context)
-    
 
 
 class EmailVerifyView(View):
-    
     def get(self, request, uidb64, token):
         user = self.get_user(uidb64)
 
@@ -64,10 +58,9 @@ class EmailVerifyView(View):
             user.email_verify = True
             user.save()
             login(request, user)
-            return redirect('home')
+            return redirect("home")
         else:
-            return redirect('email_verify_invalid')
-
+            return redirect("email_verify_invalid")
 
     @staticmethod
     def get_user(uidb64):
@@ -83,5 +76,3 @@ class EmailVerifyView(View):
         ):
             user = None
         return user
-
-

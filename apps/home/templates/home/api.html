@@ -1,11 +1,225 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block stylesheets %}
+<!-- prism css -->
+<link rel="stylesheet" href="{% static 'assets/css/prism.css' %}">
+<style>
+    .lead {
+        font-weight: 300;
+        font-size: 18px;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block inner-header %}
+<div class="px-4 my-5 text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <h1 class="display-4 fw-bold"> &lt/&gt REST API</h1>
+            </div>
+            <h1 class="display-7 fw-bold">Simple. Powerful. Free.</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
 {% block content %}
 
-<div class="content">
+<div class="container mt-5 mb-4">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <pre><code class="language-json">
+{
+    "slug": "my-first-link",
+    "title": null,
+    "long_link": "https://www.very-looong-link-there.com",
+    "date_expire": null,
+    "disabled": false,
+    "date_created": "2019-08-24T14:15:22Z",
+    "last_changed": "2019-08-24T14:15:22Z",
+    "password": false,
+    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-link",
+    "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+    "group": {
+        "id":5
+        "title": "My First Group",
+        "slug": "my-first-group",
+        "description": "Just description of very good first group",
+        "disabled": false,
+        "rotation": true
+        "password": false,
+        "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+        "date_expire": null
+    }
+}
+            </code></pre> 
+        </div>
+        <div class="col d-flex align-items-start p-3 pe-lg-5 pt-lg-3">
+            <div>
+                <h2 class="display-5 fw-bold lh-1 text-body-emphasis">Любые действия над вашими ссылками</h2>
+                <p class="lead">
+                    Создавайте, обновляйте, просматривайте и удаляйте. Так же, доступно массовое добавление ваших ссылок.
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'api-key' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Подробнее</a>
+                    {% else %}
+                        <a href="{% url 'registration' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Зарегистрироваться</a>
+                        <a href="{% url 'login' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Войти</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+<div class="container my-4">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="col d-flex align-items-start">
+            <div class="col d-flex align-items-start p-3 p-lg-5 pt-lg-3">
+                <div>
+                    <h2 class="display-5 fw-bold lh-1 text-body-emphasis">Используйте группы</h2>
+                    <p class="lead">
+                        Объединяйте ссылки в группы, пользуйтесь настройками приватности, 
+                        посматривайте статистику и проводите A/B тестирования. 
+                        Вам доступен весь функционал личного кабинета.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'api-key' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Подробнее</a>
+                        {% else %}
+                            <a href="{% url 'registration' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Зарегистрироваться</a>
+                            <a href="{% url 'login' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Войти</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 pe-lg-5 pb-lg-5">
+            <pre><code class="language-json">
+{
+    "id": 5,
+    "title": "My First Group",
+    "slug": "my-first-group",
+    "description": "Just description of very good first group",
+    "disabled": false,
+    "rotation": true,
+    "date_expire": null,
+    "short_url": "http://127.0.0.1:8000/my-first-group",
+    "password": false,
+    "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+    "links_total": 2,
+    "links_shown": 2,
+    "links": [
+        {
+            "slug": "my-first-link",
+            "title": null,
+            "long_link": "https://www.very-looong-link-there.com",
+            "date_expire": null,
+            "disabled": false,
+            "date_created": "2019-08-24T14:15:22Z",
+            "last_changed": "2019-08-24T14:15:22Z",
+            "password": false,
+            "short_url": "http://127.0.0.1:8000/my-first-link",
+            "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+        },
+        {
+            "slug": "my-second-link",
+            "title": null,
+            "long_link": "https://www.very-looong-link-there.com",
+            "date_expire": null,
+            "disabled": false,
+            "date_created": "2019-08-24T14:15:22Z",
+            "last_changed": "2019-08-24T14:15:22Z",
+            "password": false,
+            "short_url": "http://127.0.0.1:8000/my-second-link",
+            "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+        }
+    ]
+}
+            </code></pre> 
+        </div>
+      </div>
+    </div>
+  </div>
 
+<div class="container my-4">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <pre><code class="language-json">
+# request
+curl --request POST \
+    --url {{ request.scheme }}://{{ request.META.HTTP_HOST }}/api/v1/groups/ \
+    --header 'content-type: application/json' \
+    --header 'Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a' \
+    --data '{
+        "text": "Any text, link or something else for generate qr-code"
+    }'
+
+# response
+{
+    "slug": "126kifc009894O8ebdcgtr77c3020777",
+    "text": "Any text, link or something else for generate qr-code",
+    "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
+    "date_created": "2019-08-24T14:15:22Z"
+}
+            </code></pre> 
+        </div>
+        <div class="col d-flex align-items-start">
+          <div class="col d-flex align-items-start p-3 pe-lg-5 pt-lg-3">
+            <div>
+                <h2 class="display-5 fw-bold lh-1 text-body-emphasis">QR коды как дополнительный инструмент маркетинга</h2>
+                <p class="lead">
+                    Кодируйте любую текствоую информацию в QR коды. Доступно массовое добавление.
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'api-key' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Подробнее</a>
+                    {% else %}
+                        <a href="{% url 'registration' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Зарегистрироваться</a>
+                        <a href="{% url 'login' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Войти</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container mt-4 mb-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+      <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Используйте все возможности нашего API</h1>
+        <p class="lead">
+            Мы ценим разработчиков, поэтому предоставляем открытое и бесплатное API, 
+            что позволяет вам интегрировать наш сервис в ваши проекты и приложения. 
+            Это открывает множество возможностей для разработчиков и делает Clicker 
+            еще более удобным и функциональным инструментом для всех пользователей. 
+            Присоединяйтесь к нам и упростите работу с ссылками!
+        </p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+            {% if user.is_authenticated %}
+                <a href="{% url 'api-key' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Получить документацию</a>
+            {% else %}
+                <a href="{% url 'registration' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Зарегистрироваться</a>
+                <a href="{% url 'login' %}" type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Войти</a>
+            {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-4 pb-1 mb-5 offset-lg-1 p-0 overflow-hidden">
+          <img class="rounded-lg-3" src="{% static 'home/img/p.png' %}" alt="" width="720">
+      </div>
+    </div>
 </div>
+<div class="container py-4"></div>  <!-- divider -->
 
 {% endblock %}
+
+{% block javascripts %}
+<script src="{% static 'js/pages/home-api/prism.js' %}"></script>
+{% endblock javascripts %}

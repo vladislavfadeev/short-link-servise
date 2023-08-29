@@ -5,7 +5,6 @@ from django.http import FileResponse
 from django.views.generic.base import TemplateView
 from django.views import View
 from django.contrib.auth import get_user_model
-import qrcode
 from apps.home.forms import HomeCreateLinkForm, QRGeneratorForm
 from django.contrib.auth.models import AbstractUser
 from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel
