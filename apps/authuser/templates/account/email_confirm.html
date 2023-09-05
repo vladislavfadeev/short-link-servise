@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load account %}
+
+{% block content %}
+
+<div class="px-4 pt-5 my-5 text-center custom-margin">
+    <h1 class="display-4 fw-bold">Подтверждение email</h1>
+    <div class="col-lg-6 mx-auto">
+        <br>
+
+  {% if confirmation %}
+
+    {% if can_confirm %}
+      <p class="lead mb-4">Чтобы завершить процесс подтверждения <a href="mailto:{{ confirmation.email_address.email }}">{{ confirmation.email_address.email }}</a> нажмите кнопку ниже.</p>
+
+      <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+      {% csrf_token %}
+          <button class="btn btn-primary" type="submit">Подтвердить</button>
+      </form>
+    {% else %}
+      <p class="lead mb-4">Невозможно подтвердить {{ confirmation.email_address.email }}, потому что данный адрес уже привязан к зарегистрированному аккаунту.</p>
+    {% endif %}
+
+  {% else %}
+      <p class="lead mb-4">Ваша ссылка не корректна, попробуйте <a href="{% url 'account_login' %}">войти</a> снова и получите новое письмо для подтверждения почты.</p>
+      <p class="lead mb-4">Если вы не получили письмо, проверьте папку со спамом.</p>
+  {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

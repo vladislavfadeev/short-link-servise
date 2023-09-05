@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import allauth
 
 
 
@@ -24,7 +25,4 @@ urlpatterns = [
     path('', include('apps.home.urls')),
     path('', include('apps.authuser.urls')),
     path('', include('apps.cutter.urls', namespace='cutter_url')),
-
-    
-    
 ]

@@ -11,7 +11,7 @@ class NotAuthDocsRedirectMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
 
     async def dispatch(self, request: Request, call_next: Callable):
-        if request.url.path in ("/api/v1/redoc",):
+        if request.url.path in ("/api/v1/redoc", "/api/v1/docs"):
             if isinstance(request.user, UnauthenticatedUser):
                 return RedirectResponse(
                     f"/login?next={request.url.path}", status_code=301

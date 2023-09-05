@@ -60,9 +60,6 @@
                                                                     <button class="icon-button h6 px-1" data-toggle="del-modal" data-url="{% url 'qrcode_delete' slug=qrcode.slug %}" data-title="Удалить QR" data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-trash" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
-                                                                    <button class="icon-button h6 px-1" data-toggle="share-modal" data-title="Поделиться" data-bs-toggle="tooltip">
-                                                                        <i class="icon feather icon-external-link" style="color: rgb(51, 39, 37);"></i>
-                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -78,7 +75,7 @@
                                             {% endfor %}
                                             {% include 'dashboard/includes/pagination.html' %}
                                         {% else %}
-                                            <h4 class="fs-4 text-center py-5 my-5">Еще не создано ни одной ссылки</h4>
+                                            <h4 class="fs-4 text-center py-5 my-5">Еще не создано ни одного QR</h4>
                                         {% endif %}
                                     </div> 
                                 </div>

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="container my-3">
+    <div class="row">
+      <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">    <!-- mt-5 -->
+        <div class="card radius-10 border m-2">
+          <div class="card-body p-4">
+            <div class="text-center">
+              <h4>Личный кабинет</h4>
+              <p>Войти через социальные сети</p>
+            </div>
+            <div class="form-body row g-3">
+              <div class="col-12 col-lg-12">
+                <div class="d-grid gap-2">
+                  <form class="col-12" method="post">
+                    {% csrf_token %}
+                    <button type="submit" formaction="{% provider_login_url 'google' %}" class="btn border border-2 border-dark w-100">
+                      <img src="assets/images/icons/google.png" width="20" alt="">
+                        <span class="ms-3 fw-500">Войти через Google</span>
+                    </button>
+                  </form>
+                  <form class="col-12" method="post">
+                    {% csrf_token %}
+                    <button type="submit" formaction="{% provider_login_url 'github' %}" class="btn border border-2 border-dark w-100">
+                      <img src="assets/images/icons/apple-black-logo.png" width="20" alt="">
+                      <span class="ms-3 fw-500">Войти через GitHub</span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            <form method="post">
+              {% csrf_token %}
+              {% if form.errors %}
+              <div class="col-12 my-2">
+                {{ form.non_field_errors }}
+              </div>
+              {% endif %}
+              <div class="col-12 my-2">
+                <label for="id_username" class="form-label">Ваш e-mail</label>
+                {{ form.login.errors }}
+                <input type="text" name="login" maxlength="254" class="form-control" required id="id_username" placeholder="abc@example.com">
+              </div>
+              <div class="col-12 my-2">
+                {{ form.password.errors }}
+                <label for="id_password" class="form-label">Пароль</label>
+                <input type="password" name="password" autocomplete="current-password" class="form-control" required id="id_password" placeholder="Your password">
+              </div>
+              <div class="col-12 my-2">
+                <a href="{% url 'account_reset_password' %}">Забыли пароль?</a>
+              </div>
+              <div class="col-12 col-lg-12 my-2">
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-dark">Вход</button>
+                </div>
+              </div>
+              <div class="col-12 col-lg-12 text-center">
+                <p class="mb-0">Нет аккаунта? <a href="{% url 'account_signup' %}">Регистрация</a></p>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

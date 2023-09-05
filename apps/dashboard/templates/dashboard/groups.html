@@ -78,7 +78,7 @@
                                                                     <button class="icon-button h6 px-1" data-toggle="del-modal" data-url="{% url 'groups_delete' slug=group.slug %}" data-title="Удалить группу"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-trash" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
-                                                                    <button class="icon-button h6 px-1" data-toggle="share-modal" data-title="Поделиться"  data-bs-toggle="tooltip">
+                                                                    <button class="icon-button h6 px-1" data-toggle="share-modal" data-share="{{ group.short_url }}" data-title="Поделиться"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-external-link" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
                                                                     {% if group.disabled or group.date_expire is not None and group.date_expire|date:"Y.m.d" <= date_now  %}

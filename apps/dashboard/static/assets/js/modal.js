@@ -129,7 +129,28 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('[data-toggle="share-modal"]')) {
       const btn = e.target.closest('[data-toggle="share-modal"]');
       modal.setTitle(btn.dataset.title);
-      modal.setBody();
+      modal.setBody(`
+        <div class="col text-center">
+          <a href="https://vk.com/share.php?url=${btn.dataset.share}" target="_blank" rel="nofollow noopener" title="Вконтакте">
+            <img src="/static/assets/images/vk-logo.png" style="height: 3em;">
+          </a>          
+          <a href="https://connect.ok.ru/offer?url=${btn.dataset.share}" target="_blank" rel="nofollow noopener" title="Одноклассники">
+            <img src="/static/assets/images/ok-logo.png" style="height: 3em;">
+          </a>
+          <a href="https://connect.mail.ru/share?url=${btn.dataset.share}" target="_blank" rel="nofollow noopener" title="Мой Мир">
+            <img src="/static/assets/images/moimir-logo.png" style="height: 3em;">
+          </a>
+          <a href="https://t.me/share/url?url=${btn.dataset.share}" target="_blank" rel="nofollow noopener" title="Telegram">
+            <img src="/static/assets/images/telegram-logo.png" style="height: 3em;">
+          </a>
+          <a href="https://api.whatsapp.com/send?text=${btn.dataset.share}" target="_blank" rel="nofollow noopener" title="WhatsApp">
+            <img src="/static/assets/images/whatsapp-logo.png" style="height: 3em;">
+          </a>
+          <a href="https://twitter.com/intent/tweet?url=${btn.dataset.share}" target="_blank" rel="nofollow noopener" title="Twitter">
+            <img src="/static/assets/images/twitter-logo.png" style="height: 3em;">
+          </a>
+        </div
+      `);
       modal.show();
   }
   if (e.target.closest('[data-toggle="modal-close"]')) {
@@ -137,3 +158,7 @@ document.addEventListener('click', (e) => {
   }
 
 });
+
+// <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="none" class="u01b__icon-home"> 
+//           <path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"></path> 
+//          </svg>

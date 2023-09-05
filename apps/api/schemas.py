@@ -261,3 +261,10 @@ code_404 = {
         "content": {"application/json": {"example": {"detail": "Does not exist."}}},
     }
 }
+
+code_413 = {
+    413: {
+        "description": "Payload too large",
+        "content": {"application/json": {"example": {"detail": "Request entity too large."}}},
+    }
+}

@@ -28,8 +28,46 @@
 
 {% block content %}
 
-<div class="container mt-5 mb-4">
-    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+<div class="container py-6 mt-4">
+    <div class="row">
+    <div class="col-lg-6 mx-auto text-center pb-4">
+        <h2>Не тратьте время на разработку. Просто подключитесь.</h2>
+        <p class="lead">Мы постарались сделать полезный в вашей работе инструмент. <br>Простой, надежный и быстрый.</p>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-lg-4 col-md-6">
+        <div class="p-3 text-center">
+        <div class="">
+            <img src="{% static '/img/icon-friendly.png' %}" class="" style="height: 5em;">
+        </div>
+        <h5 class="mt-4">Легко интегрировать</h5>
+        <p>У нас доступная документация. Требуется что-то нестандартное? Просто напишите нам.</p>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="p-3 text-center">
+        <div class="">
+            <img src="{% static '/img/icon-shield.png' %}" class="" style="height: 5em;">
+        </div>
+        <h5 class="mt-4">Доступность 24/7</h5>
+        <p>Мы постоянно следим за доступностью нашего сервиса и работаем над его качеством.</p>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 mx-md-auto">
+        <div class="p-3 text-center">
+        <div class="">
+            <img src="{% static '/img/icon-speed.png' %}" class="" style="height: 5em;">
+        </div>
+        <h5 class="mt-4">Низкие лимиты</h5>
+        <p>Максимум 2 запроса в секунду. Более никаких ограничений, в том числе в суточных объемах.</p>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="container mt-3 mb-4">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center">  <!-- rounded-3 border shadow-lg-->
         <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
             <pre><code class="language-json">
 {
@@ -78,7 +116,7 @@
   </div>
 
 <div class="container my-4">
-    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center">  <!-- rounded-3 border shadow-lg-->
         <div class="col d-flex align-items-start">
             <div class="col d-flex align-items-start p-3 p-lg-5 pt-lg-3">
                 <div>
@@ -148,7 +186,7 @@
   </div>
 
 <div class="container my-4">
-    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center">  <!-- rounded-3 border shadow-lg-->
         <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
             <pre><code class="language-json">
 # request
@@ -174,7 +212,7 @@ curl --request POST \
             <div>
                 <h2 class="display-5 fw-bold lh-1 text-body-emphasis">QR коды как дополнительный инструмент маркетинга</h2>
                 <p class="lead">
-                    Кодируйте любую текствоую информацию в QR коды. Доступно массовое добавление.
+                    Кодируйте любую текстовую информацию в QR коды. Доступно массовое добавление.
                 </p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
                     {% if user.is_authenticated %}

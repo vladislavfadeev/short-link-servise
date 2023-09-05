@@ -1,4 +1,5 @@
 {% load static %}
+{% load social_avatar %}
 
 <div class="container">
   <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
@@ -12,14 +13,19 @@
       <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Главная</a></li>
       <li><a href="{% url 'home' %}#features" class="nav-link px-2 link-dark">Возможности</a></li>
       <li><a href="{% url 'qr_generator' %}" class="nav-link px-2 link-dark">Создать QR</a></li>
-      <li><a href="{% url 'bot' %}" class="nav-link px-2 link-dark">TG-бот</a></li>
       <li><a href="{% url 'api' %}" class="nav-link px-2 link-dark">API</a></li>
+      <li><a href="#" class="nav-link px-2 link-dark position-relative nonactive-item">TG-бот
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info text-dark">
+              скоро
+            </span>
+          </a>
+      </li>
     </ul>
     
     {% if not user.is_authenticated %}
     <div class="col-md-3 text-end">
-      <a href="{% url 'login' %}" class="btn btn-outline-primary me-2 fw-bold">Войти</a>
-      <a href="{% url 'registration' %}" class="btn btn-primary fw-bold">Регистрация</a>
+      <a href="{% url 'account_login' %}" class="btn btn-outline-primary me-2 fw-bold">Войти</a>
+      <a href="{% url 'account_signup' %}" class="btn btn-primary fw-bold">Регистрация</a>
     </div>
     {% endif %}
 
@@ -28,14 +34,21 @@
         <div class="d-block dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           <a href="" class="text-decoration-none link-dark">
             {{ user.email }}
-            <img src="https://github.com/mdo.png" alt="mdo" class="rounded-circle" width="32" height="32">
+            {% if user.socialaccount_set.all %}
+              <img src="{% user_avatar user %}" alt="user_avatar" class="rounded-circle" width="32" height="32">
+            {% else %}
+              <img src="{% static 'img/icon-profile.png' %}" alt="user_avatar" class="rounded-circle" width="32" height="32">
+            {% endif %}
           </a>
         </div>
       <ul class="dropdown-menu text-small dropdown-menu-end">
         <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
         <li><a class="dropdown-item" href="{% url 'api-key' %}">API</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+        <form class="" method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          <li><button class="dropdown-item" type="submit">Выйти</button></li>
+        </form>
       </ul>
     </div>
     {% endif %}

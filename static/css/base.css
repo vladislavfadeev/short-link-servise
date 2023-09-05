@@ -68,6 +68,11 @@ body {
     cursor: pointer;
 }
 
+.nonactive-item {
+    pointer-events: none;
+    cursor: default;
+  }
+
 #notification {
     display: none;
     position: fixed;

@@ -43,7 +43,7 @@
                                                 <div class="row mb-3">
                                                     <div class="col-12 col-xl-6">
                                                         <label class="" style="color: rgb(17, 17, 17); font-size: 16px;">Ваш ключ:</label>
-                                                        <input class="form-control" type="text" value="Token {{ user.auth_token }}" disabled>
+                                                        <input class="form-control" type="text" value="{% if user.auth_token %}Token {{ user.auth_token }}{% else %} {% endif %}" disabled>
                                                     </div>
                                                 </div>
                                                     <button type="submit" class="btn btn-primary" style="font-size: 16px; font-weight: 700;" {% if user.auth_token %} disabled {% endif %}>
@@ -224,7 +224,8 @@ curl --request GET \
                                                         <li class="mt-2">Delete Link.</li> 
                                                         <li class="mt-2">Retrieve Detailed Link Information.</li> 
                                                         <li class="mt-2">Create Link.</li> 
-                                                        <li class="mt-2">Multiple Create Links.</li> 
+                                                        <li class="mt-2">Multiple Create Links. For free use, requests quantity cannot exceed 5 per minute and 50 per day. 
+                                                            If you need more <a href="mailto:dev@clkr.su">email</a> us.</li> 
                                                     </ul>
 
                                                     <h2 class="mt-5">
@@ -385,7 +386,8 @@ curl --request POST \
                                                         <li>Get QR-Codes List.</li>
                                                         <li class="mt-2">Retrieve QR-Code Information.</li>
                                                         <li class="mt-2">Create QR-Code.</li>
-                                                        <li class="mt-2">Multiple Create QR-Codes.</li>
+                                                        <li class="mt-2">Multiple Create QR-Codes. For free use, requests quantity cannot exceed 5 per minute and 50 per day. 
+                                                            If you need more <a href="mailto:dev@clkr.su">email</a> us.</li>
                                                     </ul>
                                                     <div class="alert alert-primary rounded mt-5 text-center" role="alert">
                                                         <h3 class="">Get full API documentation</h3>

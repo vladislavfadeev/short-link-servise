@@ -124,6 +124,11 @@ strong {
   color: #111;
 }
 
+.nonactive-item {
+  pointer-events: none;
+  cursor: default;
+}
+
 .long-link, .long-link-title {
   white-space: nowrap;
   overflow: hidden;

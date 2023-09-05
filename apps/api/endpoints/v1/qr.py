@@ -1,7 +1,7 @@
 from typing import Annotated
 from pydantic import UUID4
 
-from fastapi import APIRouter, Request, Response, HTTPException, Query
+from fastapi import APIRouter, Request, Response, HTTPException, status, Query
 from asgiref.sync import sync_to_async
 
 from apps.api import schemas
@@ -72,16 +72,22 @@ async def qr_create(item: schemas.QRCodeCreate, request: Request):
 @router.post(
     "/multiple",
     response_model=list[schemas.QRCodeRetrieve],
-    responses={**schemas.code_401},
+    responses={**schemas.code_401, **schemas.code_413},
 )
 async def qr_multiple_create(items: list[schemas.QRCodeCreate], request: Request):
     """
     # Multiple create a new qr-codes.
 
+    ## Items quantity must be less or equal 70.
+    ## For free use, requests quantity cannot exceed 5 per minute and 50 per day. If you need more email us.
+    
     ## Exceptions:
     - `401` : If the user is not authorized.
+    - `413` : If you send too much items.
     - `422` : If you have validation error.
     """
+    if len(items) > 70:
+        return Response(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
     models = [QRCodeModel(user=request.user, **item.dict()) for item in items]
     obj = await QRCodeModel.objects.abulk_create(models)
     return obj

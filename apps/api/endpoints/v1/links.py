@@ -186,14 +186,23 @@ async def create_item(item: schemas.CreateLinkModel, request: Request):
     "/multiple",
     status_code=201,
     response_model=schemas.MultipleResponseModel,
-    responses={**schemas.code_401},
+    responses={**schemas.code_401, **schemas.code_413},
 )
 async def multiple_create_item(
     items: list[schemas.CreateLinkModel], request: Request, response: Response
 ):
     """
     # Multiple create links.
+    
+    ## Items quantity must be less or equal 70.
+    ## For free use, requests quantity cannot exceed 5 per minute and 50 per day. If you need more email us.
+    
+    ## Exceptions:
+    - `413` : If you send too much items.
+    - `422` : If you have validation error.
     """
+    if len(items) > 70:
+        return Response(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
     user = request.user
     fail_items = []
     success_items = []
