@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "apps.home",
     "apps.dashboard",
     "apps.api",
+    "apps.utils",
     
     "allauth",
     "allauth.account",
@@ -82,9 +83,14 @@ AUTH_USER_MODEL = "authuser.User"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
-
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+EMAIL_USE_SSL = env('EMAIL_USE_SSL')
 
 
 AUTHENTICATION_BACKENDS = [
@@ -170,6 +176,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # AllAuth app settings
 
+ACCOUNT_ADAPTER = 'apps.authuser.adapter.MyAccountAdapter'
+
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -200,6 +208,16 @@ SOCIALACCOUNT_PROVIDERS = {
         "VERIFIED_EMAIL": True
     },
 }
+
+# Celery configuration
+
+CELERY_BROKER_URL = 'redis://localhost'
+CELERY_RESULT_BACKEND = 'redis://localhost'
+CELERY_TASK_SERIALIZER = 'jsonpickle'
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "jsonpickle"
+CELERY_RESULT_SERIALIZER = "jsonpickle"
+
 
 # Custom constants there
 
