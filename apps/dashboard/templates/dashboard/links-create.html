@@ -1,40 +1,36 @@
 {% extends "dashboard/layouts/base.html" %}
 
-{% block title %} Page Blank {% endblock %} 
+{% block title %} 
+{% if 'edit' in segment %} Редактирование ссылки {% else %} Создать новую ссылку {% endif %}
+{% endblock %} 
 
-<!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block breadcrumb %}
     {% load breadcrumb %}
-<!-- [ breadcrumb ] start -->
+
         <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
             <ol class="breadcrumb mx-3 my-2">
-                {% breadcrumb_home 'dashboard' %}
-                {% breadcrumb_item 'links' 'Мои ссылки' 1 %}
+                {% breadcrumb_home url='dashboard' %}
+                {% breadcrumb_item url='links' title='Мои ссылки' position=1 %}
                 {% if 'edit' in segment %}
-                    {% breadcrumb_active 2 url=object.get_absolute_url title=object.title prefix='Редактирование ссылки: ' %}
+                    {% breadcrumb_active url=object.get_absolute_url title=object.title prefix='Редактирование ссылки: ' position=2 %}
                 {% else %}
-                    {% breadcrumb_active 2 prefix='Создать ссылку' %}
+                    {% breadcrumb_active prefix='Создать ссылку' position=2 %}
                 {% endif %}
             </ol>
         </nav>
 
-<!-- [ breadcrumb ] end -->
 {% endblock breadcrumb %}
 
 {% block content %}
 
-    <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
-                    <!-- [ breadcrumb ] start -->
-                    <!-- [ breadcrumb ] end -->
                     <div class="main-body">
                         <div class="page-wrapper">
-                            <!-- [ Main Content ] start -->
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="card">

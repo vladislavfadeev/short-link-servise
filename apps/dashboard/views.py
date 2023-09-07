@@ -3,10 +3,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    View,
+)
 
 from apps.db_model.statistics import Statistics
 from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel
@@ -128,6 +134,17 @@ class GroupsDetailView(BaseDashboard, DetailView):
         self.object = self.get_object()
         activity = Statistics.group_info(request.user, self.object.id)
         context = self.get_context_data(object=self.object, activity=activity)
+        return self.render_to_response(context)
+
+
+class GroupsLinkEntriesView(BaseDashboard, DetailView):
+    template_name = "dashboard/groups-links-entries.html"
+    model = GroupLinkModel
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        links = LinkModel.objects.filter(user=request.user, group=self.object)
+        context = self.get_context_data(object=self.object, links=links)
         return self.render_to_response(context)
 
 

@@ -1,8 +1,9 @@
 {% extends "dashboard/layouts/base.html" %}
 
-{% block title %} Page Blank {% endblock %} 
+{% block title %}
+{% if 'edit' in segment %} Редактирование группы {% else %} Создать новую группу {% endif %}
+{% endblock %} 
 
-<!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block breadcrumb %}
@@ -10,12 +11,12 @@
 <!-- [ breadcrumb ] start -->
         <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
             <ol class="breadcrumb mx-3 my-2">
-                {% breadcrumb_home 'dashboard' %}
-                {% breadcrumb_item 'groups' 'Мои группы' 1 %}
+                {% breadcrumb_home url='dashboard' %}
+                {% breadcrumb_item url='groups' title='Мои группы' position=1 %}
                 {% if 'edit' in segment %}
-                    {% breadcrumb_active 2 url=object.get_absolute_url title=object.title prefix='Редактирование группы: ' %}
+                    {% breadcrumb_active url=object.get_absolute_url title=object.title prefix='Редактирование группы: ' position=2 %}
                 {% else %}
-                    {% breadcrumb_active 2 prefix='Создать группу' %}
+                    {% breadcrumb_active prefix='Создать группу' position=2 %}
                 {% endif %}
             </ol>
         </nav>

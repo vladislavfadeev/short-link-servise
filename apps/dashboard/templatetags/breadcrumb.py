@@ -10,15 +10,19 @@ def breadcrumb_schema():
 
 
 @register.inclusion_tag("breadcrumb/home.tpl")
-def breadcrumb_home(url, title=""):
+def breadcrumb_home(url=None, title=None):
+    title = "" if not title else title
     return {"url": reverse(url), "title": title}
 
 
 @register.inclusion_tag("breadcrumb/item.tpl")
-def breadcrumb_item(url, title, position):
-    return {"url": reverse(url), "title": title, "position": position}
+def breadcrumb_item(url=None, title=None, position=None, **kwargs):
+    title = "" if not title else title
+    
+    return {"url": reverse(url, kwargs=kwargs), "title": title, "position": position}
 
 
 @register.inclusion_tag("breadcrumb/active.tpl")
-def breadcrumb_active(position, url='', title='', prefix=''):
-    return {"url": url, 'prefix': prefix, "title": title, "position": position}
+def breadcrumb_active(url=None, title=None, prefix=None, position=None):
+    title = "" if not title else title
+    return {"url": url, "prefix": prefix, "title": title, "position": position}

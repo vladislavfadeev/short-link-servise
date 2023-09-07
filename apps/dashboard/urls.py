@@ -1,8 +1,6 @@
 from django.urls import path
 import apps.dashboard.views as views
 
-# app_name = 'dashboard'
-
 
 urlpatterns = [
     path("index", views.DashboardView.as_view(), name="dashboard"),
@@ -17,6 +15,11 @@ urlpatterns = [
     path("groups/", views.GroupsListView.as_view(), name="groups"),
     path("groups/create", views.GroupsCreateView.as_view(), name="groups_create"),
     path("groups/<str:slug>/", views.GroupsDetailView.as_view(), name="groups_detail"),
+    path(
+        "groups/<str:slug>/links-entries",
+        views.GroupsLinkEntriesView.as_view(),
+        name="groups_links_entries",
+    ),
     path("groups/<str:slug>/edit", views.GroupsEditView.as_view(), name="groups_edit"),
     path(
         "groups/<str:slug>/delete",

@@ -1,9 +1,8 @@
 {% extends "dashboard/layouts/base.html" %}
 {% load dashboard_tags %}
 
-{% block title %} Page Blank {% endblock %} 
+{% block title %} Мои группы {% endblock %} 
 
-<!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block breadcrumb %}
@@ -11,11 +10,10 @@
 <!-- [ breadcrumb ] start -->
         <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
             <ol class="breadcrumb mx-3 my-2">
-                {% breadcrumb_home 'dashboard' %}
-                {% breadcrumb_active 1 url='groups' prefix='Мои группы'%}
+                {% breadcrumb_home url='dashboard' %}
+                {% breadcrumb_active url='groups' prefix='Мои группы' position=1 %}
             </ol>
         </nav>
-
 <!-- [ breadcrumb ] end -->
 {% endblock breadcrumb %}
 
@@ -72,13 +70,16 @@
                                                                     <a href="{% url 'groups_detail' slug=group.slug %}" class="icon-button h6 px-1" title="Статистика"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-bar-chart-2" style="color: rgb(102, 193, 253);"></i>
                                                                     </a>
+                                                                    <a href="{% url 'groups_links_entries' slug=group.slug %}" class="icon-button h6 px-1" title="Показать привязанные ссылки"  data-bs-toggle="tooltip">
+                                                                        <i class="icon feather icon-list" style="color: rgb(51, 39, 37);"></i>
+                                                                    </a>
                                                                     <button class="icon-button h6 px-1" data-toggle="img-modal" data-img="{%url 'download_qr' model='group' slug=group.slug %}" data-title="{{group.title}}"  title="Скачать QR"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-maximize" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
-                                                                    <button class="icon-button h6 px-1" data-toggle="del-modal" data-url="{% url 'groups_delete' slug=group.slug %}" data-title="Удалить группу"  data-bs-toggle="tooltip">
+                                                                    <button class="icon-button h6 px-1" data-toggle="del-modal" data-url="{% url 'groups_delete' slug=group.slug %}" title="Удалить группу" data-title="Удалить группу"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-trash" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
-                                                                    <button class="icon-button h6 px-1" data-toggle="share-modal" data-share="{{ group.short_url }}" data-title="Поделиться"  data-bs-toggle="tooltip">
+                                                                    <button class="icon-button h6 px-1" data-toggle="share-modal" data-share="{{ group.short_url }}" title="Поделиться" data-title="Поделиться"  data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-external-link" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
                                                                     {% if group.disabled or group.date_expire is not None and group.date_expire|date:"Y.m.d" <= date_now  %}
@@ -120,7 +121,7 @@
                                                                     {% endif %}
                                                                 {% else %}
                                                                     <div class="col-auto" style="color: rgb(68, 66, 66)">
-                                                                        Истекает: Дата не указана
+                                                                        Истекает: нет данных
                                                                 {%endif %}
                                                                 </div>
                                                             </div>

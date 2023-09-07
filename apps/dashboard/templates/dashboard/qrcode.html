@@ -1,20 +1,17 @@
 {% extends "dashboard/layouts/base.html" %}
 
-{% block title %} Page Blank {% endblock %} 
+{% block title %} Мои QR{% endblock %} 
 
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block breadcrumb %}
     {% load breadcrumb %}
-<!-- [ breadcrumb ] start -->
         <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
             <ol class="breadcrumb mx-3 my-2">
-                {% breadcrumb_home 'dashboard' %}
-                {% breadcrumb_active 1 url='qrcode' prefix='Мои QR' %}
+                {% breadcrumb_home url='dashboard' %}
+                {% breadcrumb_active url='qrcode' prefix='Мои QR' position=1 %}
             </ol>
         </nav>
-
-<!-- [ breadcrumb ] end -->
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -57,7 +54,7 @@
                                                                     <a href="{% url 'qrcode_edit' slug=qrcode.slug %}" class="icon-button h6 px-1" title="Редактировать содержание" data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-edit" style="color: rgb(51, 39, 37);"></i>
                                                                     </a>
-                                                                    <button class="icon-button h6 px-1" data-toggle="del-modal" data-url="{% url 'qrcode_delete' slug=qrcode.slug %}" data-title="Удалить QR" data-bs-toggle="tooltip">
+                                                                    <button class="icon-button h6 px-1" data-toggle="del-modal" data-url="{% url 'qrcode_delete' slug=qrcode.slug %}" title="Удалить QR" data-title="Удалить QR" data-bs-toggle="tooltip">
                                                                         <i class="icon feather icon-trash" style="color: rgb(51, 39, 37);"></i>
                                                                     </button>
                                                                 </div>

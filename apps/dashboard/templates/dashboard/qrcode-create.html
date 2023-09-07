@@ -1,26 +1,24 @@
 {% extends "dashboard/layouts/base.html" %}
 
-{% block title %} Page Blank {% endblock %} 
+{% block title %} 
+{% if 'edit' in segment %} Редактирование содержимого QR {% else %} Создать новый QR {% endif %}
+{% endblock %} 
 
-<!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block breadcrumb %}
     {% load breadcrumb %}
-<!-- [ breadcrumb ] start -->
-        <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
-            <ol class="breadcrumb mx-3 my-2">
-                {% breadcrumb_home 'dashboard' %}
-                {% breadcrumb_item 'qrcode' 'Мои QR' 1 %}
-                {% if 'edit' in segment %}
-                    {% breadcrumb_active 2 prefix='Редактирование содержимого QR' %}
-                {% else %}
-                    {% breadcrumb_active 2 prefix='Создать новый QR' %}
-                {% endif %}
-            </ol>
-        </nav>
-
-<!-- [ breadcrumb ] end -->
+    <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
+        <ol class="breadcrumb mx-3 my-2">
+            {% breadcrumb_home url='dashboard' %}
+            {% breadcrumb_item url='qrcode' title='Мои QR' position=1 %}
+            {% if 'edit' in segment %}
+                {% breadcrumb_active prefix='Редактирование содержимого QR' position=2 %}
+            {% else %}
+                {% breadcrumb_active prefix='Создать новый QR' position=2 %}
+            {% endif %}
+        </ol>
+    </nav>
 {% endblock breadcrumb %}
 
 {% block content %}

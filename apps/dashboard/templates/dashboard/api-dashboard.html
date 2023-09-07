@@ -1,7 +1,7 @@
 {% extends "dashboard/layouts/base.html" %}
 {% load static %}
 
-{% block title %} Page Blank {% endblock %} 
+{% block title %} Clicker API Service {% endblock %} 
 
 {% block stylesheets %}
 <!-- prism css -->
@@ -13,8 +13,8 @@
 <!-- [ breadcrumb ] start -->
         <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
             <ol class="breadcrumb mx-3 my-2">
-                {% breadcrumb_home 'dashboard' %}
-                {% breadcrumb_active 1 prefix='API документация' %}
+                {% breadcrumb_home url='dashboard' %}
+                {% breadcrumb_active prefix='API документация' position=1 %}
             </ol>
         </nav>
 

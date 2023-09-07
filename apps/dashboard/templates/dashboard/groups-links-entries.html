@@ -1,17 +1,22 @@
 {% extends "dashboard/layouts/base.html" %}
 
-{% block title %} Мои ссылки {% endblock %}
+{% block title %} Список связанных с группой ссылок {% endblock %}
 
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block breadcrumb %}
     {% load breadcrumb %}
+<!-- [ breadcrumb ] start -->
         <nav aria-label="breadcrumb" itemscope itemtype="{% breadcrumb_schema %}">
             <ol class="breadcrumb mx-3 my-2">
                 {% breadcrumb_home url='dashboard' %}
-                {% breadcrumb_active url='links' prefix='Мои ссылки' position=1 %}
+                {% breadcrumb_item url='groups' title='Мои группы' position=1 %}
+                {% breadcrumb_item url='groups_detail' slug=object.slug title=object.title position=1 %}
+                {% breadcrumb_active url='groups_links_entries' prefix='Связанные ссылки' position=2 %}
             </ol>
         </nav>
+
+<!-- [ breadcrumb ] end -->
 {% endblock breadcrumb %}
 
 
@@ -35,7 +40,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="row px-3 align-items-center justify-content-between">
-                                            <h5 style="font-size: 24px;">Мои ссылки</h5>
+                                            <h5 style="font-size: 24px;">Просмотр связанных ссылок: {{object.title|truncatechars:35}}</h5>
                                             <a href="{% url 'links_create' %}" class="btn btn-primary mt-1"
                                                 style="font-size: 16px; font-weight: 700;">Создать новую ссылку</a>
                                         </div>
@@ -130,7 +135,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-2 col-sm-auto mr-3">
+                                                        <div class="col-lg-2 col-sm-auto pr-3">
                                                             <div class="row row-cols-1 border-bottom">
                                                                 <div class="col-auto" style="color: rgb(68, 66, 66);">
                                                                     Создана: {{ link.date_created|date:"Y.m.d" }}
@@ -147,19 +152,14 @@
                                                                     {% endif %}
                                                                 {% else %}
                                                                     <div class="col-12" style="color: rgb(68, 66, 66)">
-                                                                        Истекает: нет данных
+                                                                        Истекает: Дата не указана
                                                                 {%endif %}
                                                                 </div>
                                                             </div>
                                                             <div class="row row-cols-1 border-bottom">
-                                                                <div class="col-12" style="color: rgb(68, 66, 66); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                                    {% if link.group.title %}
-                                                                        <a href="{% url 'groups_detail' slug=link.group.slug %}" style="color: rgb(68, 66, 66);">
+                                                                <div class="col-12 long-link-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                    <a href="{% url 'groups_detail' slug=link.group.slug %}" style="color: rgb(68, 66, 66);">
                                                                         Группа: {{ link.group.title }}
-                                                                    {% else %}
-                                                                        Группа: нет данных
-                                                                    {% endif %}
-                                                                    </a>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -175,7 +175,7 @@
                                         {% endfor %}
                                     {% include 'dashboard/includes/pagination.html' %}
                                     {% else %}
-                                        <h4 class="fs-4 text-center py-5 my-5">Еще не создано ни одной ссылки</h4>
+                                        <h4 class="fs-4 text-center py-5 my-5">К этой группе еще не привязанно ни одной ссылки</h4>
                                     {% endif %}
                                 </div>
                             </div>
