@@ -6,17 +6,17 @@
         <ul class="pagination justify-content-center mt-4 mr-3">
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page=1">В начало</a>
+                    <a class="page-link" href="?page=1&{{ filter_query }}">В начало</a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" href="?page=1">В начало</a>
+                    <a class="page-link" href="?page=1&{{ filter_query }}">В начало</a>
                 </li>
             {% endif %}
 
             {% if page_obj.number|add:'-3' > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.number|add:'-4' }}">&hellip;</a>
+                    <a class="page-link" href="?page={{ page_obj.number|add:'-4' }}&{{ filter_query }}">&hellip;</a>
                 </li>
             {% endif %}
 
@@ -27,24 +27,24 @@
                     </li>
                 {% elif num > page_obj.number|add:'-4' and num < page_obj.number|add:'4' %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        <a class="page-link" href="?page={{ num }}&{{ filter_query }}">{{ num }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
 
             {% if page_obj.paginator.num_pages > page_obj.number|add:'3' %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.number|add:'4' }}">&hellip;</a>
+                    <a class="page-link" href="?page={{ page_obj.number|add:'4' }}&{{ filter_query }}">&hellip;</a>
                 </li>
             {% endif %}
 
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">В конец</a>
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&{{ filter_query }}">В конец</a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" href="?page=1">В конец</a>
+                    <a class="page-link" href="?page=1&{{ filter_query }}">В конец</a>
                 </li>
             {% endif %}
         </ul>

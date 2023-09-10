@@ -35,7 +35,7 @@ class Statistics:
         browser = list(
             queryset.values("browser").annotate(entries=Count("browser")).distinct()
         )
-        os = list(queryset.values("os").annotate(entries=Count("device")).distinct())
+        os = list(queryset.values("os").annotate(entries=Count("os")).distinct())
         date = list(queryset.values("date").annotate(entries=Count("date")).distinct())
         data = {
             "clicks": clicks,
@@ -103,45 +103,3 @@ class Statistics:
     @sync_to_async
     def async_account_info(cls, *args):
         return cls.account_info(*args)
-
-
-# clicks_all=4 #ch
-# clicks_month=4 #ch
-# clicks_week=4 #ch
-# clicks_day=4 #ch
-
-# device_labels = ['', '', '']  #ch
-# device=[{'device': 'PC', 'entries': 4}]
-
-# sourse_labels = ['', '', ''] #ch
-# source=[
-#     {
-#         'ref_link': 'http://127.0.0.1:8000/FcvFvcv',
-#         'entries': 3
-#     },
-#     {
-#         'ref_link': 'http://127.0.0.1:8000/kQrTKsE2',
-#         'entries': 1
-#     }
-# ]
-
-# browser_labels = ['', '', ''] #ch
-# browser=[{'browser': 'Firefox', 'entries': 4}]
-
-# date=[
-#     {
-#         'date': datetime.datetime(2023, 7, 18, 0, 0, tzinfo=datetime.timezone.utc),
-#         'entries': 2
-#     },
-#     {
-#         'date': datetime.datetime(2023, 7, 19, 0, 0, tzinfo=datetime.timezone.utc),
-#         'entries': 1
-#     },
-#     {
-#         'date': datetime.datetime(2023, 7, 27, 0, 0, tzinfo=datetime.timezone.utc),
-#         'entries': 1
-#     }
-# ]
-
-# links=163
-# groups=2

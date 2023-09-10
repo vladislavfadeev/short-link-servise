@@ -36,8 +36,58 @@
                                     <div class="card-header">
                                         <div class="row px-3 align-items-center justify-content-between">
                                             <h5 style="font-size: 24px;">Мои ссылки</h5>
-                                            <a href="{% url 'links_create' %}" class="btn btn-primary mt-1"
-                                                style="font-size: 16px; font-weight: 700;">Создать новую ссылку</a>
+                                            <div>
+                                                <a class="btn btn-outline-primary mt-1" data-bs-toggle="collapse" href="#filterCollapse" 
+                                                    style="font-size: 16px; font-weight: 700;" aria-controls="filterCollapse">
+                                                    Фильтры
+                                                </a>
+                                                <a href="{% url 'links_create' %}" class="btn btn-primary mt-1"
+                                                    style="font-size: 16px; font-weight: 700;">Создать новую ссылку</a>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="collapse border-bottom shadow-sm {% if filter_query %} show {% endif %}" id="filterCollapse" >
+                                            <form method="GET">
+                                                <div class="row mx-2 my-2">
+                                                    <div class="col-md-3 my-1">
+                                                        <label class="form-check-label" for="id_group">Принадлежит группе</label>
+                                                        {{ filter.form.group }}
+                                                    </div>
+                                                    <div class="col-md-3 my-1">
+                                                        <label class="form-check-label" for="id_date_from">Дата создания от..</label>
+                                                        {{ filter.form.date_from }}
+                                                    </div>
+                                                    <div class="col-md-3 my-1">
+                                                        <label class="form-check-label" for="id_date_to">Дата создания до..</label>
+                                                        {{ filter.form.date_to }}
+                                                    </div>
+                                                    <div class="col-md-3 my-1">
+                                                        <label class="form-check-label" for="id_date_to">Сортировать по</label>
+                                                        {{ filter.form.sort }}
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-end self-aligin-end mb-2 pr-2">
+                                                    <div class="col-auto mt-2">
+                                                        <div class="form-check">
+                                                            {{filter.form.disabled}}
+                                                            <label class="form-check-label" for="id_disabled">
+                                                                Показать отключенные
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            {{filter.form.out_of_date}}
+                                                            <label class="form-check-label" for="id_out_of_date">
+                                                                Показать просроченные
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto mt-2 ">
+                                                        <button type="submit" class="btn btn-primary" style="font-size: 16px; font-weight: 600;">Применить</button>
+                                                        <a href="{% url 'links' %}" class="btn btn-primary" style="font-size: 16px; font-weight: 600;">Сброс</a>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                     {% if links %}
