@@ -14,7 +14,6 @@ User = get_user_model()
 
 class UserInfoModel(models.Model):
     user_agent_unparsed = models.CharField(max_length=150, default="Not defined")
-    fingerprint = models.TextField(null=True, blank=True)
     device = models.CharField(max_length=20, default="Not defined")
     os = models.CharField(max_length=20, default="Not defined")
     browser = models.CharField(max_length=20, default="Not defined")
@@ -101,6 +100,7 @@ class LinkModel(models.Model):
     last_changed = models.DateTimeField(auto_now=True)
     date_expire = models.DateField(null=True, blank=True)
     disabled = models.BooleanField(default=False)
+    unauth_relation = models.UUIDField(null=True, blank=True, db_index=True)
 
     @property
     def qr(self):
@@ -163,7 +163,6 @@ class StatisticsModel(models.Model):
         LinkModel, on_delete=models.CASCADE, related_name="statistics"
     )
     user_agent_unparsed = models.CharField(max_length=150, default="Not defined")
-    fingerprint = models.TextField(null=True, blank=True)
     device = models.CharField(max_length=20, default="Not defined")
     os = models.CharField(max_length=20, default="Not defined")
     browser = models.CharField(max_length=20, default="Not defined")

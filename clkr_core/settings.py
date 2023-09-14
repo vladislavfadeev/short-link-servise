@@ -38,6 +38,7 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["192.168.1.8", "127.0.0.1", "localhost"]
 
+SESSION_COOKIE_AGE = 10**8
 
 # Application definition
 
@@ -75,7 +76,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    
     "django_user_agents.middleware.UserAgentMiddleware",
+    "apps.home.middleware.UserUniqueUUID",
 ]
 
 ROOT_URLCONF = "clkr_core.urls"
@@ -213,10 +216,9 @@ SOCIALACCOUNT_PROVIDERS = {
 
 CELERY_BROKER_URL = 'redis://localhost'
 CELERY_RESULT_BACKEND = 'redis://localhost'
-CELERY_TASK_SERIALIZER = 'jsonpickle'
 CELERY_ACCEPT_CONTENT = ["application/json"]
-CELERY_TASK_SERIALIZER = "jsonpickle"
-CELERY_RESULT_SERIALIZER = "jsonpickle"
+# CELERY_TASK_SERIALIZER = "jsonpickle"
+# CELERY_RESULT_SERIALIZER = "jsonpickle"
 
 
 # Custom constants there

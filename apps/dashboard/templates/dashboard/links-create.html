@@ -38,7 +38,7 @@
                                             <h5 style="font-size: 24px;">{% if 'edit' in segment %}Редактировать ссылку{% else %}Создать новую ссылку{% endif %}</h5>
                                         </div>
                                         <div class="card-block">
-                                            <form method="POST">
+                                            <form method="POST" action="{% if 'edit' not in segment %}{% url 'cutter:create_link' %}{% endif %}">
                                                 {% csrf_token %}
                                                 {{ form.non_field_errors }}
                                                 <div class="row mb-3">
@@ -137,4 +137,8 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+{% if 'edit' not in segment %}
+
+{% endif %}
+{% endblock javascripts %}

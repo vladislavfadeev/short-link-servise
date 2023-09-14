@@ -1,10 +1,11 @@
 from django import forms
 from django.contrib.auth.hashers import make_password
 from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel
-from apps.utils import requester
 
 
 class DashboardLinkForm(forms.ModelForm):
+    force = forms.NullBooleanField()
+
     def __init__(self, *args, **kwargs):
         initial = kwargs.get("initial")
         self._owner = initial.pop("user", None)
@@ -49,14 +50,6 @@ class DashboardLinkForm(forms.ModelForm):
             pwd = cleaned_data.get("password")
             if pwd is not None:
                 cleaned_data["password"] = make_password(pwd)
-        url = cleaned_data.get("long_link")
-        title = cleaned_data.get("title")
-        if url is not None and not title:
-            success, title = requester(url)
-            if success:
-                cleaned_data["title"] = title
-            else:
-                self.add_error("long_link", title)
         return cleaned_data
 
 

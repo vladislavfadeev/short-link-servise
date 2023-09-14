@@ -89,14 +89,14 @@ class CookieCheck:
             raw_data = model.objects.get(session_key=session_id)
         except model.DoesNotExist:
             return
-        
+
         data = raw_data.get_decoded()
         time_now = datetime.now()
-        
+
         if raw_data.expire_date.timestamp() < time_now.timestamp():
             return
         user_id = data.get("_auth_user_id")
-        
+
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -113,8 +113,8 @@ class SimpleAuthBackend(AuthenticationBackend, CookieCheck, TokenCheck):
         use_cookie: bool = True,
         use_token: bool = True,
         token_keyword: str = "Token",
-        token_model = None,
-        cookie_model = None,
+        token_model=None,
+        cookie_model=None,
     ):
         self.use_cookie = use_cookie
         self.use_token = use_token

@@ -1,14 +1,21 @@
 import random
 from datetime import datetime
 
-from django.http import Http404, HttpResponseRedirect
+from celery.result import AsyncResult
+
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic.base import RedirectView
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 from apps.db_model.models import GroupLinkModel, LinkModel, StatisticsModel
 from apps.cutter.forms import RedirectPasswordForm
+from apps.cutter.tasks import make_link_task
 from apps.utils import requester
+from apps.utils.info_normalizer import get_user_info
+from apps.dashboard.forms import DashboardLinkForm
 
 
 class BaseRedirect(RedirectView):
@@ -24,12 +31,12 @@ class BaseRedirect(RedirectView):
     def _get_user_data(self, request, link):
         try:
             device = (str(request.user_agent).split("/")[0]).strip()
-            meta = request.META.items()
-            meta.sort()
+            # meta = request.META.items()
+            # meta.sort()
             StatisticsModel.objects.create(
                 link=link,
                 user_agent_unparsed=request.headers["user-agent"],
-                fingerprint=meta,
+                # fingerprint=meta,
                 device=device,
                 os=request.user_agent.os.family,
                 browser=request.user_agent.browser.family,
@@ -120,3 +127,38 @@ class LinkRedirect(BaseRedirect):
             self._get_user_data(request, link)
             return HttpResponseRedirect(link.long_link)
         return render(request, "cutter/redirect_password.html", context={"form": form})
+
+
+class CreateLinkView(View):
+    form_class = DashboardLinkForm
+
+    @csrf_exempt
+    def post(self, request):
+        form = self.form_class(request.POST, initial={})
+        if form.is_valid():
+            location = request.POST.get("location")
+            uid = request.COOKIES.get("_uid")
+            form_data = form.cleaned_data
+            force = form_data.pop("force")
+            if request.user.is_authenticated:
+                form_data["user_id"] = request.user.id
+            user_info = get_user_info(request)
+            task = make_link_task.delay(form_data, user_info, force, location, uid)
+            return JsonResponse({"task_id": task.id}, status=202)
+        return JsonResponse({"errors": form.errors.as_ul()}, status=422)
+
+
+class TaskStatusView(View):
+    def get(self, request, task_id, *args, **kwargs):
+        task = AsyncResult(task_id)
+        status = 202
+        if task.successful():
+            status = 200
+        elif task.failed():
+            status = 422
+        result = {
+            "task_id": task_id,
+            "task_status": task.status,
+            "task_result": str(task.result),
+        }
+        return JsonResponse(result, status=status)

@@ -1,26 +1,34 @@
 {% load static %}
-<div class="container text-center py-4">
-  <div class="row justify-content-center">
-      <div class="col-xs-6 col-md-8 border rounded-5 align-items-center">
-        <div class="container">
-          <div class="row">
-            <div class="long-link-title col-md-8 text-start pt-3">{{link.title}}</div>
-            <div class="long-link col-md-6 text-start">
-              <a href="{{ link.long_link }}" target="blank">{{ link.long_link }}</a>
+<div class="container  py-4">
+  <div class="collapse {% if filter_query %} show {% endif %}" id="resultCollapse">
+    <div class="row justify-content-center">
+      <div class="col-xs-6 col-md-9">
+        {% if not user.is_authenticated %}
+          <p>Зарегистрируйтесь! Все созданные ранее ссылки сохранятся и будут 
+            доступны в удобном <a href="{% url 'account_signup' %}">личном кабинете.</a></p>
+        {% endif %}
+        {% for link in links %}
+          <div class="container border border-radius-xl my-2 align-items-center shadow-sm">
+            <div class="row">
+              <div class="long-link-title col-md-8 text-start pt-3">{{link.title}}</div>
+              <div class="long-link col-md-6 text-start">
+                <a href="{{ link.long_link }}" target="blank">{{ link.long_link }}</a>
+              </div>
             </div>
+          <div class="input-group input-group-lg mt-2 mb-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg" style="background-color:rgb(198, 245, 198);">Ваша ссылка:</span>
+              <input class="form-control" id="short-link-value" type="text" value="{{ link.short_url }}" aria-label="short link" disabled readonly>
+              <input type="hidden" value="{{ link.short_url }}" id="{{ link.slug }}">
+              <button class="input-group-text home-copy-button" id="btn{{ link.slug }}" onclick="copyToClipboard('{{ link.slug }}')" >Копировать</button>
+            <button class="input-group-text dropdown text-end dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(160, 220, 255);">Скачать QR</dutton>
+            <ul class="dropdown-menu text-small">
+              <li><a class="dropdown-item" href="{%url 'download_qr' model='link' slug=link.slug %}?type=png">Скачать PNG</a></li>
+              <li><a class="dropdown-item" href="{%url 'download_qr' model='link' slug=link.slug %}?type=svg">Скачать SVG</a></li>
+            </ul>
           </div>
         </div>
-        <div class="input-group input-group-lg mt-2 mb-4">
-          <span class="input-group-text" id="inputGroup-sizing-lg" style="background-color:rgb(198, 245, 198);">Ваша ссылка:</span>
-            <input class="form-control" id="short-link-value" type="text" value="{{ link.short_url }}" aria-label="short link" disabled readonly>
-            <input type="hidden" value="{{ link.short_url }}" id="{{ link.slug }}">
-            <button class="input-group-text home-copy-button" id="btn{{ link.slug }}" onclick="copyToClipboard('{{ link.slug }}')" >Копировать</button>
-          <button class="input-group-text dropdown text-end dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(160, 220, 255);">Скачать QR</dutton>
-          <ul class="dropdown-menu text-small">
-            <li><a class="dropdown-item" href="download/link.slug?type=png">Скачать PNG</a></li>
-            <li><a class="dropdown-item" href="download/link.slug?type=svg">Скачать SVG</a></li>
-          </ul>
-        </div>
-      </div>
+        {% endfor %}
+      {% include 'home/include/pagination.html' %}
+    </div>
   </div>
 </div>

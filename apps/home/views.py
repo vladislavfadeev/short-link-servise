@@ -1,39 +1,63 @@
 import io
+from typing import Any
+from django.db.models.query import QuerySet
 
 from django.shortcuts import get_object_or_404, render
 from django.http import FileResponse
 from django.views.generic.base import TemplateView
+from django.views.generic import ListView
 from django.views import View
 from django.contrib.auth import get_user_model
-from apps.home.forms import HomeCreateLinkForm, QRGeneratorForm
 from django.contrib.auth.models import AbstractUser
+
+from apps.home.forms import HomeCreateLinkForm, QRGeneratorForm
 from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel
 from apps.utils.info_normalizer import get_user_info
 
 User = get_user_model()
 
 
-class HomeView(View):
+class HomeView(ListView):
     form_class = HomeCreateLinkForm
     template_name = "home/index.html"
+    context_object_name = "links"
+    paginate_by = 5
+    ordering = "-date_created"
+    model = LinkModel
 
-    def get(self, request):
-        return render(
-            request, self.template_name, context={"main_form": self.form_class}
-        )
+    def get_queryset(self) -> QuerySet[Any]:
+        uid = self.request.COOKIES.get("_uid")
+        self.queryset = self.model.objects.filter(unauth_relation=uid)
+        return super().get_queryset()
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        kwargs['main_form'] = self.form_class
+        return super().get_context_data(**kwargs)
+    
+    # def get(self, request, *args, **kwargs):
+    #     kwargs['main_form'] = self.form_class
+    #     context = self.get_context_data(**kwargs)
+    #     return render(
+    #         request,
+    #         self.template_name,
+    #         context=context,
+    #     )
+    
+    
 
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            link = form.save(commit=False)
-            if issubclass(request.user.__class__, AbstractUser):
-                link.user = request.user
-            link.user_info = get_user_info(request)
-            link.save()
-            return render(
-                request, self.template_name, context={"main_form": form, "link": link}
-            )
-        return render(request, self.template_name, context={"main_form": form})
+    # @staticmethod
+    # def get_related_links(uid):
+    #     links = LinkModel.objects.filter(unauth_relation=uid)
+    #     return links
+
+    # def get(self, request):
+    #     uid = request.COOKIES.get("_uid")
+    #     links = self.get_related_links(uid)
+    #     return render(
+    #         request,
+    #         self.template_name,
+    #         context={"main_form": self.form_class, "links": links},
+    #     )
 
 
 class QRGeneratorView(View):
@@ -77,10 +101,6 @@ class DownloadFile(View):
             buffer, as_attachment=True, filename="%s_qr.%s" % (slug, req_mime)
         )
         return response
-
-
-class BotInfoView(TemplateView):
-    template_name = "home/tg-bot.html"
 
 
 class APIInfoView(TemplateView):

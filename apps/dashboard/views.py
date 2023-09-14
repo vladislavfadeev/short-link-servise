@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, render
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic import (
@@ -20,6 +20,7 @@ from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel
 from apps.authuser.models import User, Token
 from apps.dashboard.forms import DashboardLinkForm, DashboardGroupForm, QRCodeForm
 from apps.dashboard.filters import LinksFilter, GroupFilter
+from apps.dashboard.signals import enter_to_dashboard
 from apps.utils.info_normalizer import get_user_info
 
 
@@ -36,6 +37,9 @@ class DashboardView(BaseDashboard, TemplateView):
     template_name = "dashboard/index.html"
 
     def get(self, request, *args, **kwargs):
+        enter_to_dashboard.send(
+            sender=self.__class__, request=self.request, user=self.request.user
+        )
         activity = Statistics.account_info(request.user)
         kwargs.setdefault("activity", activity)
         return super().get(request, *args, **kwargs)
@@ -65,10 +69,12 @@ class LinksListView(BaseDashboard, ListView):
     paginate_by = 15
     context_object_name = "links"
     ordering = "-date_created"
-    allow_order_params = []
     model = LinkModel
 
     def get_queryset(self) -> QuerySet[Any]:
+        enter_to_dashboard.send(
+            sender=self.__class__, request=self.request, user=self.request.user
+        )
         qs = self.model.objects.filter(user=self.request.user).order_by(self.ordering)
         self._f = LinksFilter(self.request.GET, queryset=qs, request=self.request)
         return self._f.qs
@@ -104,15 +110,8 @@ class LinksCreateView(BaseDashboard, CreateView):
         self.initial["user"] = self.request.user
         return super().get_initial()
 
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            link = form.save(commit=False)
-            link.user = request.user
-            link.user_info = get_user_info(request)
-            link.save()
-            return HttpResponseRedirect(self.success_url)
-        return render(request, self.template_name, context={"form": form})
+    def post(self, request, *args, **kwargs):
+        return HttpResponseNotAllowed("GET")
 
 
 class LinksEditView(BaseDashboard, UpdateView):
@@ -120,6 +119,10 @@ class LinksEditView(BaseDashboard, UpdateView):
     success_url = reverse_lazy("links")
     model = LinkModel
     form_class = DashboardLinkForm
+
+    def get_initial(self):
+        self.initial["user"] = self.request.user
+        return super().get_initial()
 
 
 class LinksDeleteView(BaseDashboard, View):
@@ -138,10 +141,6 @@ class GroupsListView(BaseDashboard, ListView):
     context_object_name = "groups"
     ordering = "-date_created"
     model = GroupLinkModel
-
-    # def get_queryset(self) -> QuerySet[Any]:
-    #     self.queryset = self.model.objects.filter(user=self.request.user)
-    #     return super().get_queryset()
 
     def get_queryset(self) -> QuerySet[Any]:
         qs = self.model.objects.filter(user=self.request.user).order_by(self.ordering)
@@ -175,7 +174,6 @@ class GroupsLinkEntriesView(BaseDashboard, ListView, SingleObjectMixin):
     paginate_by = 15
     context_object_name = "links"
     ordering = "-date_created"
-    allow_order_params = []
     model = LinkModel
 
     def get_queryset(self) -> QuerySet[Any]:

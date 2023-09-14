@@ -1,4 +1,5 @@
 apps/dashboard/templates/dashboard/others
+apps/home/templates/home/my_old_js
 __pycache__
 migrations
 Pipfile.lock

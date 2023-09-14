@@ -218,15 +218,4 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
-
-<script>
-
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-$('[data-bs-toggle="tooltip"]').on('click', function(e){
-    $(this).blur();
-});
-
-</script>
-{% endblock javascripts %}
+{% block javascripts %}  {% endblock javascripts %}
