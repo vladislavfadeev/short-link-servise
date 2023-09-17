@@ -1,14 +1,14 @@
-from django.http.response import HttpResponseNotFound
 from django.contrib.sites.shortcuts import get_current_site
 
 from allauth.account.views import ConfirmEmailView
 
 
-def page_does_not_exist(request):
-    return HttpResponseNotFound
-
-
 class MyConfirmEmailView(ConfirmEmailView):
+    # Current method was rewrited because if in confirmation
+    # url has mistake server return 500 error.
+    # If server can not find related user in self object have not
+    # exist 'email_adress' attribute and in this case raise 
+    # 'AttributeNotExist' error.
     def get_context_data(self, **kwargs):
         ctx = kwargs
         site = get_current_site(self.request)

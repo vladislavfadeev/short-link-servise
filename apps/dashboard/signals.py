@@ -1,4 +1,4 @@
-import django.dispatch
+from django.dispatch import Signal
 
 
-enter_to_dashboard = django.dispatch.Signal()
+enter_to_dashboard = Signal()

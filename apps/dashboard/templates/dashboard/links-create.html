@@ -1,4 +1,5 @@
 {% extends "dashboard/layouts/base.html" %}
+{% load static %}
 
 {% block title %} 
 {% if 'edit' in segment %} Редактирование ссылки {% else %} Создать новую ссылку {% endif %}
@@ -38,7 +39,7 @@
                                             <h5 style="font-size: 24px;">{% if 'edit' in segment %}Редактировать ссылку{% else %}Создать новую ссылку{% endif %}</h5>
                                         </div>
                                         <div class="card-block">
-                                            <form method="POST" action="{% if 'edit' not in segment %}{% url 'cutter:create_link' %}{% endif %}">
+                                            <form method="POST" action="{% if 'edit' not in segment %}{% url 'cutter:create_link' %}{% endif %}" id="link_form">
                                                 {% csrf_token %}
                                                 {{ form.non_field_errors }}
                                                 <div class="row mb-3">
@@ -118,27 +119,28 @@
                                                 {% if 'edit' in segment %}
                                                     <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">Сохранить изменения</button>
                                                 {% else %}
-                                                    <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">Сохранить</button>
+                                                    <button type="submit" class="btn btn-primary mt-4" style="font-size: 16px; font-weight: 700;">
+                                                        <span class="submit-spinner submit-spinner_hide mr-2"></span>Сохранить</button>
                                                 {% endif %}
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- [ Main Content ] end -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- [ Main Content ] end -->
 
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 {% if 'edit' not in segment %}
-
+<script>
+var successURL = "{% url 'links' %}"
+</script>
+<script src="{% static 'js/create-link.js' %}"></script>
 {% endif %}
 {% endblock javascripts %}

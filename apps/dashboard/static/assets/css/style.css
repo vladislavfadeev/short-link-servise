@@ -114,7 +114,7 @@ strong {
   font-weight: 400;
 }
 
-/* Custom */
+/* ############# Custom ############# */
 
 .api-brief-card p, li {
   font-size: 16px;
@@ -152,8 +152,31 @@ strong {
   z-index: 9999;
 }
 
+/* spinner */
+@keyframes spinner-border {
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-/* End custom */
+.submit-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: -0.125em;
+  border: 0.2em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: .75s linear infinite spinner-border;
+  animation: .75s linear infinite spinner-border;
+}
+
+.submit-spinner_hide {
+  display: none;
+}
+
+
+/* ############# End custom ############# */
 
 .img-radius {
   border-radius: 50%;

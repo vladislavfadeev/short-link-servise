@@ -1,7 +1,7 @@
 class ItcModal {
   #elem;
   #template = (
-    `<div class="itc-modal-backdrop modal-dialog-centered">
+    `<div class="itc-modal-backdrop modal-dialog-centered" id="dmodal">
       <div class="itc-modal-content px-3">
         <div class="itc-modal-header ">
           <div class="itc-modal-title">{{title}}</div>

@@ -8,7 +8,7 @@ from django_filters import (
     ModelChoiceFilter,
 )
 from django_filters.widgets import CSVWidget
-from django.db.models import Count, ExpressionWrapper, F, BooleanField
+from django.db.models import Count
 from django import forms
 
 from apps.db_model.models import GroupLinkModel, LinkModel

@@ -27,11 +27,11 @@ from apps.api.utils import openapi_schemas, api_rate_limit
 
 def get_application() -> FastAPI:
     app = FastAPI(
-        title=settings.PROJECT_NAME,
-        debug=settings.DEBUG,
-        docs_url="/api/v1/docs",
-        redoc_url="/api/v1/redoc",
-        openapi_url="/api/v1/openapi.json",
+        title=os.environ["PROJECT_NAME"],
+        debug=os.environ["DEBUG"],
+        docs_url=os.environ["SWAGGER_URL"],
+        redoc_url=os.environ["REDOC_URL"],
+        openapi_url=os.environ["OPENAPI_URL"],
     )
     app.add_middleware(
         RateLimitMiddleware,
@@ -52,7 +52,12 @@ def get_application() -> FastAPI:
         CORSMiddleware,
         allow_origins=settings.ALLOWED_HOSTS or ["*"],
         allow_credentials=True,
-        allow_methods=("DELETE", "GET", "POST", "PUT",),
+        allow_methods=(
+            "DELETE",
+            "GET",
+            "POST",
+            "PUT",
+        ),
         allow_headers=["*"],
     )
     app.add_exception_handler(IValidationError, ivalidation_error_handler)

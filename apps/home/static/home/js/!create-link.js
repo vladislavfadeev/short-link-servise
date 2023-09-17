@@ -7,7 +7,6 @@ async function sendForm(force) {
     if (force === true) {
       form.set('force', true);
     }
-
     const response = await fetch(document.forms.link_form.action, {
       method: 'POST',
       headers: {
@@ -15,11 +14,9 @@ async function sendForm(force) {
       },
       body: form,
     });
-
     if (!response.ok) {
       throw new Error('Something went wrong');
     }
-
     const responseData = await response.json();
     spinnerActions('on');
     getStatus(responseData.task_id);
@@ -35,6 +32,7 @@ async function getStatus(task_id) {
   try {
     const response = await fetch(`task_status/${task_id}`);
     if (response.status === 200) {
+      document.cookie = "resultCollapse=True; path=/; SameSite=None; Secure";
       location.reload();
     } else if (response.status === 202) {
       setTimeout(() => getStatus(task_id), 1000);
@@ -79,7 +77,9 @@ document.forms.link_form.addEventListener('submit', (e) => {
   sendForm(false);
 });
 
-document.addEventListener('click', (e) => {
+var dmodal = document.getElementById("dmodal")
+// document.addEventListener('click', (e) => {
+dmodal.addEventListener('click', (e) => {
   if (e.target.closest('[data-toggle="force_save"]')) {
     e.preventDefault();
     sendForm(true);
@@ -89,4 +89,3 @@ document.addEventListener('click', (e) => {
     modal.hide();
   }
 });
-

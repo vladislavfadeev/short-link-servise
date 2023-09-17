@@ -29,35 +29,10 @@ class HomeView(ListView):
         uid = self.request.COOKIES.get("_uid")
         self.queryset = self.model.objects.filter(unauth_relation=uid)
         return super().get_queryset()
-    
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        kwargs['main_form'] = self.form_class
+        kwargs["form"] = self.form_class
         return super().get_context_data(**kwargs)
-    
-    # def get(self, request, *args, **kwargs):
-    #     kwargs['main_form'] = self.form_class
-    #     context = self.get_context_data(**kwargs)
-    #     return render(
-    #         request,
-    #         self.template_name,
-    #         context=context,
-    #     )
-    
-    
-
-    # @staticmethod
-    # def get_related_links(uid):
-    #     links = LinkModel.objects.filter(unauth_relation=uid)
-    #     return links
-
-    # def get(self, request):
-    #     uid = request.COOKIES.get("_uid")
-    #     links = self.get_related_links(uid)
-    #     return render(
-    #         request,
-    #         self.template_name,
-    #         context={"main_form": self.form_class, "links": links},
-    #     )
 
 
 class QRGeneratorView(View):

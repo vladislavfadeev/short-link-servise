@@ -22,7 +22,7 @@
                 <h4 class="text-muted">Приступим?</h4>
                 <div class="input-group input-group-lg mt-2 mb-2">
                   <span class="input-group-text" id="inputGroup-sizing-lg"><../></span>
-                  {{ main_form.long_link }}
+                  {{ form.long_link }}
                   <input type="hidden" name="location" value="home">
                   <button type="submit" class="btn btn-primary">
                     <span class="submit-spinner submit-spinner_hide me-2"></span>Уменьшить</button>
@@ -30,9 +30,9 @@
               </div>
             </form>
               {% if links %}
-              <div class="text-end ">
+              <div class="text-end" id="controllerWrapper">
                 <a class="text-muted mt-2 me-md-4 dropdown-toggle" data-bs-toggle="collapse" href="#resultCollapse" 
-                    style="font-size: 16px; font-weight: 600;" aria-controls="resultCollapse">
+                    style="font-size: 16px; font-weight: 600;" aria-controls="resultCollapse" id="resultCollapseController">
                     Созданные ранее ссылки
                 </a>
               </div>
@@ -48,6 +48,9 @@
 {% if links %}
   {% include 'home/include/result.html' %}
 {% endif %}
+<script>
+
+</script>
 
 <div class="container text-center" id="features">
   <div class="px-5 mx-5 mt-5">
@@ -55,13 +58,6 @@
     <p class="lead">Clicker - это легкий и простой сервис, предоставляющий пользователю возможности для управления
       ссылками. С нами вы можете легко сокращать длинные ссылки, настраивать кастомизированные адреса, а также управлять
       всеми своими данными в удобном личном кабинете, где доступна полная статистика по переходам и устройствам.</p>
-
-    <!-- <p class="lead">Наш сервис также предоставляет возможность генерации QR-кодов, что позволяет быстро и просто поделиться ссылками в офлайн мире. Кроме того, для вашего удобства, у нас есть Telegram бот, который дает вам доступ к возможностям сервиса без необходимости открывать браузер. Просто отправьте команду в чат бота и получите быстрый доступ к нашим функциям.</p> -->
-
-    <!--  -->
-    <!-- <p class="lead"> -->
-    <!-- <a href="#" class="btn btn-lg btn-light fw-bold border-white bg-white">Learn more</a> -->
-    <!-- </p> -->
   </div>
 </div>
 
@@ -186,5 +182,44 @@
 
 
 {% block javascripts %}
-<script src="{% static 'home/js/modal-actions.js' %}"></script>  
+<script>
+var successURL = undefined
+</script>
+<script src="{% static 'js/create-link.js' %}"></script>  
+
+<script>
+
+var resultList = document.getElementById('resultCollapse')
+var collapseController = document.getElementById('resultCollapseController')
+var controllerWrapper = document.getElementById('controllerWrapper')
+
+var cookieValue = document.cookie.split("; ").find((row) => row.startsWith("resultCollapse="))?.split("=")[1];
+if (cookieValue === 'True') {
+  if (resultList) {
+    resultList.classList.add('show');
+    controllerWrapper.classList.add('dropup')
+    collapseController.innerText = 'Скрыть ссылки'
+  } else if (cookieValue === undefined) {
+    document.cookie = "resultCollapse=False; path=/; SameSite=None; Secure";
+}
+} 
+
+function changeCollapseStatus() {
+  var cookieValue = document.cookie.split("; ").find((row) => row.startsWith("resultCollapse="))?.split("=")[1];
+  if (cookieValue === 'True') {
+    document.cookie = "resultCollapse=False; path=/; SameSite=None; Secure";
+    controllerWrapper.classList.remove('dropup')
+    collapseController.innerText = 'Созданные ранее ссылки'
+  } else if (cookieValue === 'False') {
+    document.cookie = "resultCollapse=True; path=/; SameSite=None; Secure";
+    controllerWrapper.classList.add('dropup')
+    collapseController.innerText = 'Скрыть ссылки'
+  }
+}
+
+collapseController.addEventListener('click', function() {
+  changeCollapseStatus()
+});
+</script>
+
 {% endblock javascripts %}

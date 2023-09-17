@@ -1,4 +1,5 @@
 from typing import Any, Dict
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect

@@ -1,5 +1,4 @@
 from datetime import date, datetime
-from email.policy import default
 from typing import Optional
 from pydantic import BaseModel, HttpUrl, UUID4, validator, Field
 from django.contrib.auth.hashers import make_password
@@ -10,7 +9,6 @@ literals = string.ascii_letters + string.digits + "_-"
 
 
 class Base(BaseModel):
-
     class Config:
         orm_mode = True
 
@@ -25,7 +23,6 @@ class GroupBase(Base):
     description: Optional[str | None] = None
     disabled: Optional[bool] = False
     rotation: Optional[bool] = Field(default=False, description="Random link choice")
-
 
 
 class CreateGroup(GroupBase):
@@ -53,7 +50,8 @@ class ViewGroupInList(GroupBase):
     @validator("password", pre=True)
     def pwd(cls, v):
         return True if v else False
-    
+
+
 class ViewGroupInLink(GroupBase):
     id: int
     password: bool
@@ -127,19 +125,6 @@ class LinksList(Base):
     links_skipped: int = Field(description="Count of skipped links")
     links_shown: int = Field(description="Count of current shown links")
     links_list: list[ViewLinkModel] | None
-
-
-# class CreateViewLinkModel(BaseLinkModel):
-#     date_created: Optional[datetime]
-#     last_changed: Optional[datetime]
-#     password: Optional[bool]
-#     group: Optional[ViewGroupInLink | None]
-#     short_url: Optional[str]
-#     qr: Optional[str]
-
-#     @validator("password", pre=True)
-#     def pwd(cls, v):
-#         return True if v else False
 
 
 class PartialUpdateLinkModel(Base):
@@ -232,7 +217,7 @@ class FailValidationModel(Base):
 
 class MultipleResponseModel(Base):
     fails: Optional[list[FailValidationModel | None]]
-    created: Optional[list[ViewLinkModel | None]]  #CreateViewLinkModel
+    created: Optional[list[ViewLinkModel | None]]  # CreateViewLinkModel
 
 
 class QRCodeRetrieve(Base):
@@ -244,8 +229,6 @@ class QRCodeRetrieve(Base):
 
 class QRCodeCreate(Base):
     text: str = Field(max_length=550)
-
-
 
 
 code_401 = {
@@ -265,6 +248,8 @@ code_404 = {
 code_413 = {
     413: {
         "description": "Payload too large",
-        "content": {"application/json": {"example": {"detail": "Request entity too large."}}},
+        "content": {
+            "application/json": {"example": {"detail": "Request entity too large."}}
+        },
     }
 }

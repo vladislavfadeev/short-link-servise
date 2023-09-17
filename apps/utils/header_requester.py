@@ -33,9 +33,6 @@ class Requester:
             page = BeautifulSoup(response.text, "html.parser")
             if page.title:
                 return True, page.title.string
-            # page_json = response.json()
-            # if page_json.get("title"):
-            #     return True, page_json.get("title").capitalize()
             domain = self.extract_domain(url)
             return True, domain
 

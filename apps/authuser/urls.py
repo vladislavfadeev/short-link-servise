@@ -8,5 +8,5 @@ urlpatterns = [
         MyConfirmEmailView.as_view(),
         name="account_confirm_email",
     ),
-    path('accounts/', include('allauth.urls')),    
+    path("accounts/", include("allauth.urls")),
 ]
