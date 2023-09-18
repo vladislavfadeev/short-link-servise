@@ -1,5 +1,9 @@
+import os
+
 from pathlib import Path
-import os, environ
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../../.env"))
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,12 +12,9 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static/"]
 STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
 
-env = environ.Env(DEBUG=(bool, False))
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
-
-DEBUG = env("DEBUG")
-SECRET_KEY = env("SECRET_KEY")
-ALLOWED_HOSTS = env["DJANGO_ALLOWED_HOSTS"].split(",")
+DEBUG = os.getenv("DEBUG", False)
+SECRET_KEY = os.environ["SECRET_KEY"]
+ALLOWED_HOSTS = os.environ["DJANGO_ALLOWED_HOSTS"].split(",")
 SESSION_COOKIE_AGE = 10**8
 
 ROOT_URLCONF = "clkr_core.urls"
@@ -93,7 +94,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-DJANGO_ALLOW_ASYNC_UNSAFE = env("DJANGO_ALLOW_ASYNC_UNSAFE")
+DJANGO_ALLOW_ASYNC_UNSAFE = os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"]
 
-PROJECT_NAME = env("PROJECT_NAME")
-DOMAIN_NAME = env("DOMAIN_NAME")
+PROJECT_NAME = os.environ["PROJECT_NAME"]
+DOMAIN_NAME = os.environ["DOMAIN_NAME"]

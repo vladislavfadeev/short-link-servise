@@ -16,7 +16,7 @@ services:
       - ~/prod/clkr/postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=hGTg#43GR543F&yg$kj*hGfDDrf?
+      - POSTGRES_PASSWORD=hGTg#43GR543F&ygkj*hGfDDrf?
       - POSTGRES_DB=clkr
   redis:
     image: redis
@@ -24,7 +24,7 @@ services:
     volumes:
       - ~/prod/clkr/redis-data/data:/data
     enviroment: 
-      - REDIS_ARGS="--requirepass gKh5Ff6Fvn^v&09?h!43f$nB)nTq"
+      - REDIS_ARGS="--requirepass gKh5Ff6Fvn^v&09?h!43fnB)nTq"
   certbot:
     image: certbot/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
