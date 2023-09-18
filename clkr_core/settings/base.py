@@ -12,11 +12,11 @@ def reduce_path(file_name, times):
     return result
 
 
-ROOT_DIR = reduce_path(__file__, 3)
-BASE_DIR = reduce_path(__file__, 2)
+ROOT_DIR = reduce_path(__file__, 4)
+BASE_DIR = reduce_path(__file__, 3)
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 DEBUG = os.getenv("DEBUG", False)
 SECRET_KEY = os.environ["SECRET_KEY"]

@@ -18,14 +18,8 @@ services:
     image: postgres:15-alpine
     volumes:
       - ~/prod/clkr/postgres-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=hGTg#43GR543F&ygkj*hGfDDrf?
-      - POSTGRES_DB=clkr
-    # env_file:
-    #   - .env
-    # ports:
-    #   - 127.0.0.3:5432:5432
+    env_file:
+      - .env
 
   clkr-redis:
     image: redis:7-alpine
