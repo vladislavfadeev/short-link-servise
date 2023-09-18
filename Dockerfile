@@ -6,6 +6,8 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update -y
 RUN apt-get upgrade -y
 
+WORKDIR /src
+
 COPY requirements.txt .
 
 RUN pip install --upgrade pip
@@ -21,5 +23,5 @@ RUN python manage.py createsuperuser --noinput \
             --password $DJANGO_SUPERUSER_PASSWORD
 
 
-CMD ["uvicorn", "clkr_core.asgi:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "5085"]
+CMD ["uvicorn", "clkr_core.asgi:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8000"]
 

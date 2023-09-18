@@ -1,38 +1,33 @@
 version: "3.10"
 
 services:
-  nginx:
-    restart: unless-stopped
-    build:
-        context: ./nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    volumes:
-      - ./persistentdata/certbot/conf:/etc/letsencrypt
-      - ./persistentdata/certbot/www:/var/www/certbot
-      - ./persistentdata/static:/var/www/static
-      - ./persistentdata/media:/var/www/media
   clkr-service:
     restart: unless-stopped
     build:
       context: .
-    image: clkr-service
     volumes:
-      - ./static:/var/www/static
+      - ~/prod/nginx/staticfiles/clkr/static:~/src/static
     env_file:
       - ./.env
   postgresql-db:
     restart: unless-stopped
     image: postgres
     volumes:
-            - ./persistentdata/db:/var/lib/postgresql/data
-    env_file:
-      - ./postgresql-db/.pg-env # why - see the next step
+      - ~/prod/clkr/postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=hGTg#43GR543F&yg$kj*hGfDDrf?
+      - POSTGRES_DB=clkr
+  redis:
+    image: redis
+    restart: unless-stopped
+    volumes:
+      - ~/prod/clkr/redis-data/data:/data
+    enviroment: 
+      - REDIS_ARGS="--requirepass gKh5Ff6Fvn^v&09?h!43f$nB)nTq"
   certbot:
     image: certbot/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     volumes:
-      - ./persistentdata/certbot/conf:/etc/letsencrypt # <--here
-      - ./persistentdata/certbot/www:/var/www/certbot
+      - ~/prod/nginx/certbot/conf/clkr:/etc/letsencrypt
+      - ~/prod/nginx/certbot/www/clkr:/var/www/certbot
