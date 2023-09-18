@@ -5,12 +5,20 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../.env"))
 
+def reduce_path(file_name, times):
+    result = os.path.realpath(file_name)
+    for _ in range(times):
+        result = os.path.dirname(result)
+    return result
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+
+# BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = reduce_path(__file__, 3)
+BASE_DIR = reduce_path(__file__, 2)
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static/"]
-STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
+# STATICFILES_DIRS = [ROOT_DIR / "static/"]
+STATIC_ROOT = os.path.join(ROOT_DIR, "/static/")
 
 DEBUG = os.getenv("DEBUG", False)
 SECRET_KEY = os.environ["SECRET_KEY"]
@@ -72,7 +80,7 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR, "templates"],
+        "DIRS": [ROOT_DIR, "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
