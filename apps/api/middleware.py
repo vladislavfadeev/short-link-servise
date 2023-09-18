@@ -6,8 +6,8 @@ from starlette.responses import RedirectResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.authentication import UnauthenticatedUser
 
-REDOC_URL=os.environ("REDOC_URL")
-SWAGGER_URL=os.environ("SWAGGER_URL")
+REDOC_URL=os.environ["REDOC_URL"]
+SWAGGER_URL=os.environ["SWAGGER_URL"]
 
 
 class NotAuthDocsRedirectMiddleware(BaseHTTPMiddleware):
