@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../../.env"))
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../.env"))
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +14,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
 
 DEBUG = os.getenv("DEBUG", False)
 SECRET_KEY = os.environ["SECRET_KEY"]
-ALLOWED_HOSTS = os.environ["DJANGO_ALLOWED_HOSTS"].split(",")
+ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 SESSION_COOKIE_AGE = 10**8
 
 ROOT_URLCONF = "clkr_core.urls"

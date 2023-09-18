@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from apps.authuser.forms import CustomUserCreationForm
+# from apps.authuser.forms import CustomUserCreationForm
 from .models import Token
 
 
@@ -9,7 +9,7 @@ User = get_user_model()
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
+    # add_form = CustomUserCreationForm
 
     add_fieldsets = (
         (

@@ -1,4 +1,3 @@
-
 version: "3.10"
 
 services:
@@ -9,25 +8,35 @@ services:
     volumes:
       - ~/prod/nginx/staticfiles/clkr/static:~/src/static
     env_file:
-      - ./.env
-  postgresql-db:
+      - .env
+    depends_on:
+      - clkr-postgresql
+      - clkr-redis
+
+  clkr-postgresql:
     restart: unless-stopped
-    image: postgres
+    image: postgres:15-alpine
     volumes:
       - ~/prod/clkr/postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=hGTg#43GR543F&ygkj*hGfDDrf?
       - POSTGRES_DB=clkr
-  redis:
-    image: redis
+    # env_file:
+    #   - .env
+    ports:
+      - 127.0.0.3:5432:5432
+
+  clkr-redis:
+    image: redis:7-alpine
     restart: unless-stopped
     volumes:
       - ~/prod/clkr/redis-data/data:/data
     env_file:
-      - ./.env
+      - .env
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
-  certbot:
+    
+  clkr-certbot:
     image: certbot/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     volumes:
