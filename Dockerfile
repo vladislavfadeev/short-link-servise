@@ -16,11 +16,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 RUN python manage.py collectstatic
-RUN python manage.py migrate
-RUN python manage.py createsuperuser --noinput \
-            --username $DJANGO_SUPERUSER_USERNAME \
-            --email $DJANGO_SUPERUSER_EMAIL \
-            --password $DJANGO_SUPERUSER_PASSWORD
+# RUN python manage.py migrate
+# RUN python manage.py createsuperuser --noinput \
+#             --username $DJANGO_SUPERUSER_USERNAME \
+#             --email $DJANGO_SUPERUSER_EMAIL \
+#             --password $DJANGO_SUPERUSER_PASSWORD
 
 
 CMD ["uvicorn", "clkr_core.asgi:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8000"]
