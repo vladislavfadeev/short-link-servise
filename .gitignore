@@ -1,7 +1,7 @@
 apps/dashboard/templates/dashboard/others
 apps/home/templates/home/my_old_js
 __pycache__
-migrations
+0*.py
 Pipfile.lock
 db.sqlite3
 db-bak.sqlite3
