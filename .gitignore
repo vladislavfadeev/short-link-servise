@@ -1,7 +1,6 @@
 apps/dashboard/templates/dashboard/others
 apps/home/templates/home/my_old_js
 __pycache__
-0*.py
 Pipfile.lock
 db.sqlite3
 db-bak.sqlite3
@@ -9,3 +8,4 @@ settings.py.bak
 фичи.txt
 .env
 eee.py
+# 0*.py

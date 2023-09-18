@@ -6,7 +6,7 @@ services:
     build:
       context: .
     volumes:
-      - ~/prod/nginx/staticfiles/clkr/static:/home/www/src/static
+      - ~/prod/nginx/staticfiles/clkr/static:/src/static
     env_file:
       - .env
     depends_on:
