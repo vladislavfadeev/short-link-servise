@@ -12,13 +12,11 @@ def reduce_path(file_name, times):
     return result
 
 
-# BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = reduce_path(__file__, 3)
 BASE_DIR = reduce_path(__file__, 2)
 
 STATIC_URL = "/static/"
-# STATICFILES_DIRS = [ROOT_DIR / "static/"]
-STATIC_ROOT = os.path.join(ROOT_DIR, "/static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
 
 DEBUG = os.getenv("DEBUG", False)
 SECRET_KEY = os.environ["SECRET_KEY"]
@@ -80,7 +78,7 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [ROOT_DIR, "templates"],
+        "DIRS": [BASE_DIR, "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
