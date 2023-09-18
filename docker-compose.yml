@@ -24,8 +24,8 @@ services:
       - POSTGRES_DB=clkr
     # env_file:
     #   - .env
-    ports:
-      - 127.0.0.3:5432:5432
+    # ports:
+    #   - 127.0.0.3:5432:5432
 
   clkr-redis:
     image: redis:7-alpine
