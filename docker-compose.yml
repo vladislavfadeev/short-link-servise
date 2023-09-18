@@ -9,6 +9,8 @@ services:
       - ~/prod/nginx/staticfiles/clkr/static:/src/static
     env_file:
       - .env
+    expose:
+      - 8000
     depends_on:
       - clkr-postgresql
       - clkr-redis
