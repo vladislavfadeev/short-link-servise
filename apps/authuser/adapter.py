@@ -1,4 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
+from django import forms
 from apps.utils.tasks import celery_email_send
 
 
@@ -13,3 +14,10 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             msg.to,
             msg.extra_headers,
         )
+
+    def validate_unique_email(self, email):
+        from allauth.account.models import EmailAddress
+
+        if EmailAddress.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(self.error_messages["email_taken"])
+        return email
