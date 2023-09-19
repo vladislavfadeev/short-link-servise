@@ -18,7 +18,7 @@ BASE_DIR = reduce_path(__file__, 3)
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-DEBUG = os.getenv("DEBUG", False)
+DEBUG = os.environ("DEBUG")
 SECRET_KEY = os.environ["SECRET_KEY"]
 ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 SESSION_COOKIE_AGE = 10**8

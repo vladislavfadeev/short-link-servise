@@ -1,11 +1,11 @@
-# from django.utils.translation import gettext_lazy as _
-# from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-# from django.core.exceptions import ValidationError
-# from django.contrib.auth import get_user_model, authenticate
-# from django import forms
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model, authenticate
+from django import forms
 # from apps.authuser.utils import send_email_verify
 
-# User = get_user_model()
+User = get_user_model()
 
 
 # class CustomAuthenticationForm(AuthenticationForm):
@@ -31,13 +31,13 @@
 #         return self.cleaned_data
 
 
-# class CustomUserCreationForm(UserCreationForm):
-#     email = forms.EmailField(
-#         label=_("Email"),
-#         max_length=254,
-#         widget=forms.EmailInput(attrs={"autocomplete": "email"}),
-#     )
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(
+        label=_("Email"),
+        max_length=254,
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
+    )
 
-#     class Meta(UserCreationForm.Meta):
-#         model = User
-#         fields = ("email",)
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("email",)
