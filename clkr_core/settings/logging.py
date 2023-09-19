@@ -1,35 +1,31 @@
+import os
+
+
+LOG_FILE = os.environ["LOG_FILE"]
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "basic": {
-            "format": "%(asctime)s - [%(levelname)s] - %(name)s "
-            "- (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s",
+        "verbose": {
+            "format": "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
             "datefmt": "%d/%b/%Y %H:%M:%S",
         },
     },
     "handlers": {
-        "console": {
-            "level": "WARNING",
-            "formatter": "basic",
-            "class": "logging.StreamHandler",
-            # 'stream': 'ext://sys.stdout',  # Default is stderr
-        },
         "file": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "level": "WARNING",
-            "formatter": "basic",
-            "filename": "/src/logs/clkr-service.log",
-            "maxBytes": 1048576,
-            "backupCount": 10,
-            "mode": "a",
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": f"{LOG_FILE}clkr-service.log",
+            "formatter": "verbose",
         },
+        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
     },
     "loggers": {
         "django": {
-            "handlers": ["console, file"],
+            "handlers": ["console", "file"],
             "propagate": True,
             "level": "WARNING",
-        }
+        },
     },
 }

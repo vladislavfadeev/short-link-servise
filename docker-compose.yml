@@ -8,6 +8,8 @@ services:
     volumes:
       - ~/prod/nginx/staticfiles/clkr/static:/src/static
       - ~/prod/clkr/src/logs/:/src/logs
+    environment:
+      - LOG_FILE=/src/logs/
     env_file:
       - .env
     expose:
@@ -39,8 +41,12 @@ services:
     build: 
       context: .
     command: sh -c "celery -A clkr_core worker -c 1 -l INFO"
+    environment:
+      - LOG_FILE=/src/logs/worker/
     env_file:
       - .env
+    volumes:
+      - ~/prod/clkr/src/logs/worker/:/src/logs/worker
     links:
       - clkr-redis
     depends_on:
