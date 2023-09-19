@@ -1,9 +1,9 @@
 import os
 
-from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../.env"))
+
 
 def reduce_path(file_name, times):
     result = os.path.realpath(file_name)
@@ -28,7 +28,7 @@ ROOT_URLCONF = "clkr_core.urls"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -43,14 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    # Third party apps
-    "django_filters",
-    "django_user_agents",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.github",
-    "allauth.socialaccount.providers.google",
     # Local apps
     "apps.authuser",
     "apps.cutter",
@@ -59,6 +51,14 @@ INSTALLED_APPS = [
     "apps.dashboard",
     "apps.api",
     "apps.utils",
+    # Third party apps
+    "django_filters",
+    "django_user_agents",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.google",
 ]
 
 MIDDLEWARE = [
