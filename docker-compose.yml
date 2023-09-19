@@ -11,6 +11,7 @@ services:
       - .env
     expose:
       - 8000
+    command: sh -c "uvicorn clkr_core.asgi:app --proxy-headers --host 0.0.0.0 --port 8000"
     depends_on:
       - clkr-postgresql
       - clkr-redis
@@ -30,8 +31,20 @@ services:
       - ~/prod/clkr/redis-data/data:/data
     env_file:
       - .env
-    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
-    
+    command: /bin/sh -c "redis-server --requirepass $REDIS_PASSWORD"
+
+  clkr-worker:
+    hostname: clkr-worker
+    build: 
+      context: .
+    command: sh -c "celery -A clkr_core worker -c 1 -l INFO"
+    env_file:
+      - .env
+    links:
+      - clkr-redis
+    depends_on:
+      - clkr-redis
+
   clkr-certbot:
     image: certbot/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

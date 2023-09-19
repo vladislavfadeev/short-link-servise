@@ -44,10 +44,8 @@ SITE_ID = 1
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
-            "client_id": "7469f4f94351cb8804aa",
-            # "client_id": os.environ["SOCIALACCOUNT_GITHUB_CLIENT_ID"],
-            "secret": "45bb7855ad8d52993ed0c3cd5b9ed6d097793f3b",
-            # "secret": os.environ["SOCIALACCOUNT_GITHUB_SECRET"],
+            "client_id": os.environ["SOCIALACCOUNT_GITHUB_CLIENT_ID"],
+            "secret": os.environ["SOCIALACCOUNT_GITHUB_SECRET"],
         },
         "SCOPE": [
             "user",
@@ -55,19 +53,15 @@ SOCIALACCOUNT_PROVIDERS = {
             "email",
             "read:org",
         ],
-        "VERIFIED_EMAIL": True
-        # "VERIFIED_EMAIL": os.environ["SOCIALACCOUNT_GITHUB_VERIFIED_EMAIL"]
+        "VERIFIED_EMAIL": os.environ["SOCIALACCOUNT_GITHUB_VERIFIED_EMAIL"]
     },
     "google": {
         "APP": {
-            "client_id": "37855567346-j5siunmsjim8pk4k0h2lt3bmerufqdqm.apps.googleusercontent.com",
-            # "client_id": os.environ["SOCIALACCOUNT_GOOGLE_CLIENT_ID"],,
-            "secret": "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",
-            # "secret": os.environ["SOCIALACCOUNT_GOOGLE_SECRET"],,
+            "client_id": os.environ["SOCIALACCOUNT_GOOGLE_CLIENT_ID"],
+            "secret": os.environ["SOCIALACCOUNT_GOOGLE_SECRET"],
             "key": "",
         },
         "SCOPE": ["profile", "email"],
-        "VERIFIED_EMAIL": True,
-        # "VERIFIED_EMAIL": os.environ["SOCIALACCOUNT_GOOGLE_VERIFIED_EMAIL"],
+        "VERIFIED_EMAIL": os.environ["SOCIALACCOUNT_GOOGLE_VERIFIED_EMAIL"],
     },
 }
