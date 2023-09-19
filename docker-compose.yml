@@ -38,6 +38,7 @@ services:
 
   clkr-worker:
     hostname: clkr-worker
+    restart: unless-stopped
     build:
       context: .
     command: sh -c "celery -A clkr_core worker -c 1 -l INFO"
@@ -54,6 +55,7 @@ services:
 
   clkr-certbot:
     image: certbot/certbot
+    restart: unless-stopped
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     volumes:
       - ~/prod/nginx/certbot/conf/clkr:/etc/letsencrypt
