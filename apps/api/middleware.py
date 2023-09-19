@@ -6,8 +6,8 @@ from starlette.responses import RedirectResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.authentication import UnauthenticatedUser
 
-REDOC_URL=os.environ["REDOC_URL"]
-SWAGGER_URL=os.environ["SWAGGER_URL"]
+REDOC_URL=str(os.environ["REDOC_URL"])
+SWAGGER_URL=str(os.environ["SWAGGER_URL"])
 
 
 class NotAuthDocsRedirectMiddleware(BaseHTTPMiddleware):
@@ -18,7 +18,7 @@ class NotAuthDocsRedirectMiddleware(BaseHTTPMiddleware):
         if request.url.path in (REDOC_URL, SWAGGER_URL):
             if isinstance(request.user, UnauthenticatedUser):
                 return RedirectResponse(
-                    f"/login?next={request.url.path}", status_code=301
+                    f"/accounts/login?next={request.url.path}", status_code=301
                 )
         response = await call_next(request)
         return response
