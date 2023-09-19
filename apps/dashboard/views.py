@@ -26,7 +26,7 @@ from apps.utils.info_normalizer import get_user_info
 
 
 class BaseDashboard(LoginRequiredMixin):
-    login_url = "accounts/login/"
+    login_url = "/accounts/login/"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         segments = self.request.path.replace("?", "/").split("/")

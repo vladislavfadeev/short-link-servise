@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load socialaccount %}
 
 {% block content %}
@@ -17,14 +18,14 @@
                 <form class="col-12" method="post">
                   {% csrf_token %}
                   <button type="submit" formaction="{% provider_login_url 'google' %}" class="btn border border-2 border-dark w-100">
-                    <img src="assets/images/icons/google.png" width="20" alt="">
+                    <img src="{% static 'img/google-logo1.png' %}" width="20" alt="">
                       <span class="ms-3 fw-500">Войти через Google</span>
                   </button>
                 </form>
                 <form class="col-12" method="post">
                   {% csrf_token %}
                   <button type="submit" formaction="{% provider_login_url 'github' %}" class="btn border border-2 border-dark w-100">
-                    <img src="assets/images/icons/apple-black-logo.png" width="20" alt="">
+                    <img src="{% static 'img/github-logo.png' %}" width="20" alt="">
                     <span class="ms-3 fw-500">Войти через GitHub</span>
                   </button>
                 </form>

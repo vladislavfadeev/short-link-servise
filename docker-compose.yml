@@ -38,7 +38,7 @@ services:
 
   clkr-worker:
     hostname: clkr-worker
-    build: 
+    build:
       context: .
     command: sh -c "celery -A clkr_core worker -c 1 -l INFO"
     environment:
