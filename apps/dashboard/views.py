@@ -17,7 +17,7 @@ from django.views.generic import (
 )
 
 from apps.db_model.statistics import Statistics
-from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel
+from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel, UserInfoModel
 from apps.authuser.models import User, Token
 from apps.dashboard.forms import DashboardLinkForm, DashboardGroupForm, QRCodeForm
 from apps.dashboard.filters import LinksFilter, GroupFilter
@@ -255,7 +255,7 @@ class QRCodeCreateView(BaseDashboard, CreateView):
         if form.is_valid():
             qrcode = form.save(commit=False)
             qrcode.user = request.user
-            qrcode.user_info = get_user_info(request)
+            qrcode.user_info = UserInfoModel(**get_user_info(request)).save()
             qrcode.save()
             return HttpResponseRedirect(self.success_url)
         return render(request, self.template_name, context={"form": form})

@@ -147,7 +147,7 @@
     "disabled": false,
     "rotation": true,
     "date_expire": null,
-    "short_url": "http://127.0.0.1:8000/my-first-group",
+    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
     "password": false,
     "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
     "links_total": 2,
@@ -162,7 +162,7 @@
             "date_created": "2019-08-24T14:15:22Z",
             "last_changed": "2019-08-24T14:15:22Z",
             "password": false,
-            "short_url": "http://127.0.0.1:8000/my-first-link",
+            "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-link",
             "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
         },
         {
@@ -174,7 +174,7 @@
             "date_created": "2019-08-24T14:15:22Z",
             "last_changed": "2019-08-24T14:15:22Z",
             "password": false,
-            "short_url": "http://127.0.0.1:8000/my-second-link",
+            "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-second-link",
             "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
         }
     ]

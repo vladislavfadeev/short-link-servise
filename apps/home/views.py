@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 
 from apps.home.forms import HomeCreateLinkForm, QRGeneratorForm
-from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel
+from apps.db_model.models import GroupLinkModel, LinkModel, QRCodeModel, UserInfoModel
 from apps.utils.info_normalizer import get_user_info
 
 User = get_user_model()
@@ -48,7 +48,7 @@ class QRGeneratorView(View):
             qrcode = form.save(commit=False)
             if issubclass(request.user.__class__, AbstractUser):
                 qrcode.user = request.user
-            qrcode.user_info = get_user_info(request)
+            qrcode.user_info = UserInfoModel(**get_user_info(request)).save()
             qrcode.save()
             return render(
                 request, self.template_name, context={"form": form, "qrcode": qrcode}

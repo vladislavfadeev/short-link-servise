@@ -125,7 +125,7 @@ curl --request POST \
         "disabled": false,
         "rotation": true
         "password": false,
-        "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+        "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/g/my-first-group",
         "date_expire": null
     }
 }
@@ -183,7 +183,7 @@ curl --request GET \
                 "disabled": false,
                 "rotation": true
                 "password": false,
-                "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+                "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/g/my-first-group",
                 "date_expire": null
             }
         },
@@ -206,7 +206,7 @@ curl --request GET \
                 "disabled": false,
                 "rotation": true
                 "password": false,
-                "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+                "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/g/my-first-group",
                 "date_expire": null
             }
         }
@@ -257,7 +257,7 @@ curl --request POST \
     "disabled": false,
     "rotation": true,
     "password": false,
-    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/g/my-first-group",
     "date_expire": null,
     "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX..."
 }
@@ -297,7 +297,7 @@ curl --request GET \
     "disabled": false,
     "rotation": true,
     "date_expire": null,
-    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/my-first-group",
+    "short_url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}/g/my-first-group",
     "password": false,
     "qr": "data:image/png;base64,iVBORw0KGgoXXXXXXXXX...",
     "links_total": 2,
