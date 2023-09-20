@@ -27,7 +27,7 @@ class HomeView(ListView):
 
     def get_queryset(self) -> QuerySet[Any]:
         uid = self.request.COOKIES.get("_uid")
-        self.queryset = self.model.objects.filter(unauth_relation=uid)
+        self.queryset = self.model.objects.filter(unauth_relation__exact=uid)
         return super().get_queryset()
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:

@@ -4,7 +4,7 @@ from apps.db_model.models import LinkModel
 
 def created_links_handler(request, user, **kwargs):
     uid = request.COOKIES.get("_uid")
-    links = LinkModel.objects.filter(unauth_relation=uid)
+    links = LinkModel.objects.filter(unauth_relation__exact=uid)
     if links:
         links.update(user=user, unauth_relation=None)
 
