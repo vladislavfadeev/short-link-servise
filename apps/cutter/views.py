@@ -35,13 +35,13 @@ class BaseRedirect(RedirectView):
             # meta.sort()
             StatisticsModel.objects.create(
                 link=link,
-                user_agent_unparsed=request.headers["user-agent"],
+                user_agent_unparsed=str(request.user_agent),
                 # fingerprint=meta,
                 device=device,
-                os=request.user_agent.os.family,
-                browser=request.user_agent.browser.family,
+                os=str(request.user_agent.os.family),
+                browser=str(request.user_agent.browser.family),
                 ref_link=requester.extract_domain(request.META.get("HTTP_REFERER")),
-                user_ip=request.META["REMOTE_ADDR"],
+                user_ip=str(request.META.get("REMOTE_ADDR", "Not defined")),
             )
         except:
             pass

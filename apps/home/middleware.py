@@ -15,3 +15,9 @@ class UserUniqueUUID(MiddlewareMixin):
         uid = str(uuid.uuid4())
         response.cookies['_uid'] = uid
         return response
+    
+
+class UserIPAdressFromNginx(MiddlewareMixin):
+    def process_request(self, request):
+        request.META["REMOTE_ADDR"] = request.META.get("HTTP_FORWARDED_FOR")
+        return request

@@ -72,6 +72,7 @@ MIDDLEWARE = [
     # Third party middleware
     "django_user_agents.middleware.UserAgentMiddleware",
     # Local middleware
+    "apps.home.middleware.UserIPAdressFromNginx",
     "apps.home.middleware.UserUniqueUUID",
 ]
 
