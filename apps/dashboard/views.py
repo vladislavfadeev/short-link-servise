@@ -210,7 +210,7 @@ class GroupsCreateView(BaseDashboard, CreateView):
         if form.is_valid():
             group = form.save(commit=False)
             group.user = request.user
-            group.user_info = get_user_info(request)
+            group.user_info = UserInfoModel(**get_user_info(request)).save
             group.save()
             return HttpResponseRedirect(self.success_url)
         return render(request, self.template_name, context={"form": form})
