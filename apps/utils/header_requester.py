@@ -9,12 +9,9 @@ class Requester:
 
     @staticmethod
     def extract_domain(url):
-        try:
-            parsed_url = urlparse(url)
-        except:
-            return "Undefined"
-        else:
-            return parsed_url.netloc
+        if url != "Undefined":
+            url = urlparse(url)
+        return url
 
     def __call__(self, url: str, force: bool | None):
         headers = {"user-agent": self.faker.user_agent()}

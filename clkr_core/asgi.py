@@ -28,7 +28,8 @@ from apps.api.utils import openapi_schemas, api_rate_limit
 def get_application() -> FastAPI:
     app = FastAPI(
         title=os.environ["PROJECT_NAME"],
-        debug=os.environ["DEBUG"],
+        # debug=os.environ["DEBUG"],
+        debug=False,
         docs_url=os.environ["SWAGGER_URL"],
         redoc_url=os.environ["REDOC_URL"],
         openapi_url=os.environ["OPENAPI_URL"],

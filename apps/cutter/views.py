@@ -31,17 +31,15 @@ class BaseRedirect(RedirectView):
     def _get_user_data(self, request, link):
         try:
             device = (str(request.user_agent).split("/")[0]).strip()
-            # meta = request.META.items()
-            # meta.sort()
+
             StatisticsModel.objects.create(
                 link=link,
                 user_agent_unparsed=str(request.user_agent),
-                # fingerprint=meta,
                 device=device,
                 os=str(request.user_agent.os.family),
                 browser=str(request.user_agent.browser.family),
-                ref_link=requester.extract_domain(request.META.get("HTTP_REFERER")),
-                user_ip=str(request.META.get("REMOTE_ADDR", "Not defined")),
+                ref_link=requester.extract_domain(request.META.get("HTTP_REFERER", "Undefined")),
+                user_ip=str(request.META.get("REMOTE_ADDR", "Undefined")),
             )
         except:
             pass
