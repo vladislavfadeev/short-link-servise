@@ -2,7 +2,7 @@ import uuid
 from django.utils.deprecation import MiddlewareMixin
 
 
-class UserUniqueUUID(MiddlewareMixin):
+class UserUniqueUUIDMiddleware(MiddlewareMixin):
     
     def process_response(self, request, response):
         # check the '_uid' attribute in cookies, if it not
@@ -17,7 +17,12 @@ class UserUniqueUUID(MiddlewareMixin):
         return response
     
 
-class UserIPAdressFromNginx(MiddlewareMixin):
+class SetRealRemoteAddrMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        request.META["REMOTE_ADDR"] = request.META.get("HTTP_FORWARDED_FOR")
-        return request
+        try:
+            real_ip = request.META['HTTP_X_REAL_IP']
+        except KeyError:
+            pass
+        else:
+            real_ip = real_ip.split(",")[0]
+            request.META['REMOTE_ADDR'] = real_ip

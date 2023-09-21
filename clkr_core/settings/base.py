@@ -18,7 +18,8 @@ BASE_DIR = reduce_path(__file__, 3)
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-DEBUG = os.environ["DEBUG"]
+#DEBUG = os.environ["DEBUG"]
+DEBUG = False
 SECRET_KEY = os.environ["SECRET_KEY"]
 ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
 SESSION_COOKIE_AGE = 10**8
@@ -72,8 +73,8 @@ MIDDLEWARE = [
     # Third party middleware
     "django_user_agents.middleware.UserAgentMiddleware",
     # Local middleware
-    "apps.home.middleware.UserIPAdressFromNginx",
-    "apps.home.middleware.UserUniqueUUID",
+    "apps.home.middleware.SetRealRemoteAddrMiddleware",
+    "apps.home.middleware.UserUniqueUUIDMiddleware",
 ]
 
 TEMPLATES = [
