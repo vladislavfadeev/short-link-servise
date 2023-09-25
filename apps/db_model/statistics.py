@@ -40,7 +40,7 @@ class Statistics:
         date = list(
             queryset.annotate(tr_date=TruncDate("date"))
             .values("tr_date")
-            .annotate(entries=Count("date"))
+            .annotate(entries=Count("tr_date"))
             .distinct()
         )
         data = {

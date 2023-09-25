@@ -8,7 +8,7 @@
     var dayEntries = 0;
 
     for (var i = 0; i < dayEntriesData.length; i++) {
-        var entryDate = new Date(dayEntriesData[i].date);
+        var entryDate = new Date(dayEntriesData[i].tr_date);
         var timeDiff = Math.abs(currentDate - entryDate);
         var daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
 
@@ -79,7 +79,7 @@
 
     for (var i = 0; i < clickDynamic.length; i++) {
         var dict = clickDynamic[i];
-        var labels = dict["date"].slice(0, 10);
+        var labels = dict["tr_date"].slice(0, 10);
         var entries = dict["entries"];
 
         clickDynamicLabels.push(labels);
