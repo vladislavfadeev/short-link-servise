@@ -10,7 +10,7 @@ class Requester:
     @staticmethod
     def extract_domain(url):
         if url != "Undefined":
-            url = urlparse(url)
+            url = urlparse(url).netloc
         return url
 
     def __call__(self, url: str, force: bool | None):

@@ -130,7 +130,6 @@ class LinkRedirect(BaseRedirect):
 class CreateLinkView(View):
     form_class = DashboardLinkForm
 
-    @csrf_exempt
     def post(self, request):
         form = self.form_class(request.POST, initial={})
         if form.is_valid():

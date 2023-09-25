@@ -5,6 +5,7 @@ from asgiref.sync import sync_to_async
 from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.db.models.query import QuerySet
+from django.db.models.functions import TruncDate
 
 from apps.db_model.models import GroupLinkModel, LinkModel, StatisticsModel
 from apps.db_model.schemas import (
@@ -36,7 +37,12 @@ class Statistics:
             queryset.values("browser").annotate(entries=Count("browser")).distinct()
         )
         os = list(queryset.values("os").annotate(entries=Count("os")).distinct())
-        date = list(queryset.values("date").annotate(entries=Count("date")).distinct())
+        date = list(
+            queryset.annotate(tr_date=TruncDate("date"))
+            .values("tr_date")
+            .annotate(entries=Count("date"))
+            .distinct()
+        )
         data = {
             "clicks": clicks,
             "device": device,
