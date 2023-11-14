@@ -74,7 +74,7 @@ async def link_detail(request: Request, slug: str):
     return data
 
 
-@router.put(
+@router.patch(
     "/{slug}",
     response_model=schemas.ViewLinkModel,
     responses={**schemas.code_401, **schemas.code_404},

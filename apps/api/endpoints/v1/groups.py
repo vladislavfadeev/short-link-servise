@@ -85,7 +85,7 @@ async def group_detail(
     return resp_model
 
 
-@router.put(
+@router.patch(
     "/{pk}",
     response_model=schemas.ViewCreatedGroup,
     responses={**schemas.code_401, **schemas.code_404},
